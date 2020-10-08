@@ -23,10 +23,10 @@ export default BallThrowAR = createReactClass({
 		return (
 			<ViroARScene>
 				<ViroText
-					text={'Click for next!'}
+					text={'Swipe for next!'}
 					scale={[0.5, 0.5, 0.5]}
 					position={[0, 0, -1]}
-					onClick={this._pushNextScene}
+					onDrag={this._pushNextScene}
 				/>
 				<ViroAmbientLight color={'#aaaaaa'} />
 				<ViroSpotLight
@@ -37,11 +37,7 @@ export default BallThrowAR = createReactClass({
 					color="#ffffff"
 					castsShadow={true}
 				/>
-				<ViroNode
-					position={[0, -1, 0]}
-					// dragType="FixedToWorld"
-					// onDrag={() => {}}
-				>
+				<ViroNode position={[0, -1, 0]}>
 					<Viro3DObject
 						source={require('./res/emoji_smile/emoji_smile.vrx')}
 						resources={[
@@ -52,7 +48,7 @@ export default BallThrowAR = createReactClass({
 						position={[0, -1, -2]}
 						scale={[0.2, 0.2, 0.2]}
 						type="VRX"
-						onDrag={this._onBallClick}
+						onClick={this._onBallClick}
 						animation={{
 							name: this.state.currentAnimation,
 							run: true,
@@ -67,7 +63,7 @@ export default BallThrowAR = createReactClass({
 	_onBallClick() {
 		if (this.state.currentAnimation === 'rotate') {
 			this.setState({
-				currentAnimation: 'moveLeft',
+				currentAnimation: 'arc',
 			});
 		} else {
 			this.setState({
@@ -82,16 +78,31 @@ export default BallThrowAR = createReactClass({
 });
 
 ViroAnimations.registerAnimations({
-	moveLeft: {
-		properties: { positionX: '-=5.0', rotateZ: '+=45' },
-		duration: 10000,
-	},
+	// moveLeft: {
+	// 	properties: { positionX: '-=5.0', rotateZ: '+=45' },
+	// 	duration: 10000,
+	// },
 	rotate: {
 		properties: {
 			rotateY: '+=90',
 		},
 		duration: 250, //.25 seconds
 	},
+	launch: {
+		properties: {
+			positionX: '-=5.0',
+			positionY: '+=5.0',
+		},
+		duration: 5000,
+	},
+	fall: {
+		properties: {
+			positionX: '+=10.0',
+			positionY: '-=5.0',
+		},
+		duration: 5000,
+	},
+	arc: [['launch', 'fall']],
 });
 
 module.exports = BallThrowAR;
