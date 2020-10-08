@@ -39,11 +39,11 @@ export default BallThrowAR = createReactClass({
 				/>
 				<ViroNode position={[0, -1, 0]}>
 					<Viro3DObject
-						source={require('./res/emoji_smile/emoji_smile.vrx')}
+						source={require('./res/object_sphere.vrx')}
 						resources={[
-							require('./res/emoji_smile/emoji_smile_diffuse.png'),
-							require('./res/emoji_smile/emoji_smile_normal.png'),
-							require('./res/emoji_smile/emoji_smile_specular.png'),
+							require('./res/sphere_diffuse.png'),
+
+							require('./res/sphere_specular.png'),
 						]}
 						position={[0, -1, -2]}
 						scale={[0.2, 0.2, 0.2]}
@@ -56,6 +56,30 @@ export default BallThrowAR = createReactClass({
 						}}
 					/>
 				</ViroNode>
+
+				{/* leash but the file might be the wrong format */}
+				{/* <ViroNode position={[0, -3, 0]}>
+					<Viro3DObject
+						source={require('./res/leash.max')}
+						position={[0, -3, 0]}
+						scale={[0.2, 0.2, 0.2]}
+						type="VRX"
+					/>
+				</ViroNode> */}
+
+				{/* dog bowl but i may be requiring the wrong files */}
+				{/* <ViroNode position={[0, 0, -2]}>
+					<Viro3DObject
+						source={require('./res/Dog-Graphics/DogBowl_NoFood.fbx')}
+						resources={[
+							require('./res/Dog-Graphics/DogBowl_Noormals.png'),
+							require('./res/Dog-Graphics/Dogbowl2_Specular.jpg'),
+						]}
+						position={[0, -1, -2]}
+						scale={[0.2, 0.2, 0.2]}
+						type="FBX"
+					/>
+				</ViroNode> */}
 			</ViroARScene>
 		);
 	},
