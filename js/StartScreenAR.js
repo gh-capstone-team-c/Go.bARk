@@ -8,6 +8,7 @@ import {
 } from "react-viro";
 var createReactClass = require("create-react-class");
 const HelloWorldSceneAR = require("./HelloWorldSceneAR copy");
+const BallThrowAR = require("./BallThrowAR")
 
 export default StartScreenAR = createReactClass({
 	render() {
@@ -31,7 +32,7 @@ export default StartScreenAR = createReactClass({
 	},
 
 	_pushNextScene() {
-		this.props.sceneNavigator.push({ scene: HelloWorldSceneAR });
+		this.props.sceneNavigator.push({ scene: BallThrowAR });
 	},
 });
 

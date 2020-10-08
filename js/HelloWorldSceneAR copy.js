@@ -1,10 +1,10 @@
 /** @format */
 
-"use strict";
+'use strict';
 
-import React, { Component } from "react";
+import React, { Component } from 'react';
 
-import { StyleSheet } from "react-native";
+import { StyleSheet } from 'react-native';
 
 import {
 	ViroARScene,
@@ -18,7 +18,7 @@ import {
 	ViroARPlaneSelector,
 	ViroNode,
 	ViroAnimations,
-} from "react-viro";
+} from 'react-viro';
 
 export default class HelloWorldSceneAR extends Component {
 	constructor(props) {
@@ -26,15 +26,21 @@ export default class HelloWorldSceneAR extends Component {
 
 		// Set initial state here
 		this.state = {
-			text: "Initializing AR...",
+			text: 'Initializing AR...',
 		};
 
 		// bind 'this' to functions
 		this._onInitialized = this._onInitialized.bind(this);
 	}
 
+	getInitialState() {
+		return {
+			runAnimation: false,
+		};
+	}
+
 	render() {
-		console.log("yoyoyo");
+		console.log('yoyoyo');
 		return (
 			<ViroARScene onTrackingUpdated={this._onInitialized}>
 				<ViroText
@@ -46,10 +52,10 @@ export default class HelloWorldSceneAR extends Component {
 				<ViroBox
 					position={[0, -0.5, -1]}
 					scale={[0.3, 0.3, 0.1]}
-					materials={["grid"]}
-					animation={{ name: "rotate", run: true, loop: true }}
+					materials={['grid']}
+					animation={{ name: 'rotate', run: true, loop: true }}
 				/>
-				<ViroAmbientLight color={"#aaaaaa"} />
+				<ViroAmbientLight color={'#aaaaaa'} />
 				<ViroSpotLight
 					innerAngle={5}
 					outerAngle={90}
@@ -64,25 +70,34 @@ export default class HelloWorldSceneAR extends Component {
 					onDrag={() => {}}
 				>
 					<Viro3DObject
-						source={require("./res/emoji_smile/emoji_smile.vrx")}
+						source={require('./res/emoji_smile/emoji_smile.vrx')}
 						resources={[
-							require("./res/emoji_smile/emoji_smile_diffuse.png"),
-							require("./res/emoji_smile/emoji_smile_normal.png"),
-							require("./res/emoji_smile/emoji_smile_specular.png"),
+							require('./res/emoji_smile/emoji_smile_diffuse.png'),
+							require('./res/emoji_smile/emoji_smile_normal.png'),
+							require('./res/emoji_smile/emoji_smile_specular.png'),
 						]}
-						position={[0, 0.5, 0]}
+						position={[0, -1, -2]}
 						scale={[0.2, 0.2, 0.2]}
 						type="VRX"
+						// onDrag={this._onBallClick}
+					
 					/>
 				</ViroNode>
 			</ViroARScene>
 		);
 	}
 
+	// _onBallClick() {
+	// 	console.log('clicked');
+	// 	this.setState({
+	// 		runAnimation: !this.state.runAnimation,
+	// 	});
+	// }
+
 	_onInitialized(state, reason) {
 		if (state == ViroConstants.TRACKING_NORMAL) {
 			this.setState({
-				text: "Hello",
+				text: 'Hello',
 			});
 		} else if (state == ViroConstants.TRACKING_NONE) {
 			// Handle loss of tracking
@@ -92,26 +107,33 @@ export default class HelloWorldSceneAR extends Component {
 
 var styles = StyleSheet.create({
 	helloWorldTextStyle: {
-		fontFamily: "Arial",
+		fontFamily: 'Arial',
 		fontSize: 30,
-		color: "#ffffff",
-		textAlignVertical: "center",
-		textAlign: "center",
+		color: '#ffffff',
+		textAlignVertical: 'center',
+		textAlign: 'center',
 	},
 });
 
 ViroMaterials.createMaterials({
 	grid: {
-		diffuseTexture: require("./res/grid_bg.jpg"),
+		diffuseTexture: require('./res/grid_bg.jpg'),
 	},
 });
 
 ViroAnimations.registerAnimations({
 	rotate: {
 		properties: {
-			rotateY: "+=90",
+			rotateY: '+=90',
 		},
 		duration: 250, //.25 seconds
+	},
+	moveAway:
+	{
+		properties: {
+			positionZ: '+=0.3'
+		},
+		duration: 1000
 	},
 });
 
