@@ -19,6 +19,7 @@ import {
 } from "react-native";
 
 import { ViroARSceneNavigator } from "react-viro";
+import Menu from "./js/Menu";
 
 /*
  TODO: Insert your API key below
@@ -43,7 +44,7 @@ export default class ViroSample extends Component {
 		super();
 
 		this.state = {
-			navigatorType: defaultNavigatorType,
+			login: false,
 			sharedProps: sharedProps,
 		};
 		// this._getExperienceSelector = this._getExperienceSelector.bind(this);
@@ -73,8 +74,8 @@ export default class ViroSample extends Component {
 
 					<TouchableHighlight
 						style={localStyles.buttons}
-						onPress={this._getExperienceButtonOnPress(AR_NAVIGATOR_TYPE)}
-						underlayColor={"#68a0ff"}
+						onPress={this._getARNavigator()}
+						underlayColor={"transparent"}
 					>
 						<Text style={localStyles.buttonText}>start</Text>
 					</TouchableHighlight>
@@ -88,29 +89,15 @@ export default class ViroSample extends Component {
 	_getARNavigator() {
 		Vibration.vibrate();
 		return (
-			<ViroARSceneNavigator
-				{...this.state.sharedProps}
-				initialScene={{ scene: InitialARScene }}
-				onExitViro={this._exitViro}
-			/>
+			<View>
+				<Menu />
+				<ViroARSceneNavigator
+					{...this.state.sharedProps}
+					initialScene={{ scene: InitialARScene }}
+					onExitViro={this._exitViro}
+				/>
+			</View>
 		);
-	}
-
-	// This function returns an anonymous/lambda function to be used
-	// by the experience selector buttons
-	_getExperienceButtonOnPress(navigatorType) {
-		return () => {
-			this.setState({
-				navigatorType: navigatorType,
-			});
-		};
-	}
-
-	// This function "exits" Viro by setting the navigatorType to UNSET.
-	_exitViro() {
-		this.setState({
-			navigatorType: UNSET,
-		});
 	}
 }
 
@@ -154,18 +141,6 @@ var localStyles = StyleSheet.create({
 		marginBottom: 10,
 		backgroundColor: "#ccff00",
 		borderRadius: 100,
-		borderWidth: 1,
-		borderColor: "#fff",
-	},
-	exitButton: {
-		height: 50,
-		width: 100,
-		paddingTop: 10,
-		paddingBottom: 10,
-		marginTop: 10,
-		marginBottom: 10,
-		backgroundColor: "#68a0cf",
-		borderRadius: 10,
 		borderWidth: 1,
 		borderColor: "#fff",
 	},

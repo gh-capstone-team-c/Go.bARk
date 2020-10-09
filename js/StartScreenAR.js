@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { View } from "react-native";
 import {
 	ViroARScene,
 	ViroText,
@@ -6,9 +7,10 @@ import {
 	ViroBox,
 	ViroScene,
 } from "react-viro";
+import Menu from "./Menu";
 var createReactClass = require("create-react-class");
 const HelloWorldSceneAR = require("./HelloWorldSceneAR copy");
-const BallThrowAR = require("./BallThrowAR")
+const BallThrowAR = require("./BallThrowAR");
 
 export default StartScreenAR = createReactClass({
 	render() {
