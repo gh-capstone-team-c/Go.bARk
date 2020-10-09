@@ -1,13 +1,7 @@
-import { AppRegistry } from "react-native";
-import App from "./App.js";
-import React, { Component } from "react";
+import { AppRegistry } from 'react-native';
+import App from './App.js';
 
-export default class Root extends Component {
-	render() {
-		return <App />;
-	}
-}
-AppRegistry.registerComponent("viroSample", () => Root);
+AppRegistry.registerComponent('viroSample', () => App);
 
 // The below line is necessary for use with the TestBed App
-AppRegistry.registerComponent("ViroSample", () => Root);
+AppRegistry.registerComponent('ViroSample', () => App);
