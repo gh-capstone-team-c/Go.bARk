@@ -15,9 +15,10 @@ import {
 	StyleSheet,
 	PixelRatio,
 	TouchableHighlight,
+	Vibration,
 } from "react-native";
 
-import { ViroVRSceneNavigator, ViroARSceneNavigator } from "react-viro";
+import { ViroARSceneNavigator } from "react-viro";
 
 /*
  TODO: Insert your API key below
@@ -28,10 +29,9 @@ var sharedProps = {
 
 // Sets the default scene you want for AR and VR
 var InitialARScene = require("./js/StartScreenAR");
-var InitialVRScene = require("./js/StartScreenAR");
 
 var UNSET = "UNSET";
-var VR_NAVIGATOR_TYPE = "VR";
+
 var AR_NAVIGATOR_TYPE = "AR";
 
 // This determines which type of experience to launch in, or UNSET, if the user should
@@ -46,9 +46,8 @@ export default class ViroSample extends Component {
 			navigatorType: defaultNavigatorType,
 			sharedProps: sharedProps,
 		};
-		this._getExperienceSelector = this._getExperienceSelector.bind(this);
+		// this._getExperienceSelector = this._getExperienceSelector.bind(this);
 		this._getARNavigator = this._getARNavigator.bind(this);
-		this._getVRNavigator = this._getVRNavigator.bind(this);
 		this._getExperienceButtonOnPress = this._getExperienceButtonOnPress.bind(
 			this
 		);
@@ -59,38 +58,27 @@ export default class ViroSample extends Component {
 	// if you are building a specific type of experience.
 	render() {
 		if (this.state.navigatorType == UNSET) {
-			return this._getExperienceSelector();
-		} else if (this.state.navigatorType == VR_NAVIGATOR_TYPE) {
-			return this._getVRNavigator();
-		} else if (this.state.navigatorType == AR_NAVIGATOR_TYPE) {
+			return this._getLogin();
+		} else if (this.state.navigatorType === AR_NAVIGATOR_TYPE) {
 			return this._getARNavigator();
 		}
 	}
 
 	// Presents the user with a choice of an AR or VR experience
-	_getExperienceSelector() {
+	_getLogin() {
 		return (
 			<View style={localStyles.outer}>
 				<View style={localStyles.inner}>
-					<Text style={localStyles.titleText}>
-						Choose your desired experience:
-					</Text>
+					<Text style={localStyles.titleText}>go</Text>
 
 					<TouchableHighlight
 						style={localStyles.buttons}
 						onPress={this._getExperienceButtonOnPress(AR_NAVIGATOR_TYPE)}
 						underlayColor={"#68a0ff"}
 					>
-						<Text style={localStyles.buttonText}>AR</Text>
+						<Text style={localStyles.buttonText}>start</Text>
 					</TouchableHighlight>
-
-					<TouchableHighlight
-						style={localStyles.buttons}
-						onPress={this._getExperienceButtonOnPress(VR_NAVIGATOR_TYPE)}
-						underlayColor={"#68a0ff"}
-					>
-						<Text style={localStyles.buttonText}>VR</Text>
-					</TouchableHighlight>
+					<Text style={localStyles.titleText}>bARk</Text>
 				</View>
 			</View>
 		);
@@ -98,20 +86,11 @@ export default class ViroSample extends Component {
 
 	// Returns the ViroARSceneNavigator which will start the AR experience
 	_getARNavigator() {
+		Vibration.vibrate();
 		return (
 			<ViroARSceneNavigator
 				{...this.state.sharedProps}
 				initialScene={{ scene: InitialARScene }}
-			/>
-		);
-	}
-
-	// Returns the ViroSceneNavigator which will start the VR experience
-	_getVRNavigator() {
-		return (
-			<ViroVRSceneNavigator
-				{...this.state.sharedProps}
-				initialScene={{ scene: InitialVRScene }}
 				onExitViro={this._exitViro}
 			/>
 		);
@@ -138,19 +117,19 @@ export default class ViroSample extends Component {
 var localStyles = StyleSheet.create({
 	viroContainer: {
 		flex: 1,
-		backgroundColor: "black",
+		backgroundColor: "darkseagreen",
 	},
 	outer: {
 		flex: 1,
 		flexDirection: "row",
 		alignItems: "center",
-		backgroundColor: "black",
+		// backgroundColor: "darkseagreen",
 	},
 	inner: {
 		flex: 1,
 		flexDirection: "column",
 		alignItems: "center",
-		backgroundColor: "black",
+		// backgroundColor: "darkseagreen",
 	},
 	titleText: {
 		paddingTop: 30,
@@ -160,19 +139,21 @@ var localStyles = StyleSheet.create({
 		fontSize: 25,
 	},
 	buttonText: {
-		color: "#fff",
+		color: "#000",
 		textAlign: "center",
 		fontSize: 20,
 	},
 	buttons: {
-		height: 80,
+		display: "flex",
+		justifyContent: "center",
+		height: 150,
 		width: 150,
 		paddingTop: 20,
 		paddingBottom: 20,
 		marginTop: 10,
 		marginBottom: 10,
-		backgroundColor: "#68a0cf",
-		borderRadius: 10,
+		backgroundColor: "#ccff00",
+		borderRadius: 100,
 		borderWidth: 1,
 		borderColor: "#fff",
 	},
