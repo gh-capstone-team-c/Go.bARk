@@ -118,7 +118,7 @@ var localStyles = StyleSheet.create({
 	titleText: {
 		paddingTop: 30,
 		paddingBottom: 20,
-		color: '#fff',
+		color: '#000',
 		textAlign: 'center',
 		fontSize: 25,
 	},
