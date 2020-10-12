@@ -47,7 +47,7 @@ export default class ViroSample extends Component {
 		return (
 			<View style={localStyles.container}>
 				{!this.state.loggedIn ? (
-					<View style={localStyles.test}>
+					<View>
 						<Text style={localStyles.titleText}>go</Text>
 
 						<TouchableHighlight
@@ -73,6 +73,7 @@ export default class ViroSample extends Component {
 								left: 0,
 								right: 0,
 								height: 50,
+								backgroundColor: '#fff',
 							}}
 						>
 							<Menu />
@@ -112,11 +113,8 @@ var localStyles = StyleSheet.create({
 		height: height,
 		flexDirection: 'column',
 		alignItems: 'center',
-		backgroundColor: '#fff',
 	},
-	test: {
-		backgroundColor: '#fff',
-	},
+
 	titleText: {
 		paddingTop: 30,
 		paddingBottom: 20,

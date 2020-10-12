@@ -27,10 +27,10 @@ export default class Menu extends React.Component {
 }
 var menuStyles = StyleSheet.create({
 	container: {
-		color: 'blue',
 		flexDirection: 'row',
 		alignContent: 'center',
 		justifyContent: 'space-around',
 		marginTop: 10,
+		backgroundColor: '#fff',
 	},
 });
