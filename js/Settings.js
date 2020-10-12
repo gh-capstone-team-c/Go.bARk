@@ -1,36 +1,32 @@
 import React from 'react';
 import { View, Image, StyleSheet, Text, TouchableOpacity } from 'react-native';
 
-/**
- * Component for showing AR initialization UI to user to move device around until AR tracking is initialized
- */
-export default class Menu extends React.Component {
+export default class Settings extends React.Component {
 	constructor(props) {
 		super(props);
 	}
 
 	render() {
 		return (
-			<View style={menuStyles.container}>
+			<View style={settings.container}>
 				<TouchableOpacity>
-					<Text>Account</Text>
+					<Text>Friends</Text>
+				</TouchableOpacity>
+				<TouchableOpacity>
+					<Text>Photos</Text>
 				</TouchableOpacity>
 				<TouchableOpacity>
 					<Text>Settings</Text>
-				</TouchableOpacity>
-				<TouchableOpacity>
-					<Text>Help</Text>
 				</TouchableOpacity>
 			</View>
 		);
 	}
 }
-var menuStyles = StyleSheet.create({
+var settings = StyleSheet.create({
 	container: {
 		flexDirection: 'row',
 		alignContent: 'center',
 		justifyContent: 'space-around',
-		marginTop: 10,
-		backgroundColor: '#fff',
+		marginTop: 20,
 	},
 });
