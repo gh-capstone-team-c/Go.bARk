@@ -9,6 +9,7 @@ import {
   ViroNode,
   ViroAnimations,
   ViroText,
+  ViroARPlaneSelector,
 } from 'react-viro';
 var createReactClass = require('create-react-class');
 const HelloWorldSceneAR = require('./HelloWorldSceneAR copy');
@@ -19,7 +20,23 @@ export default BallThrowAR = createReactClass({
       currentAnimation: 'rotate',
     };
   },
-  render: function () {
+
+  // _renderDog() {
+  //   return (
+  //     <Viro3DObject
+  //       source={require('./res/Doggo/dingo_obj/Dingo.obj')}
+  //       resources={[
+  //         require('./res/Doggo/dingo_obj/Dingo.mtl'),
+  //         require('./res/Doggo/dingo_obj/Dingo_BaseColor.png'),
+  //       ]}
+  //       type="OBJ"
+  //       scale={[0.5, 0.5, 0.5]}
+  //       position={[0, -2, -4]}
+  //     />
+  //   );
+  // },
+
+  render() {
     return (
       <ViroARScene>
         <ViroText
@@ -45,8 +62,12 @@ export default BallThrowAR = createReactClass({
           ]}
           type="OBJ"
           scale={[0.5, 0.5, 0.5]}
-          position={[0, -2, -3]}
+          position={[0, -2, -4]}
         />
+        {/* <ViroARPlaneSelector minHeight={0.5} minWidth={0.5}>
+          {this._renderDog()}
+        </ViroARPlaneSelector> */}
+
         <ViroNode position={[0, -1, 0]}>
           <Viro3DObject
             source={require('./res/object_sphere.vrx')}
