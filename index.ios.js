@@ -1,5 +1,5 @@
 import { AppRegistry } from 'react-native';
-import App from './App.js';
+import App from './App-ios.js';
 
 AppRegistry.registerComponent('viroSample', () => App);
 
