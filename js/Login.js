@@ -1,32 +1,32 @@
 import React from 'react';
 import { View, Image, StyleSheet, Text, TouchableOpacity } from 'react-native';
 
-export default class Settings extends React.Component {
+export default class Login extends React.Component {
 	constructor(props) {
 		super(props);
 	}
 
 	render() {
 		return (
-			<View style={settings.container}>
+			<View style={loginStyle.container}>
 				<TouchableOpacity>
-					<Text>these are your settings</Text>
+					<Text>This is some test text</Text>
 				</TouchableOpacity>
 				<TouchableOpacity>
-					<Text>here they are</Text>
+					<Text>You have reached Login</Text>
 				</TouchableOpacity>
 				<TouchableOpacity>
-					<Text>Settings!</Text>
+					<Text>Congratulations</Text>
 				</TouchableOpacity>
 			</View>
 		);
 	}
 }
-var settings = StyleSheet.create({
+var loginStyle = StyleSheet.create({
 	container: {
-		flexDirection: 'row',
+		flexDirection: 'column',
 		alignContent: 'center',
 		justifyContent: 'space-around',
-		backgroundColor: '#fff',
+		marginTop: 20,
 	},
 });
