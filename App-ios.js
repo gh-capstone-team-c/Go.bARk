@@ -15,13 +15,17 @@ import {
 	StyleSheet,
 	PixelRatio,
 	TouchableHighlight,
+	TouchableOpacity,
 	Vibration,
 	Dimensions,
 } from 'react-native';
 const { width, height } = Dimensions.get('window');
 import { ViroARSceneNavigator } from 'react-viro';
-import Menu from './js/Menu';
+// import Menu from './Menu';
 import Screenshot from './js/Screenshot';
+import Photos from './js/Photos';
+import Settings from './js/Settings';
+import Friends from './js/Friends';
 
 /*
  TODO: Insert your API key below
@@ -31,18 +35,24 @@ var sharedProps = {
 };
 
 // Sets the default scene you want for AR and VR
-var InitialARScene = require('./js/StartScreenAR');
+var InitialARScene = require('./js/BallThrowAR');
 
-export default class ViroSample extends Component {
+export default class AppIos extends Component {
 	constructor() {
 		super();
 
 		this.state = {
 			loggedIn: false,
+			menuItem: null,
 			sharedProps: sharedProps,
 		};
+		this.renderComponent = this.renderComponent.bind(this);
 	}
-
+	renderComponent() {
+		if (this.state.menuItem === 'settings') return <Settings />;
+		else if (this.state.menuItem === 'friends') return <Friends />;
+		else if (this.state.menuItem === 'photos') return <Photos />;
+	}
 	render() {
 		return (
 			<View style={localStyles.container}>
@@ -76,8 +86,37 @@ export default class ViroSample extends Component {
 								backgroundColor: '#fff',
 							}}
 						>
-							<Menu />
+							<View style={localStyles.menuContainer}>
+								<TouchableOpacity
+									onPress={() => {
+										if (this.state.menuItem === 'settings')
+											this.setState({ menuItem: null });
+										else this.setState({ menuItem: 'settings' });
+									}}
+								>
+									<Text>Settings</Text>
+								</TouchableOpacity>
+								<TouchableOpacity
+									onPress={() => {
+										if (this.state.menuItem === 'friends')
+											this.setState({ menuItem: null });
+										else this.setState({ menuItem: 'friends' });
+									}}
+								>
+									<Text>Friends</Text>
+								</TouchableOpacity>
+								<TouchableOpacity
+									onPress={() => {
+										if (this.state.menuItem === 'photos')
+											this.setState({ menuItem: null });
+										else this.setState({ menuItem: 'photos' });
+									}}
+								>
+									<Text>Photos</Text>
+								</TouchableOpacity>
+							</View>
 						</View>
+
 						<View
 							style={{
 								position: 'absolute',
@@ -91,6 +130,23 @@ export default class ViroSample extends Component {
 								{...this.state.sharedProps}
 								initialScene={{ scene: InitialARScene }}
 							/>
+						</View>
+						<View style={{ position: 'absolute', left: 0, right: 0, top: 100 }}>
+							{this.state.menuItem === 'settings' ? (
+								<View>
+									<Settings />
+								</View>
+							) : null}
+							{this.state.menuItem === 'friends' ? (
+								<View>
+									<Friends />
+								</View>
+							) : null}
+							{this.state.menuItem === 'photos' ? (
+								<View>
+									<Photos />
+								</View>
+							) : null}
 						</View>
 						<View style={{ position: 'absolute', bottom: 25, right: 10 }}>
 							<Screenshot />
@@ -113,6 +169,13 @@ var localStyles = StyleSheet.create({
 		height: height,
 		flexDirection: 'column',
 		alignItems: 'center',
+	},
+	menuContainer: {
+		flexDirection: 'row',
+		alignContent: 'center',
+		justifyContent: 'space-around',
+		marginTop: 10,
+		backgroundColor: '#fff',
 	},
 
 	titleText: {
@@ -141,5 +204,3 @@ var localStyles = StyleSheet.create({
 		borderColor: '#fff',
 	},
 });
-
-module.exports = ViroSample;
