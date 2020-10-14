@@ -1,25 +1,32 @@
 /** @format */
 
 import React, { Component } from 'react';
+import { TouchableHighlightBase } from 'react-native';
 import {
-  ViroARScene,
-  Viro3DObject,
-  ViroAmbientLight,
-  ViroSpotLight,
-  ViroNode,
-  ViroAnimations,
-  ViroText,
+
+	ViroARScene,
+	Viro3DObject,
+	ViroAmbientLight,
+	ViroSpotLight,
+	ViroNode,
+	ViroAnimations,
+	ViroText,
+	ViroARPlaneSelector,
+	ViroBox,
+	ViroQuad,
+
 } from 'react-viro';
 var createReactClass = require('create-react-class');
 const HelloWorldSceneAR = require('./HelloWorldSceneAR copy');
 
 export default BallThrowAR = createReactClass({
+
   getInitialState() {
     return {
       currentAnimation: 'rotate',
       text: 'Swipe for next!',
       animation: true,
-      dogAnimation: 'waiting',
+      dogAnimation: 'tailWag',
     };
   },
 
@@ -79,10 +86,10 @@ export default BallThrowAR = createReactClass({
             shadowOpacity={0.7}
           />
           <Viro3DObject
-            source={require('./res/dogTwo/TheDogTwo.vrx')}
+            source={require('./res/Dog/TheDogThree.vrx')}
             position={[0, -4, -10]}
             scale={[0.06, 0.06, 0.06]}
-            animation={{ name: 'tailWag', run: true, loop: true }}
+            animation={{ name: this.state.dogAnimation, run: true, loop: true, interruptible: true}}
             ignoreEventHandling={true}
             type="VRX"
           />
@@ -106,13 +113,13 @@ export default BallThrowAR = createReactClass({
             //   loop: true,
             // }}
             onClickState={this._onBallClick}
-            animation={{ name: this.state.currentAnimation, run: true }}
+            animation={{ name: this.state.currentAnimation, run: true, interruptible: true }}
             onDrag={this._onBallDrag}
           />
         </ViroNode>
 
-        {/* leash but the file might be the wrong format */}
-        {/* <ViroNode position={[0, -3, 0]}>
+				{/* leash but the file might be the wrong format */}
+				{/* <ViroNode position={[0, -3, 0]}>
 					<Viro3DObject
 						source={require('./res/leash.max')}
 						position={[0, -3, 0]}
@@ -134,14 +141,9 @@ export default BallThrowAR = createReactClass({
 						type="FBX"
 					/>
 				</ViroNode> */}
+
       </ViroARScene>
     );
-  },
-
-  _onTappedDog() {
-    this.setState({
-      text: 'Hello Human!',
-    });
   },
 
   _onBallClick(stateValue, position, source) {
@@ -175,6 +177,38 @@ export default BallThrowAR = createReactClass({
     }
   },
   _onBallDrag() {},
+				{/* </ViroARPlaneSelector> */}
+			</ViroARScene>
+		);
+	},
+
+	_onBallClick(stateValue, position, source) {
+		let track;
+		if (stateValue === 1) {
+			this.setState({
+				dogAnimation: 'waiting',
+			});
+		} else if (stateValue === 2 || stateValue === 3) {
+			this.setState({
+				currentAnimation: 'arc',
+			});
+		
+			setTimeout(() => {
+				this.setState({
+					currentAnimation: 'returnBall',
+					dogAnimation: 'return',
+				});
+			}, 6000);
+		}
+		console.log('fetch!', position);
+	},
+	_onBallDrag() {},
+	_onTappedDog() {
+		this.setState({
+			text: 'Hello Human!',
+		});
+	},
+
 
   _pushNextScene() {
     this.props.sceneNavigator.push({ scene: HelloWorldSceneAR });
@@ -182,69 +216,72 @@ export default BallThrowAR = createReactClass({
 });
 
 ViroAnimations.registerAnimations({
-  // moveLeft: {
-  // 	properties: { positionX: '-=5.0', rotateZ: '+=45' },
-  // 	duration: 10000,
-  // },
-  rotate: {
-    properties: {
-      rotateY: '+=90',
-    },
-    duration: 0, //0 seconds
-  },
-  lookLeft: {
-    properties: {
-      rotateY: '+=10',
-    },
-    duration: 500, //0 seconds
-  },
-  lookRight: {
-    properties: {
-      rotateY: '-=10',
-    },
-    duration: 500, //0 seconds
-  },
-  launch: {
-    properties: {
-      positionZ: '-=3.0',
-      positionY: '+=3.0',
-    },
-    easing: 'EaseOut',
-    duration: 2500,
-  },
-  fall: {
-    properties: {
-      positionZ: '-=3.0',
-      positionY: '-=3.0',
-    },
-    duration: 2500,
-    easing: 'EaseIn',
-  },
-  arc: [['launch', 'fall']],
-  waiting: [
-    [
-      'lookLeft',
-      'lookRight',
-      'lookLeft',
-      'lookRight',
-      'lookLeft',
-      'lookRight',
-      'lookLeft',
-      'lookRight',
-    ],
-  ],
-  track: [
-    [
-      {
-        properties: {
-          positionZ: '-=4.0',
-        },
-        duration: 1000,
-        easing: 'EaseOut',
-      },
-      'waiting',
-    ],
-  ],
+	rotate: {
+		properties: {
+			rotateY: '+=90',
+		},
+		duration: 0, //0 seconds
+	},
+	lookLeft: {
+		properties: {
+			rotateY: '+=10',
+		},
+		duration: 500, //0 seconds
+	},
+	lookRight: {
+		properties: {
+			rotateY: '-=10',
+		},
+		duration: 500, //0 seconds
+	},
+	launch: {
+		properties: {
+			positionZ: '-=3.0',
+			positionY: '+=3.0',
+		},
+		easing: 'EaseOut',
+		duration: 2500,
+	},
+	fall: {
+		properties: {
+			positionZ: '-=3.0',
+			positionY: '-=3.0',
+		},
+		duration: 2500,
+		easing: 'EaseIn',
+	},
+	arc: [['launch', 'fall']],
+	waiting: [
+		[
+			'lookLeft',
+			'lookRight',
+			'lookLeft',
+			'lookRight',
+			'lookLeft',
+			'lookRight',
+			'lookLeft',
+			'lookRight',
+		],
+	],
+	return: {
+		properties: {
+			positionX: 0,
+			positionY: -2,
+			positionZ: 0,
+		},
+		duration: 2000,
+		easing: 'EaseOut',
+	},
+	returnBall: {
+		properties: {
+			positionX: 0,
+			positionY: 0,
+			positionZ: -1.2,
+		},
+		duration: 2000,
+		easing: 'EaseOut',
+	},
+                                  
 });
 
 module.exports = BallThrowAR;

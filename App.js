@@ -20,6 +20,7 @@ import {
 	TouchableOpacity,
 	Vibration,
 	Dimensions,
+	TextInput,
 } from 'react-native';
 const { width, height } = Dimensions.get('window');
 import { ViroARSceneNavigator } from 'react-viro';
@@ -39,7 +40,7 @@ var sharedProps = {
 // Sets the default scene you want for AR and VR
 var InitialARScene = require('./js/BallThrowAR');
 
-export default class AppIos extends Component {
+export default class App extends Component {
 	constructor() {
 		super();
 
@@ -63,7 +64,7 @@ export default class AppIos extends Component {
 								this.setState({ isLoggedIn: true });
 							}}
 						>
-							<Text>Login</Text>
+							<Text style={{ color: '#fff' }}>Login</Text>
 						</TouchableOpacity>
 					</View>
 				) : (
@@ -256,6 +257,7 @@ var localStyles = StyleSheet.create({
 		borderWidth: 1,
 		width: 250,
 		padding: 10,
+		color: '#fff',
 	},
 	inputContainer: {
 		flexDirection: 'column',
