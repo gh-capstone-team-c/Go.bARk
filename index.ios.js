@@ -1,7 +1,7 @@
 import { AppRegistry } from 'react-native';
-import App from './App-ios.js';
+import AppIos from './App-ios.js';
 
-AppRegistry.registerComponent('viroSample', () => App);
+AppRegistry.registerComponent('viroSample', () => AppIos);
 
 // The below line is necessary for use with the TestBed App
-AppRegistry.registerComponent('ViroSample', () => App);
+AppRegistry.registerComponent('ViroSample', () => AppIos);
