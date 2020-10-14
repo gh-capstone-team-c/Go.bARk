@@ -25,7 +25,7 @@ export const me = () => {
 };
 
 //login/signup
-export const auth = (email, password, method) => async (dispatch) => {
+export const login = (email, password) => async (dispatch) => {
 	let res;
 	let object = { email, password };
 
@@ -35,14 +35,14 @@ export const auth = (email, password, method) => async (dispatch) => {
 	// 	object = { email, password };
 	// }
 
-	try {
-		res = await axios.post(
-			`https://gobark-backend.herokuapp.com/auth/${method}`,
-			object
-		);
-	} catch (authError) {
-		return dispatch(getUser({ error: authError }));
-	}
+	// try {
+	// 	res = await axios.post(
+	// 		`https://gobark-backend.herokuapp.com/auth/${method}`,
+	// 		object
+	// 	);
+	// } catch (authError) {
+	// 	return dispatch(getUser({ error: authError }));
+	// }
 
 	try {
 		dispatch(getUser(res.data));

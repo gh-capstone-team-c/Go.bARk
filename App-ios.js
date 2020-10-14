@@ -29,6 +29,8 @@ import Screenshot from './js/Screenshot';
 import Photos from './js/Photos';
 import Settings from './js/Settings';
 import Friends from './js/Friends';
+import { connect } from 'react-redux';
+import { login } from './store/users';
 
 /*
  TODO: Insert your API key below
@@ -40,7 +42,7 @@ var sharedProps = {
 // Sets the default scene you want for AR and VR
 var InitialARScene = require('./js/BallThrowAR');
 
-export default class AppIos extends Component {
+class AppIos extends Component {
 	constructor() {
 		super();
 
@@ -154,7 +156,12 @@ export default class AppIos extends Component {
 									/>
 								</View>
 								<View
-									style={{ position: 'absolute', left: 0, right: 0, top: 100 }}
+									style={{
+										position: 'absolute',
+										left: 0,
+										right: 0,
+										top: 100,
+									}}
 								>
 									{this.state.menuItem === 'settings' ? (
 										<View>
@@ -243,3 +250,18 @@ var localStyles = StyleSheet.create({
 		alignItems: 'center',
 	},
 });
+
+// connect to redux
+const mapState = (state) => {
+	return {
+		user: state.user,
+	};
+};
+
+const mapDispatch = (dispatch) => {
+	return {
+		login: (email, password) => dispatch(login(email, password)),
+	};
+};
+
+export default connect(mapState, mapDispatch)(AppIos);

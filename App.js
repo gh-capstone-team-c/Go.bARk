@@ -39,7 +39,7 @@ var sharedProps = {
 // Sets the default scene you want for AR and VR
 var InitialARScene = require('./js/BallThrowAR');
 
-export default class AppIos extends Component {
+export default class App extends Component {
 	constructor() {
 		super();
 
