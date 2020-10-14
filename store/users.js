@@ -26,12 +26,11 @@ export const me = () => {
 
 //login/signup
 export const login = (email, password) => async (dispatch) => {
-  try {
+	try {
+		let object = { email, password };
 
-	let object = { email, password };
+		let res = await axios.post(`https://gobark-backend.herokuapp.com/auth/signup`, object);
 
-
-		let res = await axios.post(`https://gobark-backend.herokuapp.com/auth/login`, object);
 
 
 		console.log('res in redux1', res.data);
