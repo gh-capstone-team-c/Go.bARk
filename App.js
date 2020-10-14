@@ -55,7 +55,7 @@ export default class AppIos extends Component {
 		return (
 			<View style={localStyles.container}>
 				{!this.state.isLoggedIn ? (
-					<View>
+					<View style={localStyles.inputContainer}>
 						<TextInput style={localStyles.input} placeholder="email" />
 						<TextInput style={localStyles.input} placeholder="password" />
 						<TouchableOpacity
@@ -254,5 +254,12 @@ var localStyles = StyleSheet.create({
 		height: 40,
 		borderColor: '#7a42f4',
 		borderWidth: 1,
+		width: 250,
+		padding: 10,
+	},
+	inputContainer: {
+		flexDirection: 'column',
+		justifyContent: 'space-between',
+		alignItems: 'center',
 	},
 });
