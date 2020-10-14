@@ -26,31 +26,41 @@ export const me = () => {
 
 //login/signup
 export const login = (email, password) => async (dispatch) => {
-	let res;
+  try {
+
 	let object = { email, password };
 
-	// if (method === 'login') {
-	// 	object = { email, password };
-	// } else {
-	// 	object = { email, password };
-	// }
 
-	// try {
-	// 	res = await axios.post(
-	// 		`https://gobark-backend.herokuapp.com/auth/${method}`,
-	// 		object
-	// 	);
-	// } catch (authError) {
-	// 	return dispatch(getUser({ error: authError }));
-	// }
+		let res = await axios.post(`https://gobark-backend.herokuapp.com/auth/login`, object);
 
-	try {
-		dispatch(getUser(res.data));
+
+		console.log('res in redux1', res.data);
+		// dispatch(getUser(res.data));
+		// console.log('res in redux', res.data);
 		// history.push('/home')
 	} catch (dispatchOrHistoryErr) {
 		console.error(dispatchOrHistoryErr);
 	}
 };
+
+// 	try {
+// 		res = await axios.post(
+// 			`https://gobark-backend.herokuapp.com/auth/login`,
+// 			object
+// 		);
+// 	} catch (authError) {
+// 		return dispatch(getUser({ error: authError }));
+// 	}
+
+// 	try {
+// 		console.log('res in redux', res.data);
+// 		dispatch(getUser(res.data));
+// 		console.log('res in redux', res.data);
+// 		// history.push('/home')
+// 	} catch (dispatchOrHistoryErr) {
+// 		console.error(dispatchOrHistoryErr);
+// 	}
+// };
 
 //logout
 export const logout = () => async (dispatch) => {

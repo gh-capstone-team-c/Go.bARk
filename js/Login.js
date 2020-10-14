@@ -19,6 +19,8 @@ class Login extends React.Component {
 		super(props);
 		this.state = {
 			isLoggedIn: false,
+			email: '',
+			password: '',
 		};
 	}
 
@@ -27,11 +29,29 @@ class Login extends React.Component {
 			<View style={styles.container}>
 				{!this.state.isLoggedIn ? (
 					<View style={styles.inputContainer}>
-						<TextInput style={styles.input} placeholder="email" />
-						<TextInput style={styles.input} placeholder="password" />
+						<Text styles={styles.titleText}>go.bARk!</Text>
+						<TextInput
+							style={styles.input}
+							type="text"
+							onChangeText={(email) => this.setState({ email })}
+							placeholder="email"
+							value={this.state.email}
+						/>
+						<TextInput
+							style={styles.input}
+							type="password"
+							placeholder="password"
+							onChangeText={(password) => this.setState({ password })}
+							value={this.state.password}
+						/>
 						<TouchableOpacity
 							onPress={() => {
-								this.setState({ isLoggedIn: true });
+								console.log('press', this.state);
+								this.props.login(this.state.email, this.state.password);
+								console.log('after dispatch', this.props);
+								// if (this.props.user) {
+								// 	this.setState({ isLoggedIn: true });
+								// }
 							}}
 						>
 							<Text>Login</Text>
@@ -65,6 +85,13 @@ var styles = StyleSheet.create({
 		height: height,
 		flexDirection: 'column',
 		alignItems: 'center',
+	},
+	titleText: {
+		paddingTop: 30,
+		paddingBottom: 20,
+		color: '#000',
+		textAlign: 'center',
+		fontSize: 25,
 	},
 });
 
