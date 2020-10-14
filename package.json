@@ -8,11 +8,23 @@
 		"test": "jest"
 	},
 	"dependencies": {
+		"@react-native-community/masked-view": "^0.1.10",
+		"@react-navigation/native": "^5.7.6",
+		"@react-navigation/stack": "^5.9.3",
+		"axios": "^0.20.0",
 		"create-react-class": "^15.6.3",
 		"ngrok": "^3.3.0",
 		"react": "16.8.3",
 		"react-native": "0.59.9",
-		"react-viro": "2.17.0"
+		"react-native-gesture-handler": "^1.8.0",
+		"react-native-reanimated": "^1.13.1",
+		"react-native-safe-area-context": "^3.1.8",
+		"react-native-screens": "^2.11.0",
+		"react-viro": "2.17.0",
+		"redux": "^4.0.5",
+		"redux-devtools-extension": "^2.13.8",
+		"redux-logger": "^3.0.6",
+		"redux-thunk": "^2.3.0"
 	},
 	"devDependencies": {
 		"@babel/core": "^7.11.6",
