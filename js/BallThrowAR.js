@@ -18,6 +18,7 @@ export default BallThrowAR = createReactClass({
 	getInitialState() {
 		return {
 			currentAnimation: 'rotate',
+			dogAnimation: null,
 		};
 	},
 
@@ -60,6 +61,8 @@ export default BallThrowAR = createReactClass({
 						require('./res/Doggo/dingo_obj/Dingo.mtl'),
 						require('./res/Doggo/dingo_obj/Dingo_BaseColor.png'),
 					]}
+					animation={{ name: this.state.dogAnimation, run: true }}
+					onFinish
 					type="OBJ"
 					scale={[0.5, 0.5, 0.5]}
 					position={[0, -2, -4]}
@@ -120,11 +123,14 @@ export default BallThrowAR = createReactClass({
 
 	_onBallClick(stateValue, position, source) {
 		if (stateValue == 1) {
-			console.log('User has click-down on the image!', source);
+			this.setState({
+				dogAnimation: 'waiting',
+			});
 		} else if (stateValue == 2) {
 			if (this.state.currentAnimation === 'rotate') {
 				this.setState({
 					currentAnimation: 'arc',
+					dogAnimation: 'track',
 				});
 			} else {
 				this.setState({
@@ -136,6 +142,7 @@ export default BallThrowAR = createReactClass({
 			if (this.state.currentAnimation === 'rotate') {
 				this.setState({
 					currentAnimation: 'arc',
+					dogAnimation: 'track',
 				});
 			} else {
 				this.setState({
@@ -160,14 +167,26 @@ ViroAnimations.registerAnimations({
 		properties: {
 			rotateY: '+=90',
 		},
-		duration: 0, //.25 seconds
+		duration: 0, //0 seconds
+	},
+	lookLeft: {
+		properties: {
+			rotateY: '+=10',
+		},
+		duration: 500, //0 seconds
+	},
+	lookRight: {
+		properties: {
+			rotateY: '-=10',
+		},
+		duration: 500, //0 seconds
 	},
 	launch: {
 		properties: {
 			positionZ: '-=3.0',
 			positionY: '+=3.0',
 		},
-		easing: 'EaseInEaseOut',
+		easing: 'EaseOut',
 		duration: 2500,
 	},
 	fall: {
@@ -176,9 +195,33 @@ ViroAnimations.registerAnimations({
 			positionY: '-=3.0',
 		},
 		duration: 2500,
-		easing: 'EaseInEaseOut',
+		easing: 'EaseIn',
 	},
 	arc: [['launch', 'fall']],
+	waiting: [
+		[
+			'lookLeft',
+			'lookRight',
+			'lookLeft',
+			'lookRight',
+			'lookLeft',
+			'lookRight',
+			'lookLeft',
+			'lookRight',
+		],
+	],
+	track: [
+		[
+			{
+				properties: {
+					positionZ: '-=4.0',
+				},
+				duration: 1000,
+				easing: 'EaseOut',
+			},
+			'waiting',
+		],
+	],
 });
 
 module.exports = BallThrowAR;
