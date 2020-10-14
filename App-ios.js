@@ -20,6 +20,7 @@ import {
 	TouchableOpacity,
 	Vibration,
 	Dimensions,
+	TextInput,
 } from 'react-native';
 const { width, height } = Dimensions.get('window');
 import { ViroARSceneNavigator } from 'react-viro';
@@ -61,12 +62,14 @@ export default class AppIos extends Component {
 			<View style={localStyles.container}>
 				{!this.state.isLoggedIn ? (
 					<View>
+						<TextInput style={localStyles.input} placeholder="email" />
+						<TextInput style={localStyles.input} placeholder="password" />
 						<TouchableOpacity
 							onPress={() => {
 								this.setState({ isLoggedIn: true });
 							}}
 						>
-							<Text>Hey you didn't log in!</Text>
+							<Text>Login</Text>
 						</TouchableOpacity>
 					</View>
 				) : (
@@ -225,5 +228,11 @@ var localStyles = StyleSheet.create({
 		borderRadius: 100,
 		borderWidth: 1,
 		borderColor: '#fff',
+	},
+	input: {
+		margin: 15,
+		height: 40,
+		borderColor: '#7a42f4',
+		borderWidth: 1,
 	},
 });
