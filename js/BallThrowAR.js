@@ -2,74 +2,72 @@
 
 import React, { Component } from 'react';
 import {
-	ViroARScene,
-	Viro3DObject,
-	ViroAmbientLight,
-	ViroSpotLight,
-	ViroNode,
-	ViroAnimations,
-	ViroText,
-	ViroARPlaneSelector,
+
+  ViroARScene,
+  Viro3DObject,
+  ViroAmbientLight,
+  ViroSpotLight,
+  ViroNode,
+  ViroAnimations,
+  ViroText,
+
 } from 'react-viro';
 var createReactClass = require('create-react-class');
 const HelloWorldSceneAR = require('./HelloWorldSceneAR copy');
 
 export default BallThrowAR = createReactClass({
-	getInitialState() {
-		return {
-			currentAnimation: 'rotate',
-			dogAnimation: null,
-		};
-	},
 
-	// _renderDog() {
-	//   return (
-	//     <Viro3DObject
-	//       source={require('./res/Doggo/dingo_obj/Dingo.obj')}
-	//       resources={[
-	//         require('./res/Doggo/dingo_obj/Dingo.mtl'),
-	//         require('./res/Doggo/dingo_obj/Dingo_BaseColor.png'),
-	//       ]}
-	//       type="OBJ"
-	//       scale={[0.5, 0.5, 0.5]}
-	//       position={[0, -2, -4]}
-	//     />
-	//   );
-	// },
+  getInitialState() {
+    return {
+      currentAnimation: 'rotate',
+      text: 'Swipe for next!',
+      animation: true,
+  dogAnimation: null,
+    };
+  },
 
-	render() {
-		return (
-			<ViroARScene>
-				<ViroText
-					text={'Swipe for next!'}
-					scale={[0.5, 0.5, 0.5]}
-					position={[0, 0, -1]}
-					onDrag={this._pushNextScene}
-				/>
-				<ViroAmbientLight color={'#aaaaaa'} />
-				<ViroSpotLight
-					innerAngle={5}
-					outerAngle={90}
-					direction={[0, -1, -0.2]}
-					position={[0, 3, 1]}
-					color="#ffffff"
-					castsShadow={true}
-				/>
-				<Viro3DObject
-					source={require('./res/Doggo/dingo_obj/Dingo.obj')}
-					resources={[
-						require('./res/Doggo/dingo_obj/Dingo.mtl'),
-						require('./res/Doggo/dingo_obj/Dingo_BaseColor.png'),
-					]}
-					animation={{ name: this.state.dogAnimation, run: true }}
-					onFinish
-					type="OBJ"
-					scale={[0.5, 0.5, 0.5]}
-					position={[0, -2, -4]}
-				/>
-				{/* <ViroARPlaneSelector minHeight={0.5} minWidth={0.5}>
-          {this._renderDog()}
-        </ViroARPlaneSelector> */}
+  render() {
+    return (
+      <ViroARScene>
+        <ViroText
+          text={this.state.text}
+          scale={[0.5, 0.5, 0.5]}
+          position={[0, 0, -1]}
+          onDrag={this._pushNextScene}
+        />
+        <ViroAmbientLight color={'#aaaaaa'} />
+        <ViroSpotLight
+          innerAngle={5}
+          outerAngle={90}
+          direction={[0, -1, -0.2]}
+          position={[0, 3, 1]}
+          color="#ffffff"
+          castsShadow={true}
+        />
+
+        <ViroNode position={[0, -3, -4]}>
+          <ViroSpotLight
+            innerAngle={5}
+            outerAngle={25}
+            direction={[0, -1, 0]}
+            position={[0, 5, 0]}
+            color="#ffffff"
+            castsShadow={true}
+            shadowMapSize={2048}
+            shadowNearZ={2}
+            shadowFarZ={7}
+            shadowOpacity={0.7}
+          />
+          <Viro3DObject
+            source={require('./res/Dog/TheDogThree.vrx')}
+            position={[0, -4, -10]}
+            scale={[0.06, 0.06, 0.06]}
+            animation={{ name: this.state.dogAnimation, run: true }}
+            type="VRX"
+            onClick={this._onTappedDog}
+          />
+        </ViroNode>
+
 
 				<ViroNode position={[0, -1, 0]}>
 					<Viro3DObject
@@ -120,6 +118,12 @@ export default BallThrowAR = createReactClass({
 			</ViroARScene>
 		);
 	},
+
+  _onTappedDog() {
+    this.setState({
+      text: 'Hello Human!',
+    });
+  },
 
 	_onBallClick(stateValue, position, source) {
 		if (stateValue == 1) {
