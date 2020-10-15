@@ -10,8 +10,6 @@ import {
 	ViroNode,
 	ViroAnimations,
 	ViroText,
-	ViroARPlaneSelector,
-	ViroBox,
 	ViroQuad,
 } from 'react-viro';
 var createReactClass = require('create-react-class');
@@ -23,7 +21,7 @@ export default BallThrowAR = createReactClass({
 			currentAnimation: 'rotate',
 			text: 'Swipe for next!',
 			animation: true,
-			dogAnimation: 'tailWag',
+			dogAnimation: 'waiting',
 		};
 	},
 
@@ -45,29 +43,6 @@ export default BallThrowAR = createReactClass({
 					color="#ffffff"
 					castsShadow={true}
 				/>
-				{/* <ViroNode position={[0, -3, -4]}> */}
-				{/* <ViroSpotLight
-            innerAngle={5}
-            outerAngle={25}
-            direction={[0, -1, 0]}
-            position={[0, 5, 0]}
-            color="#ffffff"
-            castsShadow={true}
-            shadowMapSize={2048}
-            shadowNearZ={2}
-            shadowFarZ={7}
-            shadowOpacity={0.7}
-          /> */}
-				{/* <Viro3DObject
-            source={require('./res/Dog/TheDogThree.vrx')}
-            position={[0, -4, -10]}
-            scale={[0.06, 0.06, 0.06]}
-            animation={{ name: this.state.dogAnimation, run: true }}
-            type="VRX"
-            ignoreEventHandling={true}
-            // onClick={this._onTappedDog}
-          /> */}
-				{/* </ViroNode > */}
 
 				<ViroNode position={[0, -3, -4]}>
 					<ViroSpotLight
@@ -151,6 +126,7 @@ export default BallThrowAR = createReactClass({
 		);
 	},
 
+
 	_onBallClick(stateValue, position, source) {
 		let track;
 		if (stateValue === 1) {
@@ -171,7 +147,9 @@ export default BallThrowAR = createReactClass({
 		}
 		console.log('fetch!', position);
 	},
-	_onBallDrag() {},
+	_onBallDrag() {
+		console.log('hi');
+	},
 
 	_pushNextScene() {
 		this.props.sceneNavigator.push({ scene: HelloWorldSceneAR });
