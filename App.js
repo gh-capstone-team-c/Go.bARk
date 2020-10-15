@@ -11,16 +11,18 @@
 
 import React, { Component } from 'react';
 import {
-  AppRegistry,
-  Text,
-  View,
-  StyleSheet,
-  PixelRatio,
-  TouchableHighlight,
-  TouchableOpacity,
-  Vibration,
-  Dimensions,
-  TextInput,
+
+	AppRegistry,
+	ActivityIndicator,
+	Text,
+	View,
+	StyleSheet,
+	PixelRatio,
+	TouchableHighlight,
+	TouchableOpacity,
+	Vibration,
+	Dimensions,
+	TextInput,
 } from 'react-native';
 const { width, height } = Dimensions.get('window');
 import { ViroARSceneNavigator } from 'react-viro';
@@ -31,18 +33,42 @@ import Settings from './js/Settings';
 import Friends from './js/Friends';
 import DogBowl from './js/DogBowl';
 
+
+export function renderIf(condition, renderedContent) {
+	if (condition) {
+		return renderedContent;
+	} else {
+		return null;
+	}
+}
+
+// Sets the default scene you want for AR and VR
 var InitialARScene = require('./js/BallThrowAR');
 
 export default class App extends Component {
-  constructor() {
-    super();
+	constructor() {
+		super();
+		// // all code here for ray tracing
+		// this._renderTrackingText = this._renderTrackingText.bind(this);
+		// this._onTrackingUpdated = this._onTrackingUpdated.bind(this);
+		// this._onLoadStart = this._onLoadStart.bind(this);
+		// this._onLoadEnd = this._onLoadEnd.bind(this);
+		// //
+		this.state = {
+			pressed: false,
+			menuItem: null,
+			isLoggedIn: false,
+			//adding in code to get ray tracing
+			// viroAppProps: {
+			// 	_onLoadEnd: this._onLoadEnd,
+			// 	_onLoadStart: this._onLoadStart,
+			// 	_onTrackingUpdated: this._onTrackingUpdated,
+			// },
+			// trackingInitialized: false,
+			// isLoading: false,
+		};
+	}
 
-    this.state = {
-      pressed: false,
-      menuItem: null,
-      isLoggedIn: false,
-    };
-  }
 
 	render() {
 		return (
@@ -120,19 +146,89 @@ export default class App extends Component {
 								</View>
 							</View>
 
-							<View
-								style={{
-									position: 'absolute',
-									top: 50,
-									right: 0,
-									bottom: 0,
-									left: 0,
-								}}
-							>
-								<ViroARSceneNavigator
-									{...this.state.sharedProps}
-									initialScene={{ scene: InitialARScene }}
-								/>
+
+								<View
+									style={{
+										position: 'absolute',
+										top: 50,
+										right: 0,
+										bottom: 0,
+										left: 0,
+									}}
+								>
+									{/* {this._renderTrackingText()}
+									{renderIf(
+										this.state.isLoading,
+										<View
+											style={{
+												position: 'absolute',
+												left: 0,
+												right: 0,
+												top: 0,
+												bottom: 0,
+												alignItems: 'center',
+												justifyContent: 'center',
+											}}
+										>
+											<ActivityIndicator
+												size="large"
+												animating={this.state.isLoading}
+												color="#ffffff"
+											/>
+										</View>
+									)} */}
+									<ViroARSceneNavigator
+										initialScene={{
+											scene: InitialARScene,
+										}}
+										// viroAppProps={this.state.viroAppProps}
+									/>
+								</View>
+								<View>
+									{renderIf(
+										this.state.menuItem === 'settings',
+										<View
+											style={{
+												position: 'absolute',
+												left: 0,
+												right: 0,
+												top: 50,
+											}}
+										>
+											<Settings />
+										</View>
+									)}
+									{renderIf(
+										this.state.menuItem === 'friends',
+										<View
+											style={{
+												position: 'absolute',
+												left: 0,
+												right: 0,
+												top: 50,
+											}}
+										>
+											<Friends />
+										</View>
+									)}
+									{renderIf(
+										this.state.menuItem === 'photos',
+										<View
+											style={{
+												position: 'absolute',
+												left: 0,
+												right: 0,
+												top: 50,
+											}}
+										>
+											<Photos />
+										</View>
+									)}
+								</View>
+								<View style={{ position: 'absolute', bottom: 25, right: 10 }}>
+									<Screenshot />
+								</View>
+
 							</View>
 							<View>
 								{this.state.menuItem === 'settings' ? (
@@ -183,6 +279,65 @@ export default class App extends Component {
 				</View>
 			</View>
 		);
+	}
+
+	// functions from sample re: ray tracing, loading, etc
+	// Invoked when a model has started to load, we show a loading indictator.
+	_onLoadStart() {
+		this.setState({
+			isLoading: true,
+		});
+	}
+
+	// Invoked when a model has loaded, we hide the loading indictator.
+	_onLoadEnd() {
+		this.setState({
+			isLoading: false,
+		});
+	}
+
+	_renderTrackingText() {
+		if (this.state.trackingInitialized) {
+			return (
+				<View
+					style={{
+						position: 'absolute',
+						backgroundColor: '#ffffff22',
+						left: 30,
+						right: 30,
+						top: 30,
+						alignItems: 'center',
+					}}
+				>
+					<Text style={{ fontSize: 12, color: '#ffffff' }}>
+						Tracking initialized.
+					</Text>
+				</View>
+			);
+		} else {
+			return (
+				<View
+					style={{
+						position: 'absolute',
+						backgroundColor: '#ffffff22',
+						left: 30,
+						right: 30,
+						top: 30,
+						alignItems: 'center',
+					}}
+				>
+					<Text style={{ fontSize: 12, color: '#ffffff' }}>
+						Waiting for tracking to initialize.
+					</Text>
+				</View>
+			);
+		}
+	}
+
+	_onTrackingUpdated() {
+		this.setState({
+			trackingInitialized: true,
+		});
 	}
 
 }
