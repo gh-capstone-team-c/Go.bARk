@@ -12,7 +12,7 @@ import {
 const { width, height } = Dimensions.get('window');
 import { connect } from 'react-redux';
 import { login } from '../store/users';
-import App from '../App';
+import HomeAndroid from './Home-android';
 
 class LoginAndroid extends React.Component {
 	constructor(props) {
@@ -59,7 +59,7 @@ class LoginAndroid extends React.Component {
 						</TouchableOpacity>
 					</View>
 				) : (
-					<App />
+					<HomeAndroid />
 				)}
 			</View>
 		);

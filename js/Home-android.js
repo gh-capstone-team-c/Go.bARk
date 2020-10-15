@@ -12,16 +12,15 @@ import {
 } from 'react-native';
 const { width, height } = Dimensions.get('window');
 import { connect } from 'react-redux';
-import AppIos from '../App-ios';
+import App from '../App';
 
-class HomeIos extends React.Component {
+class HomeAndroid extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			pressed: false,
 		};
 	}
-
 
 	render() {
 		console.log(this.props.user.dog);
@@ -54,7 +53,7 @@ class HomeIos extends React.Component {
 						</TouchableOpacity>
 					</View>
 				) : (
-					<AppIos />
+					<App />
 				)}
 			</View>
 		);
@@ -96,4 +95,4 @@ const mapState = (state) => {
 // 	};
 // };
 
-export default connect(mapState)(HomeIos);
+export default connect(mapState)(HomeAndroid);
