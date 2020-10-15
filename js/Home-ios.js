@@ -24,7 +24,7 @@ class HomeIos extends React.Component {
 
 
 	render() {
-		console.log(this.props.user.dog);
+		
 		return (
 			<View style={styles.container}>
 				{!this.state.pressed ? (

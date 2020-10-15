@@ -9,7 +9,7 @@ import store from './store/store';
 
 export default class RootAndroid extends Component {
 	render() {
-		console.log('this is the root');
+		
 		return (
 			<Provider store={store}>
 				<LoginAndroid />

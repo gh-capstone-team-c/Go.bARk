@@ -32,13 +32,11 @@ export const login = (email, password) => async (dispatch) => {
 			object
 		);
 
-		console.log('res in redux1', res.data);
 		dispatch(getUser(res.data));
 	} catch (dispatchOrHistoryErr) {
 		console.error(dispatchOrHistoryErr);
 	}
 };
-
 
 //logout
 export const logout = () => async (dispatch) => {

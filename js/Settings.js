@@ -1,23 +1,35 @@
+/** @format */
+
 import React from 'react';
 import { View, Image, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { connect } from 'react-redux';
 
-export default class Settings extends React.Component {
+class Settings extends React.Component {
 	constructor(props) {
 		super(props);
+		this.state = {
+			editSettings: false,
+		};
 	}
 
 	render() {
+		console.log(this.props.user);
 		return (
 			<View style={settings.container}>
-				<TouchableOpacity>
-					<Text>these are your settings</Text>
-				</TouchableOpacity>
-				<TouchableOpacity>
-					<Text>here they are</Text>
-				</TouchableOpacity>
-				<TouchableOpacity>
-					<Text>Settings!</Text>
-				</TouchableOpacity>
+				<View>
+					<TouchableOpacity>
+						<Text>Points: {this.props.user.points}</Text>
+					</TouchableOpacity>
+					<TouchableOpacity>
+						<Text>Dog: {this.props.user.dog.name}</Text>
+					</TouchableOpacity>
+					<TouchableOpacity>
+						<Text>Happiness Level: {this.props.user.dog.happiness}</Text>
+					</TouchableOpacity>
+					<TouchableOpacity>
+						<Text>Edit Settings</Text>
+					</TouchableOpacity>
+				</View>
 			</View>
 		);
 	}
@@ -30,3 +42,18 @@ var settings = StyleSheet.create({
 		backgroundColor: '#fff',
 	},
 });
+
+// connect to redux
+const mapState = (state) => {
+	return {
+		user: state.user,
+	};
+};
+
+// const mapDispatch = (dispatch) => {
+// 	return {
+// 		me: () => dispatch(me()),
+// 	};
+// };
+
+export default connect(mapState)(Settings);
