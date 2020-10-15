@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 const { width, height } = Dimensions.get('window');
 import { connect } from 'react-redux';
-import { login } from '../store/users';
+import { login, signup } from '../store/users';
 import HomeAndroid from './Home-android';
 
 class LoginAndroid extends React.Component {
@@ -54,6 +54,18 @@ class LoginAndroid extends React.Component {
 							}}
 						>
 							<Text>Login</Text>
+						</TouchableOpacity>
+
+						<TouchableOpacity
+							onPress={() => {
+								this.props.signup(this.state.email, this.state.password);
+
+								if (this.props.user) {
+									this.setState({ isLoggedIn: true });
+								}
+							}}
+						>
+							<Text>Sign up</Text>
 						</TouchableOpacity>
 					</View>
 				) : (
@@ -104,6 +116,7 @@ const mapState = (state) => {
 const mapDispatch = (dispatch) => {
 	return {
 		login: (email, password) => dispatch(login(email, password)),
+		signup: (email, password) => dispatch(signup(email, password)),
 	};
 };
 

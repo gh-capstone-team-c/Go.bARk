@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 const { width, height } = Dimensions.get('window');
 import { connect } from 'react-redux';
-import { login } from '../store/users';
+import { login, signup } from '../store/users';
 import HomeIos from './Home-ios';
 
 class LoginIos extends React.Component {
@@ -44,17 +44,31 @@ class LoginIos extends React.Component {
 							onChangeText={(password) => this.setState({ password })}
 							value={this.state.password}
 						/>
-						<TouchableOpacity
-							onPress={() => {
-								this.props.login(this.state.email, this.state.password);
+						<View styles={styles.options}>
+							<TouchableOpacity
+								onPress={() => {
+									this.props.login(this.state.email, this.state.password);
 
-								if (this.props.user) {
-									this.setState({ isLoggedIn: true });
-								}
-							}}
-						>
-							<Text>Login</Text>
-						</TouchableOpacity>
+									if (this.props.user) {
+										this.setState({ isLoggedIn: true });
+									}
+								}}
+							>
+								<Text>Login</Text>
+							</TouchableOpacity>
+
+							<TouchableOpacity
+								onPress={() => {
+									this.props.signup(this.state.email, this.state.password);
+
+									if (this.props.user) {
+										this.setState({ isLoggedIn: true });
+									}
+								}}
+							>
+								<Text>Sign up</Text>
+							</TouchableOpacity>
+						</View>
 					</View>
 				) : (
 					<HomeIos />
@@ -76,6 +90,10 @@ var styles = StyleSheet.create({
 		flexDirection: 'column',
 		justifyContent: 'space-between',
 		alignItems: 'center',
+	},
+	options: {
+		flexDirection: 'row',
+		justifyContent: 'space-between',
 	},
 	container: {
 		flex: 1,
@@ -104,6 +122,7 @@ const mapState = (state) => {
 const mapDispatch = (dispatch) => {
 	return {
 		login: (email, password) => dispatch(login(email, password)),
+		signup: (email, password) => dispatch(signup(email, password)),
 	};
 };
 

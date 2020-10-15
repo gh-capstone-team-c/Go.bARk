@@ -22,7 +22,7 @@ export const me = () => {
 	};
 };
 
-//login/signup
+//login
 export const login = (email, password) => async (dispatch) => {
 	try {
 		let object = { email, password };
@@ -37,6 +37,21 @@ export const login = (email, password) => async (dispatch) => {
 		console.error(dispatchOrHistoryErr);
 	}
 };
+
+//signup
+// export const signup = (email, password) => async (dispatch) => {
+// 	try {
+// 		let object = { email, password };
+
+// 		let res = await axios.post(
+// 			`https://gobark-backend.herokuapp.com/auth/signup`,
+// 			object
+// 		);
+// 		dispatch(getUser(res.data));
+// 	} catch (dispatchOrHistoryErr) {
+// 		console.error(dispatchOrHistoryErr);
+// 	}
+// };
 
 //logout
 export const logout = () => async (dispatch) => {
