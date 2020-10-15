@@ -20,6 +20,7 @@ export const addPoints = (stateObj) => {
 				stateObj,
 				state: getState,
 			});
+			console.log("stateobj in redux", stateObj);
 		} catch (err) {
 			console.log(err);
 		}

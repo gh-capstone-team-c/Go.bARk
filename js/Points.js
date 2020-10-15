@@ -11,7 +11,7 @@ class Points extends React.Component {
 	}
 
 	render() {
-		console.log('user', this.props.user);
+		// console.log('user', this.props.user);
 		let heart = '🤍';
 		if (this.props.user.points >= 5) heart = '🧡';
 		if (this.props.user.points >= 10) heart = '💛';

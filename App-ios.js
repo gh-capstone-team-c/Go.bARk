@@ -24,6 +24,8 @@ import {
 } from 'react-native';
 const { width, height } = Dimensions.get('window');
 import { ViroARSceneNavigator } from 'react-viro';
+import { connect } from 'react-redux';
+import { addPoints } from './store/users';
 
 import Screenshot from './js/Screenshot';
 import Photos from './js/Photos';
@@ -34,13 +36,19 @@ import Points from './js/Points';
 
 var InitialARScene = require('./js/BallThrowAR');
 
-export default class AppIos extends Component {
-	constructor() {
-		super();
+class AppIos extends Component {
+	constructor(props) {
+		super(props);
 
 		this.state = {
 			pressed: false,
 			menuItem: null,
+
+			//trying to pass the addpoints redux function to AR scene
+			viroAppProps: {
+				user: this.props.user,
+				addPoints: this.props.addPoints,
+			},
 		};
 		this.renderComponent = this.renderComponent.bind(this);
 	}
@@ -50,6 +58,7 @@ export default class AppIos extends Component {
 		else if (this.state.menuItem === 'photos') return <Photos />;
 	}
 	render() {
+		
 		return (
 			<View style={localStyles.container}>
 				<View>
@@ -133,6 +142,7 @@ export default class AppIos extends Component {
 								<ViroARSceneNavigator
 									{...this.state.sharedProps}
 									initialScene={{ scene: InitialARScene }}
+									viroAppProps={this.state.viroAppProps}
 								/>
 							</View>
 							<View
@@ -220,3 +230,18 @@ var localStyles = StyleSheet.create({
 		borderColor: '#fff',
 	},
 });
+
+// connect to redux
+const mapState = (state) => {
+	return {
+		user: state.user,
+	};
+};
+
+const mapDispatch = (dispatch) => {
+	return {
+		addPoints: (obj) => dispatch(addPoints(obj)),
+	};
+};
+
+export default connect(mapState, mapDispatch)(AppIos);

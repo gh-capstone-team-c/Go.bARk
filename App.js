@@ -26,12 +26,15 @@ import {
 } from 'react-native';
 const { width, height } = Dimensions.get('window');
 import { ViroARSceneNavigator } from 'react-viro';
+import { connect } from 'react-redux';
+import { addPoints } from './store/users';
 
 import Screenshot from './js/Screenshot';
 import Photos from './js/Photos';
 import Settings from './js/Settings';
 import Friends from './js/Friends';
 import DogBowl from './js/DogBowl';
+import Points from './js/Points';
 
 
 export function renderIf(condition, renderedContent) {
@@ -45,241 +48,248 @@ export function renderIf(condition, renderedContent) {
 // Sets the default scene you want for AR and VR
 var InitialARScene = require('./js/BallThrowAR');
 
-export default class App extends Component {
+class App extends Component {
 	constructor() {
 		super();
-		// // all code here for ray tracing
-		// this._renderTrackingText = this._renderTrackingText.bind(this);
-		// this._onTrackingUpdated = this._onTrackingUpdated.bind(this);
-		// this._onLoadStart = this._onLoadStart.bind(this);
-		// this._onLoadEnd = this._onLoadEnd.bind(this);
-		// //
-		this.state = {
-			pressed: false,
-			menuItem: null,
-			isLoggedIn: false,
-			//adding in code to get ray tracing
-			// viroAppProps: {
-			// 	_onLoadEnd: this._onLoadEnd,
-			// 	_onLoadStart: this._onLoadStart,
-			// 	_onTrackingUpdated: this._onTrackingUpdated,
-			// },
-			// trackingInitialized: false,
-			// isLoading: false,
-		};
-	}
+	    // // all code here for ray tracing
+    // this._renderTrackingText = this._renderTrackingText.bind(this);
+    // this._onTrackingUpdated = this._onTrackingUpdated.bind(this);
+    // this._onLoadStart = this._onLoadStart.bind(this);
+    // this._onLoadEnd = this._onLoadEnd.bind(this);
+    // //
+    this.state = {
+      pressed: false,
+      menuItem: null,
+      isLoggedIn: false,
+			toggle: false,
 
+			viroAppProps: {
+				user: this.props.user,
+				addPoints: this.props.addPoints,
+			},
 
-	render() {
-		return (
-			<View style={localStyles.container}>
-				<View>
-					{!this.state.pressed ? (
-						<View>
-							<Text style={localStyles.titleText}>go</Text>
-
-							<TouchableHighlight
-								style={localStyles.buttons}
-								onPress={() => {
-									Vibration.vibrate();
-									this.setState({ pressed: true });
-								}}
-								underlayColor={'transparent'}
-							>
-								<Text style={localStyles.buttonText}>start</Text>
-							</TouchableHighlight>
-							<Text style={localStyles.titleText}>bARk</Text>
-						</View>
-					) : (
-						<View
-							style={{
-								backgroundColor: '#green',
-								width: width,
-								height: height,
-							}}
-						>
-							<View
-								style={{
-									position: 'absolute',
-									top: 0,
-									left: 0,
-									right: 0,
-									height: 50,
-									backgroundColor: '#fff',
-								}}
-							>
-								<View style={localStyles.menuContainer}>
-									<TouchableOpacity
-										onPress={() => {
-											if (this.state.menuItem === 'settings')
-												this.setState({ menuItem: null });
-											else {
-												this.setState({ menuItem: 'settings' });
-												console.log(this.state.menuItem, 'test');
-											}
-										}}
-									>
-										<Text>Settings</Text>
-									</TouchableOpacity>
-									<TouchableOpacity
-										onPress={() => {
-											if (this.state.menuItem === 'friends')
-												this.setState({ menuItem: null });
-											else {
-												this.setState({ menuItem: 'friends' });
-												console.log(this.state.menuItem, 'test');
-											}
-										}}
-									>
-										<Text>Friends</Text>
-									</TouchableOpacity>
-									<TouchableOpacity
-										onPress={() => {
-											if (this.state.menuItem === 'photos')
-												this.setState({ menuItem: null });
-											else this.setState({ menuItem: 'photos' });
-											console.log(this.state.menuItem, 'test');
-										}}
-									>
-										<Text>Photos</Text>
-									</TouchableOpacity>
-								</View>
-							</View>
-
-
-								<View
-									style={{
-										position: 'absolute',
-										top: 50,
-										right: 0,
-										bottom: 0,
-										left: 0,
-									}}
-								>
-									{/* {this._renderTrackingText()}
-									{renderIf(
-										this.state.isLoading,
-										<View
-											style={{
-												position: 'absolute',
-												left: 0,
-												right: 0,
-												top: 0,
-												bottom: 0,
-												alignItems: 'center',
-												justifyContent: 'center',
-											}}
-										>
-											<ActivityIndicator
-												size="large"
-												animating={this.state.isLoading}
-												color="#ffffff"
-											/>
-										</View>
-									)} */}
-									<ViroARSceneNavigator
-										initialScene={{
-											scene: InitialARScene,
-										}}
-										// viroAppProps={this.state.viroAppProps}
-									/>
-								</View>
-								<View>
-									{renderIf(
-										this.state.menuItem === 'settings',
-										<View
-											style={{
-												position: 'absolute',
-												left: 0,
-												right: 0,
-												top: 50,
-											}}
-										>
-											<Settings />
-										</View>
-									)}
-									{renderIf(
-										this.state.menuItem === 'friends',
-										<View
-											style={{
-												position: 'absolute',
-												left: 0,
-												right: 0,
-												top: 50,
-											}}
-										>
-											<Friends />
-										</View>
-									)}
-									{renderIf(
-										this.state.menuItem === 'photos',
-										<View
-											style={{
-												position: 'absolute',
-												left: 0,
-												right: 0,
-												top: 50,
-											}}
-										>
-											<Photos />
-										</View>
-									)}
-								</View>
-								<View style={{ position: 'absolute', bottom: 25, right: 10 }}>
-									<Screenshot />
-								</View>
-
-							</View>
-							<View>
-								{this.state.menuItem === 'settings' ? (
-									<View
-										style={{
-											position: 'absolute',
-											left: 0,
-											right: 0,
-											top: 50,
-										}}
-									>
-										<Settings />
+      //adding in code to get ray tracing
+      // viroAppProps: {
+      //  _onLoadEnd: this._onLoadEnd,
+      //  _onLoadStart: this._onLoadStart,
+      //  _onTrackingUpdated: this._onTrackingUpdated,
+      // },
+      // trackingInitialized: false,
+      // isLoading: false,
+    };
+  }
+​
+  render() {
+    return (
+      <View style={appStyles.containerApp}>
+        <View>
+          {!this.state.pressed ? (
+            <View>
+              <Text style={appStyles.titleText}>go</Text>
+​
+              <TouchableOpacity
+                style={appStyles.buttons}
+                onPress={() => {
+                  Vibration.vibrate();
+                  this.setState({ pressed: true });
+                }}
+                underlayColor={'transparent'}
+              >
+                <Image
+                  style={appStyles.logo}
+                  source={require('./js/res/shibaFace.png')}
+                />
+              </TouchableOpacity>
+              <Text style={appStyles.titleText}>bARk</Text>
+            </View>
+          ) : (
+            <View
+              style={{
+                width: width,
+                height: height,
+              }}
+            >
+              <View style={appStyles.menuBar}>
+                <View style={appStyles.menuContainer}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      if (this.state.menuItem === 'settings')
+                        this.setState({ menuItem: null });
+                      else {
+                        this.setState({ menuItem: 'settings' });
+                        console.log(this.state.menuItem, 'test');
+                      }
+                    }}
+                  >
+                    <Text>Settings</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() => {
+                      if (this.state.menuItem === 'friends')
+                        this.setState({ menuItem: null });
+                      else {
+                        this.setState({ menuItem: 'friends' });
+                        console.log(this.state.menuItem, 'test');
+                      }
+                    }}
+                  >
+                    <Text>Friends</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() => {
+                      if (this.state.menuItem === 'photos')
+                        this.setState({ menuItem: null });
+                      else this.setState({ menuItem: 'photos' });
+                      console.log(this.state.menuItem, 'test');
+                    }}
+                  >
+                    <Text>Photos</Text>
+										</TouchableOpacity>
+										<View>
+										<Points />
 									</View>
-								) : null}
-								{this.state.menuItem === 'friends' ? (
-									<View
-										style={{
-											position: 'absolute',
-											left: 0,
-											right: 0,
-											top: 50,
-										}}
-									>
-										<Friends />
-									</View>
-								) : null}
-								{this.state.menuItem === 'photos' ? (
-									<View
-										style={{
-											position: 'absolute',
-											left: 0,
-											right: 0,
-											top: 50,
-										}}
-									>
-										<Photos />
-									</View>
-								) : null}
-							</View>
-							<View style={{ position: 'absolute', bottom: 25, right: 10 }}>
-								<Screenshot />
-							</View>
- <View style={{ position: 'absolute', bottom: 25, left: 10 }}>
-                  <DogBowl />
                 </View>
-						</View>
-					)}
-				</View>
-			</View>
-		);
-	}
+              </View>
+​
+              <View
+                style={{
+                  position: 'absolute',
+                  top: 50,
+                  right: 0,
+                  bottom: 0,
+                  left: 0,
+                }}
+              >
+                {/* {this._renderTrackingText()}
+                  {renderIf(
+                    this.state.isLoading,
+                    <View
+                      style={{
+                        position: 'absolute',
+                        left: 0,
+                        right: 0,
+                        top: 0,
+                        bottom: 0,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                    >
+                      <ActivityIndicator
+                        size="large"
+                        animating={this.state.isLoading}
+                        color="#ffffff"
+                      />
+                    </View>
+                  )} */}
+                <ViroARSceneNavigator
+                  initialScene={{
+                    scene: InitialARScene,
+										}}
+										viroAppProps={this.state.viroAppProps}
+                  // viroAppProps={this.state.viroAppProps}
+                />
+              </View>
+​
+              <View>
+                {renderIf(
+                  this.state.menuItem === 'settings',
+                  <View
+                    style={{
+                      position: 'absolute',
+                      left: 0,
+                      right: 0,
+                      top: 50,
+                    }}
+                  >
+                    <Settings />
+                  </View>
+                )}
+                {renderIf(
+                  this.state.menuItem === 'friends',
+                  <View
+                    style={{
+                      position: 'absolute',
+                      left: 0,
+                      right: 0,
+                      top: 50,
+                    }}
+                  >
+                    <Friends />
+                  </View>
+                )}
+                {renderIf(
+                  this.state.menuItem === 'photos',
+                  <View
+                    style={{
+                      position: 'absolute',
+                      left: 0,
+                      right: 0,
+                      top: 50,
+                    }}
+                  >
+                    <Photos />
+                  </View>
+                )}
+              </View>
+              <View style={{ position: 'absolute', bottom: 25, right: 10 }}>
+                <Screenshot />
+              </View>
+              <View>
+                {this.state.menuItem === 'settings' ? (
+                  <View
+                    style={{
+                      position: 'absolute',
+                      left: 0,
+                      right: 0,
+                      top: 50,
+                    }}
+                  >
+                    <Settings />
+                  </View>
+                ) : null}
+                {this.state.menuItem === 'friends' ? (
+                  <View
+                    style={{
+                      position: 'absolute',
+                      left: 0,
+                      right: 0,
+                      top: 50,
+                    }}
+                  >
+                    <Friends />
+                  </View>
+                ) : null}
+                {this.state.menuItem === 'photos' ? (
+                  <View
+                    style={{
+                      position: 'absolute',
+                      left: 0,
+                      right: 0,
+                      top: 50,
+                    }}
+                  >
+                    <Photos />
+                  </View>
+                ) : null}
+              </View>
+              <View style={{ position: 'absolute', bottom: 25, right: 10 }}>
+                <Screenshot />
+              </View>
+              <View style={{ position: 'absolute', bottom: 25, left: 10 }}>
+                <TouchableOpacity
+                  onPress={() =>
+                    this.setState({ ...this.state, potato: !this.state.potato })
+                  }
+                >
+                  <DogBowl />
+                </TouchableOpacity>
+              </View>
+            </View>
+          )}
+        </View>
+      </View>
+    );
+  }
 
 	// functions from sample re: ray tracing, loading, etc
 	// Invoked when a model has started to load, we show a loading indictator.
@@ -387,3 +397,18 @@ var localStyles = StyleSheet.create({
 		borderColor: '#fff',
 	},
 });
+
+// connect to redux
+const mapState = (state) => {
+	return {
+		user: state.user,
+	};
+};
+
+const mapDispatch = (dispatch) => {
+	return {
+		addPoints: (obj) => dispatch(addPoints(obj)),
+	};
+};
+
+export default connect(mapState, mapDispatch)(App);

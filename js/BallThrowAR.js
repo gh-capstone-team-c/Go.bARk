@@ -29,10 +29,14 @@ export default BallThrowAR = createReactClass({
 			rotation: [0, 0, 0],
 			dogAnimation: 'waiting',
 
+			//trying to pass function to AR component
+			user: this.props.arSceneNavigator.viroAppProps.user,
+			addPoints: this.props.arSceneNavigator.viroAppProps.addPoints,
 		};
 	},
 
 	render() {
+		// console.log('user in ar', this.state.user);
 		return (
 			<ViroARScene ref="arscene" _onTrackingUpdated={this._onTrackingUpdated}>
 				<ViroText
@@ -51,7 +55,6 @@ export default BallThrowAR = createReactClass({
 					castsShadow={true}
 				/>
 
-
 				<ViroNode
 					position={this.state.dogPosition}
 					scale={this.state.dogScale}
@@ -61,7 +64,6 @@ export default BallThrowAR = createReactClass({
 					ref={'dog'}
 					rotation={this.state.rotation}
 				>
-
 					<ViroSpotLight
 						innerAngle={5}
 						outerAngle={25}
@@ -97,7 +99,6 @@ export default BallThrowAR = createReactClass({
 						ignoreEventHandling={true}
 					/>
 				</ViroNode>
-
 
 				<ViroNode
 					position={this.state.ballPosition}
@@ -143,8 +144,11 @@ export default BallThrowAR = createReactClass({
 		this.arNodeRef = component;
 	},
 
-
 	_onBallClick(stateValue, position, source) {
+		let pts = this.state.user.points++;
+
+		this.state.addPoints({ points: pts - 1 });
+
 		if (
 			stateValue === 1 &&
 			this.state.currentAnimation !== ('arc' || 'rollAway')
@@ -201,9 +205,9 @@ export default BallThrowAR = createReactClass({
 		console.log('fetch!', stateValue);
 	},
 	_onBallDrag() {
-	
+		// this.state.addPoints({ points: this.state.user.points + 1 });
+		// console.log('user in drag', this.state.user);
 	},
-
 
 	//Ray - tracing
 	_onLoadStart() {
@@ -471,7 +475,6 @@ ViroAnimations.registerAnimations({
 		duration: 1800,
 		easing: 'EaseOut',
 	},
-
 });
 
 module.exports = BallThrowAR;
