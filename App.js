@@ -11,7 +11,6 @@
 
 import React, { Component } from 'react';
 import {
-
 	AppRegistry,
 	ActivityIndicator,
 	Text,
@@ -32,7 +31,6 @@ import Photos from './js/Photos';
 import Settings from './js/Settings';
 import Friends from './js/Friends';
 import DogBowl from './js/DogBowl';
-
 
 export function renderIf(condition, renderedContent) {
 	if (condition) {
@@ -68,7 +66,6 @@ export default class App extends Component {
 			// isLoading: false,
 		};
 	}
-
 
 	render() {
 		return (
@@ -146,17 +143,16 @@ export default class App extends Component {
 								</View>
 							</View>
 
-
-								<View
-									style={{
-										position: 'absolute',
-										top: 50,
-										right: 0,
-										bottom: 0,
-										left: 0,
-									}}
-								>
-									{/* {this._renderTrackingText()}
+							<View
+								style={{
+									position: 'absolute',
+									top: 50,
+									right: 0,
+									bottom: 0,
+									left: 0,
+								}}
+							>
+								{/* {this._renderTrackingText()}
 									{renderIf(
 										this.state.isLoading,
 										<View
@@ -177,58 +173,56 @@ export default class App extends Component {
 											/>
 										</View>
 									)} */}
-									<ViroARSceneNavigator
-										initialScene={{
-											scene: InitialARScene,
+								<ViroARSceneNavigator
+									initialScene={{
+										scene: InitialARScene,
+									}}
+									// viroAppProps={this.state.viroAppProps}
+								/>
+							</View>
+							<View>
+								{renderIf(
+									this.state.menuItem === 'settings',
+									<View
+										style={{
+											position: 'absolute',
+											left: 0,
+											right: 0,
+											top: 50,
 										}}
-										// viroAppProps={this.state.viroAppProps}
-									/>
-								</View>
-								<View>
-									{renderIf(
-										this.state.menuItem === 'settings',
-										<View
-											style={{
-												position: 'absolute',
-												left: 0,
-												right: 0,
-												top: 50,
-											}}
-										>
-											<Settings />
-										</View>
-									)}
-									{renderIf(
-										this.state.menuItem === 'friends',
-										<View
-											style={{
-												position: 'absolute',
-												left: 0,
-												right: 0,
-												top: 50,
-											}}
-										>
-											<Friends />
-										</View>
-									)}
-									{renderIf(
-										this.state.menuItem === 'photos',
-										<View
-											style={{
-												position: 'absolute',
-												left: 0,
-												right: 0,
-												top: 50,
-											}}
-										>
-											<Photos />
-										</View>
-									)}
-								</View>
-								<View style={{ position: 'absolute', bottom: 25, right: 10 }}>
-									<Screenshot />
-								</View>
-
+									>
+										<Settings />
+									</View>
+								)}
+								{renderIf(
+									this.state.menuItem === 'friends',
+									<View
+										style={{
+											position: 'absolute',
+											left: 0,
+											right: 0,
+											top: 50,
+										}}
+									>
+										<Friends />
+									</View>
+								)}
+								{renderIf(
+									this.state.menuItem === 'photos',
+									<View
+										style={{
+											position: 'absolute',
+											left: 0,
+											right: 0,
+											top: 50,
+										}}
+									>
+										<Photos />
+									</View>
+								)}
+							</View>
+							<View style={{ position: 'absolute', bottom: 25, right: 10 }}>
+								<Screenshot />
 							</View>
 							<View>
 								{this.state.menuItem === 'settings' ? (
@@ -271,9 +265,9 @@ export default class App extends Component {
 							<View style={{ position: 'absolute', bottom: 25, right: 10 }}>
 								<Screenshot />
 							</View>
- <View style={{ position: 'absolute', bottom: 25, left: 10 }}>
-                  <DogBowl />
-                </View>
+							<View style={{ position: 'absolute', bottom: 25, left: 10 }}>
+								<DogBowl />
+							</View>
 						</View>
 					)}
 				</View>
@@ -339,28 +333,27 @@ export default class App extends Component {
 			trackingInitialized: true,
 		});
 	}
-
 }
 
 var localStyles = StyleSheet.create({
-  viroContainer: {
-    backgroundColor: 'darkseagreen',
-  },
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    width: width,
-    height: height,
-    flexDirection: 'column',
-    alignItems: 'center',
-  },
-  menuContainer: {
-    flexDirection: 'row',
-    alignContent: 'center',
-    justifyContent: 'space-around',
-    marginTop: 10,
-    backgroundColor: '#fff',
-  },
+	viroContainer: {
+		backgroundColor: 'darkseagreen',
+	},
+	container: {
+		flex: 1,
+		justifyContent: 'center',
+		width: width,
+		height: height,
+		flexDirection: 'column',
+		alignItems: 'center',
+	},
+	menuContainer: {
+		flexDirection: 'row',
+		alignContent: 'center',
+		justifyContent: 'space-around',
+		marginTop: 10,
+		backgroundColor: '#fff',
+	},
 	titleText: {
 		paddingTop: 30,
 		paddingBottom: 20,
