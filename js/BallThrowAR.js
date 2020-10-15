@@ -3,75 +3,74 @@
 import React, { Component } from 'react';
 import { TouchableHighlightBase } from 'react-native';
 import {
-  ViroARScene,
-  Viro3DObject,
-  ViroAmbientLight,
-  ViroSpotLight,
-  ViroNode,
-  ViroAnimations,
-  ViroText,
-  ViroARPlaneSelector,
-  ViroBox,
-  ViroQuad,
+	ViroARScene,
+	Viro3DObject,
+	ViroAmbientLight,
+	ViroSpotLight,
+	ViroNode,
+	ViroAnimations,
+	ViroText,
+	ViroQuad,
 } from 'react-viro';
 var createReactClass = require('create-react-class');
 const HelloWorldSceneAR = require('./HelloWorldSceneAR copy');
 
 export default BallThrowAR = createReactClass({
-  getInitialState() {
-    return {
-      currentAnimation: 'rotate',
-      text: 'Swipe for next!',
-      animation: true,
-      dogAnimation: 'tailWag',
-    };
-  },
+	getInitialState() {
+		return {
+			currentAnimation: 'rotate',
+			text: 'Swipe for next!',
+			animation: true,
+			dogAnimation: 'waiting',
+		};
+	},
 
-  render() {
-    return (
-      <ViroARScene>
-        <ViroText
-          text={this.state.text}
-          scale={[0.5, 0.5, 0.5]}
-          position={[0, 0, -1]}
-          onDrag={this._pushNextScene}
-        />
-        <ViroAmbientLight color={'#aaaaaa'} />
-        <ViroSpotLight
-          innerAngle={5}
-          outerAngle={90}
-          direction={[0, -1, -0.2]}
-          position={[0, 3, 1]}
-          color="#ffffff"
-          castsShadow={true}
-        />
-        <ViroNode position={[0, -3, -4]}>
-          <ViroSpotLight
-            innerAngle={5}
-            outerAngle={25}
-            direction={[0, -1, 0]}
-            position={[0, 5, 0]}
-            color="#ffffff"
-            castsShadow={true}
-            shadowMapSize={2048}
-            shadowNearZ={2}
-            shadowFarZ={7}
-            shadowOpacity={0.7}
-          />
-          <Viro3DObject
-            source={require('./res/Dog/TheDogThree.vrx')}
-            position={[0, -4, -10]}
-            scale={[0.06, 0.06, 0.06]}
-            animation={{
-              name: this.state.dogAnimation,
-              run: true,
-              loop: true,
-              interruptible: true,
-            }}
-            ignoreEventHandling={true}
-            type="VRX"
-          />
-        </ViroNode>
+	render() {
+		return (
+			<ViroARScene>
+				<ViroText
+					text={this.state.text}
+					scale={[0.5, 0.5, 0.5]}
+					position={[0, 0, -1]}
+					onDrag={this._pushNextScene}
+				/>
+				<ViroAmbientLight color={'#aaaaaa'} />
+				<ViroSpotLight
+					innerAngle={5}
+					outerAngle={90}
+					direction={[0, -1, -0.2]}
+					position={[0, 3, 1]}
+					color="#ffffff"
+					castsShadow={true}
+				/>
+
+				<ViroNode position={[0, -3, -4]}>
+					<ViroSpotLight
+						innerAngle={5}
+						outerAngle={25}
+						direction={[0, -1, 0]}
+						position={[0, 5, 0]}
+						color="#ffffff"
+						castsShadow={true}
+						shadowMapSize={2048}
+						shadowNearZ={2}
+						shadowFarZ={7}
+						shadowOpacity={0.7}
+					/>
+					<Viro3DObject
+						source={require('./res/Dog/TheDogThree.vrx')}
+						position={[0, -4, -10]}
+						scale={[0.06, 0.06, 0.06]}
+						animation={{
+							name: this.state.dogAnimation,
+							run: true,
+							loop: true,
+							interruptible: true,
+						}}
+						ignoreEventHandling={true}
+						type="VRX"
+					/>
+				</ViroNode>
 
         <ViroNode position={[0, -1, 0]}>
           <Viro3DObject
@@ -107,27 +106,29 @@ export default BallThrowAR = createReactClass({
     );
   },
 
-  _onBallClick(stateValue, position, source) {
-    let track;
-    if (stateValue === 1) {
-      this.setState({
-        dogAnimation: 'waiting',
-      });
-    } else if (stateValue === 2 || stateValue === 3) {
-      this.setState({
-        currentAnimation: 'arc',
-      });
+	_onBallClick(stateValue, position, source) {
+		let track;
+		if (stateValue === 1) {
+			this.setState({
+				dogAnimation: 'waiting',
+			});
+		} else if (stateValue === 2 || stateValue === 3) {
+			this.setState({
+				currentAnimation: 'arc',
+			});
 
-      setTimeout(() => {
-        this.setState({
-          currentAnimation: 'returnBall',
-          dogAnimation: 'return',
-        });
-      }, 6000);
-    }
-    console.log('fetch!', position);
-  },
-  _onBallDrag() {},
+			setTimeout(() => {
+				this.setState({
+					currentAnimation: 'returnBall',
+					dogAnimation: 'return',
+				});
+			}, 6000);
+		}
+		console.log('fetch!', position);
+	},
+	_onBallDrag() {
+	
+	},
 
   _pushNextScene() {
     this.props.sceneNavigator.push({ scene: HelloWorldSceneAR });
