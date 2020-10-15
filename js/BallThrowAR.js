@@ -45,30 +45,6 @@ export default BallThrowAR = createReactClass({
           color="#ffffff"
           castsShadow={true}
         />
-        {/* <ViroNode position={[0, -3, -4]}> */}
-        {/* <ViroSpotLight
-            innerAngle={5}
-            outerAngle={25}
-            direction={[0, -1, 0]}
-            position={[0, 5, 0]}
-            color="#ffffff"
-            castsShadow={true}
-            shadowMapSize={2048}
-            shadowNearZ={2}
-            shadowFarZ={7}
-            shadowOpacity={0.7}
-          /> */}
-        {/* <Viro3DObject
-            source={require('./res/Dog/TheDogThree.vrx')}
-            position={[0, -4, -10]}
-            scale={[0.06, 0.06, 0.06]}
-            animation={{ name: this.state.dogAnimation, run: true }}
-            type="VRX"
-            ignoreEventHandling={true}
-            // onClick={this._onTappedDog}
-          /> */}
-        {/* </ViroNode > */}
-
         <ViroNode position={[0, -3, -4]}>
           <ViroSpotLight
             innerAngle={5}
@@ -124,42 +100,9 @@ export default BallThrowAR = createReactClass({
           />
         </ViroNode>
 
-        {/* leash but the file might be the wrong format */}
-        {/* <ViroNode position={[0, -3, 0]}>
-					<Viro3DObject
-						source={require('./res/leash.max')}
-						position={[0, -3, 0]}
-						scale={[0.2, 0.2, 0.2]}
-						type="VRX"
-					/>
-				</ViroNode> */}
-        <ViroNode position={[0, 0, 1]}>
-          <Viro3DObject
-            source={require('./res/Dog-Graphics/DogBowl_NoFood.vrx')}
-            resources={[
-              // require('./res/Dog-Graphics/Dogbowl2_UV.png'),
-              // require('./res/Dog-Graphics/Dogbowl2_Specular.jpg'),
-              // require('./res/Dog-Graphics/DogBowl_Noormals.png'),
-              require('./res/Dog-Graphics/DogBowl_AO.png'),
-            ]}
-            position={[0, 0, -1]}
-            scale={[0.02, 0.02, 0.02]}
-            type="VRX"
-          />
-        </ViroNode>
-        {/* dog bowl but i may be requiring the wrong files */}
-        {/* <ViroNode position={[0, 0, -2]}>
-					<Viro3DObject
-						source={require('./res/Dog-Graphics/DogBowl_NoFood.fbx')}
-						resources={[
-							require('./res/Dog-Graphics/DogBowl_Noormals.png'),
-							require('./res/Dog-Graphics/Dogbowl2_Specular.jpg'),
-						]}
-						position={[0, -1, -2]}
-						scale={[0.2, 0.2, 0.2]}
-						type="FBX"
-					/>
-				</ViroNode> */}
+        {/* look at leash file format */}
+
+        {/* Dog bowl used to be here, may replace */}
       </ViroARScene>
     );
   },

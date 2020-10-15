@@ -17,30 +17,27 @@ import FoodTime from './FoodTime';
 export default class DogBowl extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      view: false,
+    };
     this._testPress = this._testPress.bind(this);
   }
 
   _testPress() {
-    // alert('it worked!');
-    return (
-      <View
-        style={{
-          position: 'absolute',
-          top: 100,
-          right: 0,
-          bottom: 0,
-          left: 0,
-        }}
-      >
-        <TouchableOpacity>
-          <Button
-            style={{ fontSize: 35 }}
-            onPress={this._testPress}
-            title="🦴"
-          />
-        </TouchableOpacity>
-        <ViroARSceneNavigator initialScene={{ scene: FoodTime }} />
-      </View>
+    return !this.state.view ? (
+      alert('you tapped the bone button')
+    ) : (
+      // <View
+      //   style={{
+      //     position: 'absolute',
+      //     top: 100,
+      //     right: 0,
+      //     bottom: 0,
+      //     left: 0,
+      //   }}
+      // >
+      <ViroARSceneNavigator initialScene={{ scene: FoodTime }} />
+      // </View>
     );
   }
 
