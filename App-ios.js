@@ -115,6 +115,9 @@ export default class AppIos extends Component {
 									>
 										<Text>Photos</Text>
 									</TouchableOpacity>
+									<View>
+										<Points />
+									</View>
 								</View>
 							</View>
 
@@ -156,6 +159,7 @@ export default class AppIos extends Component {
 									</View>
 								) : null}
 							</View>
+
 							<View style={{ position: 'absolute', bottom: 25, right: 10 }}>
 								<Screenshot />
 							</View>
