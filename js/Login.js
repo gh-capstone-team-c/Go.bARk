@@ -48,10 +48,11 @@ class Login extends React.Component {
 							onPress={() => {
 								console.log('press', this.state);
 								this.props.login(this.state.email, this.state.password);
-								console.log('after dispatch', this.props);
-								// if (this.props.user) {
-								// 	this.setState({ isLoggedIn: true });
-								// }
+								console.log('this.props after dispatch', this.props.user);
+
+								if (this.props.user) {
+									this.setState({ isLoggedIn: true });
+								}
 							}}
 						>
 							<Text>Login</Text>

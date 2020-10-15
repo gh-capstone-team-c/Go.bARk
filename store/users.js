@@ -6,8 +6,6 @@ const GET_USER = 'GET_USER';
 const REMOVE_USER = 'REMOVE_USER';
 const UPDATE_USER = 'UPDATE_USER';
 
-const defaultUser = {};
-
 const getUser = (user) => ({ type: GET_USER, user });
 const removeUser = () => ({ type: REMOVE_USER });
 
@@ -29,37 +27,18 @@ export const login = (email, password) => async (dispatch) => {
 	try {
 		let object = { email, password };
 
-		let res = await axios.post(`https://gobark-backend.herokuapp.com/auth/signup`, object);
-
-
+		let res = await axios.post(
+			`https://gobark-backend.herokuapp.com/auth/login`,
+			object
+		);
 
 		console.log('res in redux1', res.data);
-		// dispatch(getUser(res.data));
-		// console.log('res in redux', res.data);
-		// history.push('/home')
+		dispatch(getUser(res.data));
 	} catch (dispatchOrHistoryErr) {
 		console.error(dispatchOrHistoryErr);
 	}
 };
 
-// 	try {
-// 		res = await axios.post(
-// 			`https://gobark-backend.herokuapp.com/auth/login`,
-// 			object
-// 		);
-// 	} catch (authError) {
-// 		return dispatch(getUser({ error: authError }));
-// 	}
-
-// 	try {
-// 		console.log('res in redux', res.data);
-// 		dispatch(getUser(res.data));
-// 		console.log('res in redux', res.data);
-// 		// history.push('/home')
-// 	} catch (dispatchOrHistoryErr) {
-// 		console.error(dispatchOrHistoryErr);
-// 	}
-// };
 
 //logout
 export const logout = () => async (dispatch) => {
@@ -89,7 +68,9 @@ export const updateUser = (id, stateObj) => {
 	};
 };
 
-export default function usersReducer(state = defaultUser, action) {
+const defaultUser = {};
+
+export default function userReducer(state = defaultUser, action) {
 	switch (action.type) {
 		case GET_USER:
 			return action.user;
