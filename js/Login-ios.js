@@ -46,9 +46,7 @@ class LoginIos extends React.Component {
 						/>
 						<TouchableOpacity
 							onPress={() => {
-								console.log('press', this.state);
 								this.props.login(this.state.email, this.state.password);
-								console.log('this.props after dispatch', this.props.user);
 
 								if (this.props.user) {
 									this.setState({ isLoggedIn: true });
