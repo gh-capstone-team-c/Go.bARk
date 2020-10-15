@@ -24,21 +24,18 @@ import {
 } from 'react-native';
 const { width, height } = Dimensions.get('window');
 import { ViroARSceneNavigator } from 'react-viro';
-// import Menu from './Menu';
+
 import Screenshot from './js/Screenshot';
 import Photos from './js/Photos';
 import Settings from './js/Settings';
 import Friends from './js/Friends';
 
 
-/*
- TODO: Insert your API key below
- */
 var sharedProps = {
 	apiKey: 'API_KEY_HERE',
 };
 
-// Sets the default scene you want for AR and VR
+
 var InitialARScene = require('./js/BallThrowAR');
 
 export default class AppIos extends Component {

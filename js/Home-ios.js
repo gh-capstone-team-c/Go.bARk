@@ -24,7 +24,7 @@ class HomeIos extends React.Component {
 
 
 	render() {
-		
+
 		return (
 			<View style={styles.container}>
 				{!this.state.pressed ? (
@@ -90,10 +90,5 @@ const mapState = (state) => {
 	};
 };
 
-// const mapDispatch = (dispatch) => {
-// 	return {
-// 		me: () => dispatch(me()),
-// 	};
-// };
 
 export default connect(mapState)(HomeIos);

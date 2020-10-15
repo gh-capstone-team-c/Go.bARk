@@ -23,7 +23,6 @@ class HomeAndroid extends React.Component {
 	}
 
 	render() {
-
 		return (
 			<View style={styles.container}>
 				{!this.state.pressed ? (
@@ -88,11 +87,5 @@ const mapState = (state) => {
 		user: state.user,
 	};
 };
-
-// const mapDispatch = (dispatch) => {
-// 	return {
-// 		me: () => dispatch(me()),
-// 	};
-// };
 
 export default connect(mapState)(HomeAndroid);

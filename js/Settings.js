@@ -50,10 +50,5 @@ const mapState = (state) => {
 	};
 };
 
-// const mapDispatch = (dispatch) => {
-// 	return {
-// 		me: () => dispatch(me()),
-// 	};
-// };
 
 export default connect(mapState)(Settings);
