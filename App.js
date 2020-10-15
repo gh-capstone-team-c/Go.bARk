@@ -11,16 +11,16 @@
 
 import React, { Component } from 'react';
 import {
-	AppRegistry,
-	Text,
-	View,
-	StyleSheet,
-	PixelRatio,
-	TouchableHighlight,
-	TouchableOpacity,
-	Vibration,
-	Dimensions,
-	TextInput,
+  AppRegistry,
+  Text,
+  View,
+  StyleSheet,
+  PixelRatio,
+  TouchableHighlight,
+  TouchableOpacity,
+  Vibration,
+  Dimensions,
+  TextInput,
 } from 'react-native';
 const { width, height } = Dimensions.get('window');
 import { ViroARSceneNavigator } from 'react-viro';
@@ -29,25 +29,20 @@ import Screenshot from './js/Screenshot';
 import Photos from './js/Photos';
 import Settings from './js/Settings';
 import Friends from './js/Friends';
-
-
-var sharedProps = {
-	apiKey: 'API_KEY_HERE',
-};
+import DogBowl from './js/DogBowl';
 
 var InitialARScene = require('./js/BallThrowAR');
 
 export default class App extends Component {
-	constructor() {
-		super();
+  constructor() {
+    super();
 
-		this.state = {
-			pressed: false,
-			menuItem: null,
-			sharedProps: sharedProps,
-			isLoggedIn: false,
-		};
-	}
+    this.state = {
+      pressed: false,
+      menuItem: null,
+      isLoggedIn: false,
+    };
+  }
 
 	render() {
 		return (
@@ -180,34 +175,37 @@ export default class App extends Component {
 							<View style={{ position: 'absolute', bottom: 25, right: 10 }}>
 								<Screenshot />
 							</View>
+ <View style={{ position: 'absolute', bottom: 25, left: 10 }}>
+                  <DogBowl />
+                </View>
 						</View>
 					)}
 				</View>
 			</View>
 		);
 	}
+
 }
 
 var localStyles = StyleSheet.create({
-	viroContainer: {
-		backgroundColor: 'darkseagreen',
-	},
-	container: {
-		flex: 1,
-		justifyContent: 'center',
-		width: width,
-		height: height,
-		flexDirection: 'column',
-		alignItems: 'center',
-	},
-	menuContainer: {
-		flexDirection: 'row',
-		alignContent: 'center',
-		justifyContent: 'space-around',
-		marginTop: 10,
-		backgroundColor: '#fff',
-	},
-
+  viroContainer: {
+    backgroundColor: 'darkseagreen',
+  },
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    width: width,
+    height: height,
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  menuContainer: {
+    flexDirection: 'row',
+    alignContent: 'center',
+    justifyContent: 'space-around',
+    marginTop: 10,
+    backgroundColor: '#fff',
+  },
 	titleText: {
 		paddingTop: 30,
 		paddingBottom: 20,

@@ -25,13 +25,14 @@ module.exports = {
     return [
       'obj',
       'mtl',
-      'JPG',
+      'jpg',
       'vrx',
       'hdr',
       'gltf',
       'glb',
       'bin',
       'arobject',
+      'png',
     ];
   },
 

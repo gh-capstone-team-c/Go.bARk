@@ -72,60 +72,39 @@ export default BallThrowAR = createReactClass({
 					/>
 				</ViroNode>
 
-				<ViroNode position={[0, -1, 0]}>
-					<Viro3DObject
-						source={require('./res/object_sphere.vrx')}
-						resources={[
-							require('./res/sphere_diffuse.png'),
+        <ViroNode position={[0, -1, 0]}>
+          <Viro3DObject
+            source={require('./res/object_sphere.vrx')}
+            resources={[
+              require('./res/sphere_diffuse.png'),
 
-							require('./res/sphere_specular.png'),
-						]}
-						position={[0, -1, -2]}
-						scale={[0.2, 0.2, 0.2]}
-						type="VRX"
-						// onClick={this._onBallClick}
-						// animation={{
-						//   name: this.state.currentAnimation,
-						//   run: true,
-						//   loop: true,
-						// }}
-						onClickState={this._onBallClick}
-						animation={{
-							name: this.state.currentAnimation,
-							run: true,
-							interruptible: true,
-						}}
-						onDrag={this._onBallDrag}
-					/>
-				</ViroNode>
+              require('./res/sphere_specular.png'),
+            ]}
+            position={[0, -1, -2]}
+            scale={[0.2, 0.2, 0.2]}
+            type="VRX"
+            // onClick={this._onBallClick}
+            // animation={{
+            //   name: this.state.currentAnimation,
+            //   run: true,
+            //   loop: true,
+            // }}
+            onClickState={this._onBallClick}
+            animation={{
+              name: this.state.currentAnimation,
+              run: true,
+              interruptible: true,
+            }}
+            onDrag={this._onBallDrag}
+          />
+        </ViroNode>
 
-				{/* leash but the file might be the wrong format */}
-				{/* <ViroNode position={[0, -3, 0]}>
-					<Viro3DObject
-						source={require('./res/leash.max')}
-						position={[0, -3, 0]}
-						scale={[0.2, 0.2, 0.2]}
-						type="VRX"
-					/>
-				</ViroNode> */}
+        {/* look at leash file format */}
 
-				{/* dog bowl but i may be requiring the wrong files */}
-				{/* <ViroNode position={[0, 0, -2]}>
-					<Viro3DObject
-						source={require('./res/Dog-Graphics/DogBowl_NoFood.fbx')}
-						resources={[
-							require('./res/Dog-Graphics/DogBowl_Noormals.png'),
-							require('./res/Dog-Graphics/Dogbowl2_Specular.jpg'),
-						]}
-						position={[0, -1, -2]}
-						scale={[0.2, 0.2, 0.2]}
-						type="FBX"
-					/>
-				</ViroNode> */}
-			</ViroARScene>
-		);
-	},
-
+        {/* Dog bowl used to be here, may replace */}
+      </ViroARScene>
+    );
+  },
 
 	_onBallClick(stateValue, position, source) {
 		let track;
@@ -148,80 +127,80 @@ export default BallThrowAR = createReactClass({
 		console.log('fetch!', position);
 	},
 	_onBallDrag() {
-		console.log('hi');
+	
 	},
 
-	_pushNextScene() {
-		this.props.sceneNavigator.push({ scene: HelloWorldSceneAR });
-	},
+  _pushNextScene() {
+    this.props.sceneNavigator.push({ scene: HelloWorldSceneAR });
+  },
 });
 
 ViroAnimations.registerAnimations({
-	rotate: {
-		properties: {
-			rotateY: '+=90',
-		},
-		duration: 0, //0 seconds
-	},
-	lookLeft: {
-		properties: {
-			rotateY: '+=10',
-		},
-		duration: 500, //0 seconds
-	},
-	lookRight: {
-		properties: {
-			rotateY: '-=10',
-		},
-		duration: 500, //0 seconds
-	},
-	launch: {
-		properties: {
-			positionZ: '-=3.0',
-			positionY: '+=3.0',
-		},
-		easing: 'EaseOut',
-		duration: 2500,
-	},
-	fall: {
-		properties: {
-			positionZ: '-=3.0',
-			positionY: '-=3.0',
-		},
-		duration: 2500,
-		easing: 'EaseIn',
-	},
-	arc: [['launch', 'fall']],
-	waiting: [
-		[
-			'lookLeft',
-			'lookRight',
-			'lookLeft',
-			'lookRight',
-			'lookLeft',
-			'lookRight',
-			'lookLeft',
-			'lookRight',
-		],
-	],
-	return: {
-		properties: {
-			positionX: 0,
-			positionY: -2,
-			positionZ: 0,
-		},
-		duration: 2000,
-		easing: 'EaseOut',
-	},
-	returnBall: {
-		properties: {
-			positionX: 0,
-			positionY: 0,
-			positionZ: -1.2,
-		},
-		duration: 2000,
-		easing: 'EaseOut',
-	},
+  rotate: {
+    properties: {
+      rotateY: '+=90',
+    },
+    duration: 0, //0 seconds
+  },
+  lookLeft: {
+    properties: {
+      rotateY: '+=10',
+    },
+    duration: 500, //0 seconds
+  },
+  lookRight: {
+    properties: {
+      rotateY: '-=10',
+    },
+    duration: 500, //0 seconds
+  },
+  launch: {
+    properties: {
+      positionZ: '-=3.0',
+      positionY: '+=3.0',
+    },
+    easing: 'EaseOut',
+    duration: 2500,
+  },
+  fall: {
+    properties: {
+      positionZ: '-=3.0',
+      positionY: '-=3.0',
+    },
+    duration: 2500,
+    easing: 'EaseIn',
+  },
+  arc: [['launch', 'fall']],
+  waiting: [
+    [
+      'lookLeft',
+      'lookRight',
+      'lookLeft',
+      'lookRight',
+      'lookLeft',
+      'lookRight',
+      'lookLeft',
+      'lookRight',
+    ],
+  ],
+  return: {
+    properties: {
+      positionX: 0,
+      positionY: -2,
+      positionZ: 0,
+    },
+    duration: 2000,
+    easing: 'EaseOut',
+  },
+  returnBall: {
+    properties: {
+      positionX: 0,
+      positionY: 0,
+      positionZ: -1.2,
+    },
+    duration: 2000,
+    easing: 'EaseOut',
+  },
 });
 
 module.exports = BallThrowAR;
