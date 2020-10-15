@@ -6,8 +6,6 @@ const GET_USER = 'GET_USER';
 const REMOVE_USER = 'REMOVE_USER';
 const UPDATE_USER = 'UPDATE_USER';
 
-const defaultUser = {};
-
 const getUser = (user) => ({ type: GET_USER, user });
 const removeUser = () => ({ type: REMOVE_USER });
 
@@ -24,29 +22,32 @@ export const me = () => {
 	};
 };
 
-//login/signup
-export const auth = (email, password, method) => async (dispatch) => {
-	let res;
-	let object = { email, password };
-
-	// if (method === 'login') {
-	// 	object = { email, password };
-	// } else {
-	// 	object = { email, password };
-	// }
-
+//login
+export const login = (email, password) => async (dispatch) => {
 	try {
-		res = await axios.post(
-			`https://gobark-backend.herokuapp.com/auth/${method}`,
+		let object = { email, password };
+
+		let res = await axios.post(
+			`https://gobark-backend.herokuapp.com/auth/login`,
 			object
 		);
-	} catch (authError) {
-		return dispatch(getUser({ error: authError }));
-	}
 
-	try {
 		dispatch(getUser(res.data));
-		// history.push('/home')
+	} catch (dispatchOrHistoryErr) {
+		console.error(dispatchOrHistoryErr);
+	}
+};
+
+// signup;
+export const signup = (email, password) => async (dispatch) => {
+	try {
+		let object = { email, password };
+
+		let res = await axios.post(
+			`https://gobark-backend.herokuapp.com/auth/signup`,
+			object
+		);
+		dispatch(getUser(res.data));
 	} catch (dispatchOrHistoryErr) {
 		console.error(dispatchOrHistoryErr);
 	}
@@ -80,7 +81,9 @@ export const updateUser = (id, stateObj) => {
 	};
 };
 
-export default function usersReducer(state = defaultUser, action) {
+const defaultUser = {};
+
+export default function userReducer(state = defaultUser, action) {
 	switch (action.type) {
 		case GET_USER:
 			return action.user;

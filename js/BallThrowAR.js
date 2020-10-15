@@ -10,8 +10,6 @@ import {
 	ViroNode,
 	ViroAnimations,
 	ViroText,
-	ViroARPlaneSelector,
-	ViroBox,
 	ViroQuad,
 } from 'react-viro';
 var createReactClass = require('create-react-class');
@@ -23,13 +21,14 @@ export default BallThrowAR = createReactClass({
 			currentAnimation: 'rotate',
 			text: 'Swipe for next!',
 			animation: true,
-			dogAnimation: 'tailWag',
 			dogScale: [0.1, 0.1, 0.1],
 			scale: [0.7, 0.7, 0.7],
 			dogPosition: [0, -10, -20],
 			ballPosition: [0, -2.6, -10],
 			playCount: 0,
 			rotation: [0, 0, 0],
+			dogAnimation: 'waiting',
+
 		};
 	},
 
@@ -52,6 +51,7 @@ export default BallThrowAR = createReactClass({
 					castsShadow={true}
 				/>
 
+
 				<ViroNode
 					position={this.state.dogPosition}
 					scale={this.state.dogScale}
@@ -61,6 +61,7 @@ export default BallThrowAR = createReactClass({
 					ref={'dog'}
 					rotation={this.state.rotation}
 				>
+
 					<ViroSpotLight
 						innerAngle={5}
 						outerAngle={25}
@@ -96,6 +97,7 @@ export default BallThrowAR = createReactClass({
 						ignoreEventHandling={true}
 					/>
 				</ViroNode>
+
 
 				<ViroNode
 					position={this.state.ballPosition}
@@ -140,6 +142,7 @@ export default BallThrowAR = createReactClass({
 	_setARNodeRef(component) {
 		this.arNodeRef = component;
 	},
+
 
 	_onBallClick(stateValue, position, source) {
 		if (
@@ -197,11 +200,10 @@ export default BallThrowAR = createReactClass({
 		}
 		console.log('fetch!', stateValue);
 	},
-	_onBallDrag() {},
-
-	_pushNextScene() {
-		this.props.sceneNavigator.push({ scene: HelloWorldSceneAR });
+	_onBallDrag() {
+	
 	},
+
 
 	//Ray - tracing
 	_onLoadStart() {
@@ -469,6 +471,7 @@ ViroAnimations.registerAnimations({
 		duration: 1800,
 		easing: 'EaseOut',
 	},
+
 });
 
 module.exports = BallThrowAR;
