@@ -7,7 +7,7 @@ import { Provider } from 'react-redux';
 import LoginAndroid from './js/Login-android';
 import store from './store/store';
 
-export default class Root extends Component {
+export default class RootAndroid extends Component {
 	render() {
 		console.log('this is the root');
 		return (

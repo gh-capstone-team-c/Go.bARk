@@ -12,9 +12,9 @@ import {
 const { width, height } = Dimensions.get('window');
 import { connect } from 'react-redux';
 import { login } from '../store/users';
-import AppIos from '../App-ios';
+import HomeIos from './Home-ios';
 
-class Login extends React.Component {
+class LoginIos extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -59,7 +59,7 @@ class Login extends React.Component {
 						</TouchableOpacity>
 					</View>
 				) : (
-					<AppIos />
+					<HomeIos />
 				)}
 			</View>
 		);
@@ -109,4 +109,4 @@ const mapDispatch = (dispatch) => {
 	};
 };
 
-export default connect(mapState, mapDispatch)(Login);
+export default connect(mapState, mapDispatch)(LoginIos);
