@@ -34,7 +34,6 @@ import DogBowl from './js/DogBowl';
 import Points from './js/Points';
 import { appStyles } from './Styles';
 
-
 export function renderIf(condition, renderedContent) {
 	if (condition) {
 		return renderedContent;
@@ -138,7 +137,7 @@ class App extends Component {
 									>
 										<Text style={appStyles.menuHeadings}>Photos</Text>
 									</TouchableOpacity>
-									<View>
+									<View style={{ top: -20 }}>
 										<Points />
 									</View>
 								</View>
@@ -168,7 +167,7 @@ class App extends Component {
 									)} */}
 								<ViroARSceneNavigator
 									initialScene={{ scene: InitialARScene }}
-                  viroAppProps={{this.state.viroAppProps}}
+									viroAppProps={this.state.viroAppProps}
 								/>
 							</View>
 							{/* conditional renders based on whether that menu item was clicked */}
@@ -285,4 +284,3 @@ const mapDispatch = (dispatch) => {
 };
 
 export default connect(mapState, mapDispatch)(App);
-
