@@ -7,6 +7,7 @@ import {
 	TouchableOpacity,
 	captureScreen,
 } from 'react-native';
+import { appStyles } from '../Styles';
 
 export default class Screenshot extends React.Component {
 	constructor(props) {
@@ -17,10 +18,9 @@ export default class Screenshot extends React.Component {
 		return (
 			<View>
 				<TouchableOpacity>
-					<Text style={{ fontSize: 30 }}>📷</Text>
+					<Text style={appStyles.menuButton}>📷</Text>
 				</TouchableOpacity>
 			</View>
 		);
 	}
 }
-var screenShot = StyleSheet.create({});
