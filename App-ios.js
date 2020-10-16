@@ -58,7 +58,7 @@ class AppIos extends Component {
 		else if (this.state.menuItem === 'photos') return <Photos />;
 	}
 	render() {
-		
+
 		return (
 			<View style={localStyles.container}>
 				<View>
@@ -104,7 +104,7 @@ class AppIos extends Component {
 											else this.setState({ menuItem: 'settings' });
 										}}
 									>
-										<Text>Settings</Text>
+										<Text>My Profile</Text>
 									</TouchableOpacity>
 									<TouchableOpacity
 										onPress={() => {

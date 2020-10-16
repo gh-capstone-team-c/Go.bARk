@@ -116,7 +116,7 @@ class App extends Component {
 											}
 										}}
 									>
-										<Text>Settings</Text>
+										<Text>My Profile</Text>
 									</TouchableOpacity>
 									<TouchableOpacity
 										onPress={() => {

@@ -3,6 +3,7 @@
 import React from 'react';
 import { View, Image, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
+import Points from './Points';
 
 class Settings extends React.Component {
 	constructor(props) {
@@ -18,24 +19,27 @@ class Settings extends React.Component {
 			<View style={settings.container}>
 				<View>
 					<TouchableOpacity>
-						<Text>Points: {this.props.user.points}</Text>
-					</TouchableOpacity>
-					<TouchableOpacity>
 						<Text>
 							Dog:{' '}
 							{this.props.user.dog ? this.props.user.dog.name : 'no dog yet!'}
 						</Text>
 					</TouchableOpacity>
 					<TouchableOpacity>
-						<Text>
-							Happiness Level:{' '}
-							{this.props.user.dog
-								? this.props.user.dog.happiness
-								: 'no happiness levels yet!'}
-						</Text>
+						<Text>Points: {this.props.user.points}</Text>
+					</TouchableOpacity>
+
+					<TouchableOpacity>
+						{this.props.user ? (
+							<>
+								<Text>Happiness:</Text>
+								<Points />
+							</>
+						) : (
+							<Text>Happiness: 'no happiness points yet!'</Text>
+						)}
 					</TouchableOpacity>
 					<TouchableOpacity>
-						<Text>Edit Settings</Text>
+						<Text>Edit Profile</Text>
 					</TouchableOpacity>
 				</View>
 			</View>
