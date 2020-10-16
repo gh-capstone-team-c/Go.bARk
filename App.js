@@ -15,14 +15,11 @@ import {
 	ActivityIndicator,
 	Text,
 	View,
-	StyleSheet,
-	PixelRatio,
-	TouchableHighlight,
+	Image,
 	TouchableOpacity,
 	Vibration,
 	Dimensions,
-	Image,
-	TextInput,
+	ScrollView,
 } from 'react-native';
 const { width, height } = Dimensions.get('window');
 import { ViroARSceneNavigator } from 'react-viro';
@@ -35,6 +32,8 @@ import Settings from './js/Settings';
 import Friends from './js/Friends';
 import DogBowl from './js/DogBowl';
 import Points from './js/Points';
+import { appStyles } from './Styles';
+
 
 export function renderIf(condition, renderedContent) {
 	if (condition) {
@@ -44,7 +43,6 @@ export function renderIf(condition, renderedContent) {
 	}
 }
 
-// Sets the default scene you want for AR and VR
 var InitialARScene = require('./js/BallThrowAR');
 
 class App extends Component {
@@ -59,8 +57,6 @@ class App extends Component {
 		this.state = {
 			pressed: false,
 			menuItem: null,
-			isLoggedIn: false,
-			toggle: false,
 			viroAppProps: {
 				user: this.props.user,
 				addPoints: this.props.addPoints,
@@ -75,13 +71,15 @@ class App extends Component {
 			// isLoading: false,
 		};
 	}
+
 	render() {
 		return (
 			<View style={appStyles.containerApp}>
 				<View>
+					{/* checks to see if start button was pressed */}
 					{!this.state.pressed ? (
 						<View>
-							<Text style={appStyles.titleText}>go</Text>​
+							<Text style={appStyles.titleText}>go</Text>
 							<TouchableOpacity
 								style={appStyles.buttons}
 								onPress={() => {
@@ -98,12 +96,15 @@ class App extends Component {
 							<Text style={appStyles.titleText}>bARk</Text>
 						</View>
 					) : (
+						// renders the game menu and the ARScene player
 						<View
 							style={{
 								width: width,
 								height: height,
 							}}
 						>
+							{/* menubar toggles the different menu components */}
+
 							<View style={appStyles.menuBar}>
 								<View style={appStyles.menuContainer}>
 									<TouchableOpacity
@@ -112,11 +113,10 @@ class App extends Component {
 												this.setState({ menuItem: null });
 											else {
 												this.setState({ menuItem: 'settings' });
-												console.log(this.state.menuItem, 'test');
 											}
 										}}
 									>
-										<Text>My Profile</Text>
+										<Text style={appStyles.menuHeadings}>My Profile</Text>
 									</TouchableOpacity>
 									<TouchableOpacity
 										onPress={() => {
@@ -124,160 +124,85 @@ class App extends Component {
 												this.setState({ menuItem: null });
 											else {
 												this.setState({ menuItem: 'friends' });
-												console.log(this.state.menuItem, 'test');
 											}
 										}}
 									>
-										<Text>Friends</Text>
+										<Text style={appStyles.menuHeadings}>Friends</Text>
 									</TouchableOpacity>
 									<TouchableOpacity
 										onPress={() => {
 											if (this.state.menuItem === 'photos')
 												this.setState({ menuItem: null });
 											else this.setState({ menuItem: 'photos' });
-											console.log(this.state.menuItem, 'test');
 										}}
 									>
-										<Text>Photos</Text>
+										<Text style={appStyles.menuHeadings}>Photos</Text>
 									</TouchableOpacity>
 									<View>
 										<Points />
 									</View>
 								</View>
 							</View>
-							​
-							<View
-								style={{
-									position: 'absolute',
-									top: 50,
-									right: 0,
-									bottom: 0,
-									left: 0,
-								}}
-							>
+							{/* scene navigator */}
+							<View style={appStyles.sceneNav}>
 								{/* {this._renderTrackingText()}
-                  {renderIf(
-                    this.state.isLoading,
-                    <View
-                      style={{
-                        position: 'absolute',
-                        left: 0,
-                        right: 0,
-                        top: 0,
-                        bottom: 0,
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                      }}
-                    >
-                      <ActivityIndicator
-                        size="large"
-                        animating={this.state.isLoading}
-                        color="#ffffff"
-                      />
-                    </View>
-                  )} */}
+									{renderIf(
+										this.state.isLoading,
+										<View
+											style={{
+												position: 'absolute',
+												left: 0,
+												right: 0,
+												top: 0,
+												bottom: 0,
+												alignItems: 'center',
+												justifyContent: 'center',
+											}}
+										>
+											<ActivityIndicator
+												size="large"
+												animating={this.state.isLoading}
+												color="#ffffff"
+											/>
+										</View>
+									)} */}
 								<ViroARSceneNavigator
-									initialScene={{
-										scene: InitialARScene,
-									}}
-									viroAppProps={this.state.viroAppProps}
-									// viroAppProps={this.state.viroAppProps}
+									initialScene={{ scene: InitialARScene }}
+                  viroAppProps={{this.state.viroAppProps}}
 								/>
 							</View>
-							​
+							{/* conditional renders based on whether that menu item was clicked */}
 							<View>
 								{renderIf(
 									this.state.menuItem === 'settings',
-									<View
-										style={{
-											position: 'absolute',
-											left: 0,
-											right: 0,
-											top: 50,
-										}}
-									>
-										<Settings />
+									<View style={appStyles.menuDropDown}>
+										<ScrollView>
+											<Settings />
+										</ScrollView>
 									</View>
 								)}
 								{renderIf(
 									this.state.menuItem === 'friends',
-									<View
-										style={{
-											position: 'absolute',
-											left: 0,
-											right: 0,
-											top: 50,
-										}}
-									>
-										<Friends />
+									<View style={appStyles.menuDropDown}>
+										<ScrollView>
+											<Friends />
+										</ScrollView>
 									</View>
 								)}
 								{renderIf(
 									this.state.menuItem === 'photos',
-									<View
-										style={{
-											position: 'absolute',
-											left: 0,
-											right: 0,
-											top: 50,
-										}}
-									>
-										<Photos />
+									<View style={appStyles.menuDropDown}>
+										<ScrollView>
+											<Photos />
+										</ScrollView>
 									</View>
 								)}
-							</View>
-							<View style={{ position: 'absolute', bottom: 25, right: 10 }}>
-								<Screenshot />
-							</View>
-							<View>
-								{this.state.menuItem === 'settings' ? (
-									<View
-										style={{
-											position: 'absolute',
-											left: 0,
-											right: 0,
-											top: 50,
-										}}
-									>
-										<Settings />
-									</View>
-								) : null}
-								{this.state.menuItem === 'friends' ? (
-									<View
-										style={{
-											position: 'absolute',
-											left: 0,
-											right: 0,
-											top: 50,
-										}}
-									>
-										<Friends />
-									</View>
-								) : null}
-								{this.state.menuItem === 'photos' ? (
-									<View
-										style={{
-											position: 'absolute',
-											left: 0,
-											right: 0,
-											top: 50,
-										}}
-									>
-										<Photos />
-									</View>
-								) : null}
 							</View>
 							<View style={{ position: 'absolute', bottom: 25, right: 10 }}>
 								<Screenshot />
 							</View>
 							<View style={{ position: 'absolute', bottom: 25, left: 10 }}>
-								<TouchableOpacity
-									onPress={() =>
-										this.setState({ ...this.state, potato: !this.state.potato })
-									}
-								>
-									<DogBowl />
-								</TouchableOpacity>
+								<DogBowl />
 							</View>
 						</View>
 					)}
@@ -307,7 +232,7 @@ class App extends Component {
 				<View
 					style={{
 						position: 'absolute',
-						backgroundColor: '#ffffff22',
+						backgroundColor: '#ffffff',
 						left: 30,
 						right: 30,
 						top: 30,
@@ -346,52 +271,6 @@ class App extends Component {
 	}
 }
 
-var appStyles = StyleSheet.create({
-	viroContainer: {
-		backgroundColor: 'darkseagreen',
-	},
-	container: {
-		flex: 1,
-		justifyContent: 'center',
-		width: width,
-		height: height,
-		flexDirection: 'column',
-		alignItems: 'center',
-	},
-	menuContainer: {
-		flexDirection: 'row',
-		alignContent: 'center',
-		justifyContent: 'space-around',
-		marginTop: 10,
-		backgroundColor: '#fff',
-	},
-	titleText: {
-		paddingTop: 30,
-		paddingBottom: 20,
-		color: '#fff',
-		textAlign: 'center',
-		fontSize: 25,
-	},
-	buttonText: {
-		color: '#000',
-		textAlign: 'center',
-		fontSize: 20,
-	},
-	buttons: {
-		justifyContent: 'center',
-		height: 150,
-		width: 150,
-		paddingTop: 20,
-		paddingBottom: 20,
-		marginTop: 10,
-		marginBottom: 10,
-		backgroundColor: '#ccff00',
-		borderRadius: 100,
-		borderWidth: 1,
-		borderColor: '#fff',
-	},
-});
-
 // connect to redux
 const mapState = (state) => {
 	return {
@@ -406,3 +285,4 @@ const mapDispatch = (dispatch) => {
 };
 
 export default connect(mapState, mapDispatch)(App);
+

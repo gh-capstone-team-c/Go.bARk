@@ -1,9 +1,13 @@
 /** @format */
 
 import React from 'react';
-import { View, Image, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
+
 import Points from './Points';
+
+import { appStyles } from '../Styles';
+
 
 class Settings extends React.Component {
 	constructor(props) {
@@ -14,46 +18,42 @@ class Settings extends React.Component {
 	}
 
 	render() {
-		console.log('user in settings', this.props.user);
 		return (
-			<View style={settings.container}>
+			<View style={appStyles.individualMenu}>
 				<View>
-					<TouchableOpacity>
-						<Text>
-							Dog:{' '}
-							{this.props.user.dog ? this.props.user.dog.name : 'no dog yet!'}
-						</Text>
-					</TouchableOpacity>
-					<TouchableOpacity>
-						<Text>Points: {this.props.user.points}</Text>
-					</TouchableOpacity>
+					<Text style={appStyles.centerText}>
+						Points: {this.props.user.points}
+					</Text>
 
-					<TouchableOpacity>
+					<Text style={appStyles.centerText}>
+						Dog: {this.props.user.dog.name}
+					</Text>
+					<Text style={appStyles.centerText}>
+						Happiness Level: {this.props.user.dog.happiness}
+					</Text>
+						<Text style={appStyles.centerText}>
+							Dog:{' '}
+							{this.props.user.dog ? this.props.user.dog.name : 'Loading!'}
+						</Text>
+						<Text style={appStyles.centerText}>Points: {this.props.user.points}</Text>
+
 						{this.props.user ? (
 							<>
-								<Text>Happiness:</Text>
+								<Text style={appStyles.centerText}>Happiness:</Text>
 								<Points />
 							</>
 						) : (
-							<Text>Happiness: 'no happiness points yet!'</Text>
+							<Text style={appStyles.centerText}>Happiness: 'Loading!'</Text>
 						)}
-					</TouchableOpacity>
+					
 					<TouchableOpacity>
-						<Text>Edit Profile</Text>
+						<Text style={appStyles.centerText}>Edit Profile</Text>
 					</TouchableOpacity>
 				</View>
 			</View>
 		);
 	}
 }
-var settings = StyleSheet.create({
-	container: {
-		flexDirection: 'row',
-		alignContent: 'center',
-		justifyContent: 'space-around',
-		backgroundColor: '#fff',
-	},
-});
 
 // connect to redux
 const mapState = (state) => {

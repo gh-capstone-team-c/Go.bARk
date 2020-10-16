@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, Image, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { View, Image, Text, TouchableOpacity } from 'react-native';
+import { appStyles } from '../Styles';
 
 export default class Photos extends React.Component {
 	constructor(props) {
@@ -8,25 +9,13 @@ export default class Photos extends React.Component {
 
 	render() {
 		return (
-			<View style={photoStyle.container}>
-				<TouchableOpacity>
-					<Text>This is some test text</Text>
-				</TouchableOpacity>
-				<TouchableOpacity>
-					<Text>You have reached photos</Text>
-				</TouchableOpacity>
-				<TouchableOpacity>
-					<Text>Congratulations</Text>
-				</TouchableOpacity>
+			<View style={appStyles.individualMenu}>
+				<Text style={appStyles.centerText}>Hello</Text>
+				<Text style={appStyles.centerText}>
+					Photos will eventually be here.
+				</Text>
+				<Text style={appStyles.centerText}>Thank you for your support</Text>]
 			</View>
 		);
 	}
 }
-var photoStyle = StyleSheet.create({
-	container: {
-		flexDirection: 'column',
-		alignContent: 'center',
-		justifyContent: 'space-around',
-		backgroundColor: '#fff',
-	},
-});
