@@ -73,21 +73,21 @@ export const signup = (email, password) => async (dispatch) => {
 };
 
 //associate a newly signed up user to their new dog
-export const myDog = (stateObj) => {
+export const myDog = (dog) => {
 	return async (dispatch, getState) => {
 		try {
 			await axios.post(
 				'https://gobark-backend.herokuapp.com/auth/me',
-				stateObj
+				dog
 			);
-			console.log("state", stateObj);
+
 			dispatch({
 				type: MY_DOG,
-				stateObj,
-				state: getState
+				dog,
+				state: getState,
 			});
 		} catch (err) {
-			next(err);
+			console.log(err);
 		}
 	};
 };
@@ -131,7 +131,7 @@ export default function userReducer(state = defaultUser, action) {
 		case ADD_POINTS:
 			return { ...state, points: action.stateObj.points };
 		case MY_DOG:
-			return { ...state, dog: action.stateObj.dog };
+			return { ...state, dog: action.dog };
 		// case UPDATE_USER:
 		// 	return {
 		// 		...state,

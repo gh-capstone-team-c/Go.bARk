@@ -45,13 +45,14 @@ class HomeAndroid extends React.Component {
 									placeholder="dog name"
 									onChangeText={(dogName) => {
 										this.setState({ dogName });
-										this.forceUpdate();
+										
 									}}
 									value={this.state.dogName}
 								/>
 								<TouchableOpacity
 									onPress={() => {
-										this.props.myDog({ name: this.state.dogName });
+											this.props.myDog({ name: this.state.dogName });
+											this.forceUpdate();
 									}}
 								>
 									<Text>Add my dog!</Text>
