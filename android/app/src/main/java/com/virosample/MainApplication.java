@@ -1,4 +1,4 @@
-package com.virosample;
+package com.gobark;
 
 import android.app.Application;
 
