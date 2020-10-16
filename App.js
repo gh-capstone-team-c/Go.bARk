@@ -23,13 +23,17 @@ import {
 } from 'react-native';
 const { width, height } = Dimensions.get('window');
 import { ViroARSceneNavigator } from 'react-viro';
+import { connect } from 'react-redux';
+import { addPoints } from './store/users';
 
 import Screenshot from './js/Screenshot';
 import Photos from './js/Photos';
 import Settings from './js/Settings';
 import Friends from './js/Friends';
 import DogBowl from './js/DogBowl';
+import Points from './js/Points';
 import { appStyles } from './Styles';
+
 
 export function renderIf(condition, renderedContent) {
 	if (condition) {
@@ -41,9 +45,9 @@ export function renderIf(condition, renderedContent) {
 
 var InitialARScene = require('./js/BallThrowAR');
 
-export default class App extends Component {
-	constructor() {
-		super();
+class App extends Component {
+	constructor(props) {
+		super(props);
 		// // all code here for ray tracing
 		// this._renderTrackingText = this._renderTrackingText.bind(this);
 		// this._onTrackingUpdated = this._onTrackingUpdated.bind(this);
@@ -53,11 +57,15 @@ export default class App extends Component {
 		this.state = {
 			pressed: false,
 			menuItem: null,
+			viroAppProps: {
+				user: this.props.user,
+				addPoints: this.props.addPoints,
+			},
 			//adding in code to get ray tracing
 			// viroAppProps: {
-			// 	_onLoadEnd: this._onLoadEnd,
-			// 	_onLoadStart: this._onLoadStart,
-			// 	_onTrackingUpdated: this._onTrackingUpdated,
+			//  _onLoadEnd: this._onLoadEnd,
+			//  _onLoadStart: this._onLoadStart,
+			//  _onTrackingUpdated: this._onTrackingUpdated,
 			// },
 			// trackingInitialized: false,
 			// isLoading: false,
@@ -72,7 +80,6 @@ export default class App extends Component {
 					{!this.state.pressed ? (
 						<View>
 							<Text style={appStyles.titleText}>go</Text>
-
 							<TouchableOpacity
 								style={appStyles.buttons}
 								onPress={() => {
@@ -97,6 +104,7 @@ export default class App extends Component {
 							}}
 						>
 							{/* menubar toggles the different menu components */}
+
 							<View style={appStyles.menuBar}>
 								<View style={appStyles.menuContainer}>
 									<TouchableOpacity
@@ -108,7 +116,7 @@ export default class App extends Component {
 											}
 										}}
 									>
-										<Text style={appStyles.menuHeadings}>Settings</Text>
+										<Text style={appStyles.menuHeadings}>My Profile</Text>
 									</TouchableOpacity>
 									<TouchableOpacity
 										onPress={() => {
@@ -130,6 +138,9 @@ export default class App extends Component {
 									>
 										<Text style={appStyles.menuHeadings}>Photos</Text>
 									</TouchableOpacity>
+									<View>
+										<Points />
+									</View>
 								</View>
 							</View>
 							{/* scene navigator */}
@@ -157,6 +168,7 @@ export default class App extends Component {
 									)} */}
 								<ViroARSceneNavigator
 									initialScene={{ scene: InitialARScene }}
+                  viroAppProps={{this.state.viroAppProps}}
 								/>
 							</View>
 							{/* conditional renders based on whether that menu item was clicked */}
@@ -258,3 +270,19 @@ export default class App extends Component {
 		});
 	}
 }
+
+// connect to redux
+const mapState = (state) => {
+	return {
+		user: state.user,
+	};
+};
+
+const mapDispatch = (dispatch) => {
+	return {
+		addPoints: (obj) => dispatch(addPoints(obj)),
+	};
+};
+
+export default connect(mapState, mapDispatch)(App);
+

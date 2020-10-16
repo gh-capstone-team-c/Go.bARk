@@ -25,10 +25,14 @@ export default BallThrowAR = createReactClass({
 			playCount: 0,
 			rotation: [0, 0, 0],
 			dogAnimation: 'waiting',
+			//trying to pass function to AR component
+			user: this.props.arSceneNavigator.viroAppProps.user,
+			addPoints: this.props.arSceneNavigator.viroAppProps.addPoints,
 		};
 	},
 
 	render() {
+		// console.log('user in ar', this.state.user);
 		return (
 			<ViroARScene
 				ref="arscene"
@@ -40,14 +44,7 @@ export default BallThrowAR = createReactClass({
 					position={[0, 0, -4]}
 				/>
 				<ViroAmbientLight color={'#e8e0dc'} />
-				<ViroSpotLight
-					innerAngle={5}
-					outerAngle={90}
-					direction={[0, -1, -0.2]}
-					position={[0, 3, 1]}
-					color="#fff7f2"
-					castsShadow={true}
-				/>
+				
 				{/* dog object */}
 				<ViroNode
 					position={this.state.dogPosition}
@@ -58,18 +55,7 @@ export default BallThrowAR = createReactClass({
 					ref={'dog'}
 					rotation={this.state.rotation}
 				>
-					<ViroSpotLight
-						innerAngle={5}
-						outerAngle={25}
-						direction={[0, -1, 0]}
-						position={[0, 5, 0]}
-						color="#fff7f2"
-						castsShadow={true}
-						shadowMapSize={2048}
-						shadowNearZ={2}
-						shadowFarZ={7}
-						shadowOpacity={0.7}
-					/>
+					
 					<Viro3DObject
 						source={require('./res/Dog/TheDogThree.vrx')}
 						position={[0, -10, -20]}
@@ -93,7 +79,9 @@ export default BallThrowAR = createReactClass({
 						ignoreEventHandling={true}
 					/>
 				</ViroNode>
+
 				{/* ball object */}
+
 				<ViroNode
 					position={this.state.ballPosition}
 					dragType="FixedToWorld"
@@ -103,18 +91,7 @@ export default BallThrowAR = createReactClass({
 					scale={this.state.scale}
 					rotation={this.state.rotation}
 				>
-					<ViroSpotLight
-						innerAngle={5}
-						outerAngle={25}
-						direction={[0, -1, 0]}
-						position={[0, 5, 0]}
-						color="#fff7f2"
-						castsShadow={true}
-						shadowMapSize={2048}
-						shadowNearZ={2}
-						shadowFarZ={7}
-						shadowOpacity={0.7}
-					/>
+					
 					<Viro3DObject
 						source={require('./res/object_sphere.vrx')}
 						resources={[
@@ -128,20 +105,12 @@ export default BallThrowAR = createReactClass({
 						animation={{
 							name: this.state.currentAnimation,
 							run: true,
-							// interruptible: true,
+							interruptible: true,
 						}}
 						// onLoadEnd={this._onLoadEnd}
 						// onLoadStart={this._onLoadStart}
 						onDrag={this._onBallDrag}
 					/>
-					{/* <ViroQuad
-						rotation={[-90, 0, 0]}
-						position={[0, -0.001, 0]}
-						width={2.5}
-						height={2.5}
-						arShadowReceiver={true}
-						ignoreEventHandling={true}
-					/> */}
 				</ViroNode>
 			</ViroARScene>
 		);
@@ -155,6 +124,9 @@ export default BallThrowAR = createReactClass({
 		) {
 			const play = this.state.playCount + 1;
 			this.setState({ ...this.state, playCount: play });
+			// let pts = this.state.user.points;
+
+			this.state.addPoints({ points: this.state.user.points++ });
 		}
 		// capture when dog and ball are super close to user(already fetched) and returns gameplay loop to near start.
 		if (position[2] >= -5 && this.state.playCount >= 3) {
@@ -205,6 +177,7 @@ export default BallThrowAR = createReactClass({
 				}
 			}, 6500);
 		}
+
 	},
 	//empty function enables drag.
 	_onBallDrag() {},

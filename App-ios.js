@@ -23,13 +23,18 @@ import {
 } from 'react-native';
 const { width, height } = Dimensions.get('window');
 import { ViroARSceneNavigator } from 'react-viro';
+import { connect } from 'react-redux';
+import { addPoints } from './store/users';
 
 import Screenshot from './js/Screenshot';
 import Photos from './js/Photos';
 import Settings from './js/Settings';
 import Friends from './js/Friends';
 import DogBowl from './js/DogBowl';
-import { appStyles } from './Styles';
+
+import Points from './js/Points';
+
+var InitialARScene = require('./js/BallThrowAR');
 
 export function renderIf(condition, renderedContent) {
 	if (condition) {
@@ -39,19 +44,26 @@ export function renderIf(condition, renderedContent) {
 	}
 }
 
-var InitialARScene = require('./js/BallThrowAR');
+import { appStyles } from './Styles';
 
-export default class AppIos extends Component {
-	constructor() {
-		super();
+export class AppIos extends Component {
+	constructor(props) {
+		super(props);
 
 		this.state = {
 			pressed: false,
 			menuItem: null,
+
+			//trying to pass the addpoints redux function to AR scene
+			viroAppProps: {
+				user: this.props.user,
+				addPoints: this.props.addPoints,
+			},
 		};
 	}
 
 	render() {
+
 		return (
 			<View style={appStyles.container}>
 				<View>
@@ -93,7 +105,7 @@ export default class AppIos extends Component {
 											else this.setState({ menuItem: 'settings' });
 										}}
 									>
-										<Text style={appStyles.menuHeadings}>Settings</Text>
+										<Text style={appStyles.menuHeadings}>My Profile</Text>
 									</TouchableOpacity>
 									<TouchableOpacity
 										onPress={() => {
@@ -113,12 +125,16 @@ export default class AppIos extends Component {
 									>
 										<Text style={appStyles.menuHeadings}>Photos</Text>
 									</TouchableOpacity>
+									<View>
+										<Points />
+									</View>
 								</View>
 							</View>
 							{/* scene navigator */}
 							<View style={appStyles.appSceneNav}>
 								<ViroARSceneNavigator
 									initialScene={{ scene: InitialARScene }}
+									viroAppProps={this.state.viroAppProps}
 								/>
 							</View>
 							<View>
@@ -147,6 +163,7 @@ export default class AppIos extends Component {
 									</View>
 								)}
 							</View>
+
 							<View style={{ position: 'absolute', bottom: 25, right: 10 }}>
 								<Screenshot />
 							</View>
@@ -160,3 +177,20 @@ export default class AppIos extends Component {
 		);
 	}
 }
+
+
+// connect to redux
+const mapState = (state) => {
+	return {
+		user: state.user,
+	};
+};
+
+const mapDispatch = (dispatch) => {
+	return {
+		addPoints: (obj) => dispatch(addPoints(obj)),
+	};
+};
+
+export default connect(mapState, mapDispatch)(AppIos);
+

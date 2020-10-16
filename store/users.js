@@ -5,9 +5,28 @@ import axios from 'axios';
 const GET_USER = 'GET_USER';
 const REMOVE_USER = 'REMOVE_USER';
 const UPDATE_USER = 'UPDATE_USER';
+const ADD_POINTS = 'ADD_POINTS';
+const MY_DOG = 'MY_DOG';
 
 const getUser = (user) => ({ type: GET_USER, user });
 const removeUser = () => ({ type: REMOVE_USER });
+
+//add points
+export const addPoints = (stateObj) => {
+	return async (dispatch, getState) => {
+		try {
+			await axios.put('https://gobark-backend.herokuapp.com/auth/me', stateObj);
+			dispatch({
+				type: ADD_POINTS,
+				stateObj,
+				state: getState,
+			});
+			console.log('stateobj in redux', stateObj);
+		} catch (err) {
+			console.log(err);
+		}
+	};
+};
 
 export const me = () => {
 	return async (dispatch) => {
@@ -53,6 +72,26 @@ export const signup = (email, password) => async (dispatch) => {
 	}
 };
 
+//associate a newly signed up user to their new dog
+export const myDog = (dog) => {
+	return async (dispatch, getState) => {
+		try {
+			await axios.post(
+				'https://gobark-backend.herokuapp.com/auth/me',
+				dog
+			);
+
+			dispatch({
+				type: MY_DOG,
+				dog,
+				state: getState,
+			});
+		} catch (err) {
+			console.log(err);
+		}
+	};
+};
+
 //logout
 export const logout = () => async (dispatch) => {
 	try {
@@ -89,6 +128,10 @@ export default function userReducer(state = defaultUser, action) {
 			return action.user;
 		case REMOVE_USER:
 			return defaultUser;
+		case ADD_POINTS:
+			return { ...state, points: action.stateObj.points };
+		case MY_DOG:
+			return { ...state, dog: action.dog };
 		// case UPDATE_USER:
 		// 	return {
 		// 		...state,

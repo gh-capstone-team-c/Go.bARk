@@ -18,10 +18,12 @@ class HomeAndroid extends React.Component {
 		super(props);
 		this.state = {
 			pressed: false,
+			dogName: '',
 		};
 	}
 
 	render() {
+		// console.log('dog in component', this.props.user.dog);
 		return (
 			<View>
 				{!this.state.pressed ? (
@@ -30,13 +32,33 @@ class HomeAndroid extends React.Component {
 							style={appStyles.miniImage}
 							source={{ uri: this.props.user.imageUrl }}
 						/>
-						<Text style={appStyles.homeGreeting}>
-							Welcome back, {this.props.user.email}!
-						</Text>
-						<Text style={appStyles.homeText}>
-							Your dog:{' '}
-							{this.props.user.dog ? this.props.user.dog.name : 'cody'}
-						</Text>
+
+						{this.props.user.dog ? (
+							<Text style={appStyles.homeText}>Your Dog: {this.props.user.dog.name}</Text>
+						) : (
+							<View>
+									<TextInput
+										style={appStyles.input}
+									type="text"
+									placeholder="dog name"
+									onChangeText={(dogName) => {
+										this.setState({ dogName });
+										
+									}}
+									value={this.state.dogName}
+								/>
+								<TouchableOpacity
+                  style={appStyles.rectButton}
+									onPress={() => {
+											this.props.myDog({ name: this.state.dogName });
+											this.forceUpdate();
+									}}
+								>
+									<Text style={appStyles.buttonText}>Add my dog!</Text>
+								</TouchableOpacity>
+							</View>
+						)}
+
 						{this.props.user.dog ? (
 							<Image
 								style={appStyles.miniImage}
@@ -54,7 +76,7 @@ class HomeAndroid extends React.Component {
 						</TouchableOpacity>
 					</View>
 				) : (
-					<App />
+					<AppIos />
 				)}
 			</View>
 		);
@@ -68,4 +90,11 @@ const mapState = (state) => {
 	};
 };
 
-export default connect(mapState)(HomeAndroid);
+//this is associating the dog to the user but it isn't updating on state
+const mapDispatch = (dispatch) => {
+	return {
+		myDog: (obj) => dispatch(myDog(obj)),
+	};
+};
+
+export default connect(mapState, mapDispatch)(HomeAndroid);

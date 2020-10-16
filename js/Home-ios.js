@@ -13,13 +13,16 @@ import {
 const { width, height } = Dimensions.get('window');
 import { connect } from 'react-redux';
 import AppIos from '../App-ios';
+import { myDog } from '../store/users';
 import { appStyles } from '../Styles';
+
 
 class HomeIos extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			pressed: false,
+			dogName: '',
 		};
 	}
 
@@ -32,13 +35,33 @@ class HomeIos extends React.Component {
 							style={appStyles.miniImage}
 							source={{ uri: this.props.user.imageUrl }}
 						/>
-						<Text style={appStyles.homeGreeting}>
-							Welcome back, {this.props.user.email}!
-						</Text>
-						<Text style={appStyles.homeText}>
-							Your dog:{' '}
-							{this.props.user.dog ? this.props.user.dog.name : 'cody'}
-						</Text>
+
+						{this.props.user.dog ? (
+							<Text style={appStyles.homeText}>Your Dog: {this.props.user.dog.name}</Text>
+						) : (
+							<View>
+									<TextInput
+										style={appStyles.input}
+									type="text"
+									placeholder="dog name"
+									onChangeText={(dogName) => {
+										this.setState({ dogName });
+										
+									}}
+									value={this.state.dogName}
+								/>
+								<TouchableOpacity
+                  style={appStyles.rectButton}
+									onPress={() => {
+											this.props.myDog({ name: this.state.dogName });
+											this.forceUpdate();
+									}}
+								>
+									<Text style={appStyles.buttonText}>Add my dog!</Text>
+								</TouchableOpacity>
+							</View>
+						)}
+
 						{this.props.user.dog ? (
 							<Image
 								style={appStyles.miniImage}
@@ -64,6 +87,7 @@ class HomeIos extends React.Component {
 	}
 }
 
+
 // connect to redux
 const mapState = (state) => {
 	return {
@@ -71,4 +95,12 @@ const mapState = (state) => {
 	};
 };
 
-export default connect(mapState)(HomeIos);
+//this is associating the dog to the user but it is updating on state
+const mapDispatch = (dispatch) => {
+	return {
+		myDog: (obj) => dispatch(myDog(obj)),
+	};
+};
+
+export default connect(mapState, mapDispatch)(HomeIos);
+
