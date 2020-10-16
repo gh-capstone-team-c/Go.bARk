@@ -43,7 +43,7 @@ class HomeIos extends React.Component {
 									Your Dog: {this.props.user.dog.name}
 								</Text>
 							) : (
-								<View>
+								<View style={appStyles.inputContainer}>
 									<TextInput
 										style={appStyles.input}
 										type="text"
