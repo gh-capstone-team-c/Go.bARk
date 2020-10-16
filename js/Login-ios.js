@@ -52,11 +52,11 @@ class LoginIos extends React.Component {
 										this.state.email.trim() === '' ||
 										this.state.password.trim() === ''
 									) {
-										return ( <Text>Email and password are required</Text>)
+										return <Text>Email and password are required</Text>;
 									} else {
 										this.props.login(this.state.email, this.state.password);
 									}
-									if (this.props.user) {
+									if (this.props.user.email) {
 										this.setState({ isLoggedIn: true });
 									}
 								}}
@@ -71,9 +71,9 @@ class LoginIos extends React.Component {
 										this.state.email.trim() === '' ||
 										this.state.password.trim() === ''
 									) {
-										return (<Text>Email and password are required</Text>)
+										return <Text>Email and password are required</Text>;
 									} else {
-										this.props.signup(this.state.email, this.state.password)
+										this.props.signup(this.state.email, this.state.password);
 									}
 
 									if (this.props.user) {

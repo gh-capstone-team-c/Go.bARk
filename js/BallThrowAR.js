@@ -7,6 +7,9 @@ import {
 	ViroAmbientLight,
 	ViroSpotLight,
 	ViroNode,
+	Viro360Image,
+	ViroPortalScene,
+	ViroPortal,
 	ViroAnimations,
 	ViroText,
 	ViroQuad,
@@ -44,7 +47,7 @@ export default BallThrowAR = createReactClass({
 					position={[0, 0, -4]}
 				/>
 				<ViroAmbientLight color={'#e8e0dc'} />
-				
+
 				{/* dog object */}
 				<ViroNode
 					position={this.state.dogPosition}
@@ -55,7 +58,6 @@ export default BallThrowAR = createReactClass({
 					ref={'dog'}
 					rotation={this.state.rotation}
 				>
-					
 					<Viro3DObject
 						source={require('./res/Dog/TheDogThree.vrx')}
 						position={[0, -10, -20]}
@@ -91,7 +93,6 @@ export default BallThrowAR = createReactClass({
 					scale={this.state.scale}
 					rotation={this.state.rotation}
 				>
-					
 					<Viro3DObject
 						source={require('./res/object_sphere.vrx')}
 						resources={[
@@ -112,6 +113,25 @@ export default BallThrowAR = createReactClass({
 						onDrag={this._onBallDrag}
 					/>
 				</ViroNode>
+
+				<ViroPortalScene
+					passable={true}
+					dragType="FixedDistance"
+					onDrag={() => {}}
+				>
+					<ViroPortal position={[0, 0, -1]} scale={[0.1, 0.1, 0.1]}>
+						<Viro3DObject
+							source={require('./res/portal/portal_picture_frame.vrx')}
+							resources={[
+								require('./res/portal/portal_picture_frame_diffuse.png'),
+								require('./res/portal/portal_picture_frame_normal.png'),
+								require('./res/portal/portal_picture_frame_specular.png'),
+							]}
+							type="VRX"
+						/>
+					</ViroPortal>
+					<Viro360Image source={require('./res/360_park.jpg')} />
+				</ViroPortalScene>
 			</ViroARScene>
 		);
 	},
@@ -177,7 +197,6 @@ export default BallThrowAR = createReactClass({
 				}
 			}, 6500);
 		}
-
 	},
 	//empty function enables drag.
 	_onBallDrag() {},
