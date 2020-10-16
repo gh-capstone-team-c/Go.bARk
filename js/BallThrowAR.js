@@ -32,7 +32,7 @@ export default BallThrowAR = createReactClass({
 	},
 
 	render() {
-		// console.log('user in ar', this.state.user);
+		
 		return (
 			<ViroARScene
 				ref="arscene"
