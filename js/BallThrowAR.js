@@ -145,9 +145,9 @@ export default BallThrowAR = createReactClass({
 	},
 
 	_onBallClick(stateValue, position, source) {
-		let pts = this.state.user.points++;
+		let pts = this.state.user.points + 1;
 
-		this.state.addPoints({ points: pts - 1 });
+		this.state.addPoints({ points: pts });
 
 		if (
 			stateValue === 1 &&
