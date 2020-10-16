@@ -11,16 +11,15 @@
 
 import React, { Component } from 'react';
 import {
-  AppRegistry,
-  Text,
-  View,
-  StyleSheet,
-  PixelRatio,
-  TouchableHighlight,
-  TouchableOpacity,
-  Vibration,
-  Dimensions,
-  TextInput,
+	AppRegistry,
+	ActivityIndicator,
+	Text,
+	View,
+	Image,
+	TouchableOpacity,
+	Vibration,
+	Dimensions,
+	ScrollView,
 } from 'react-native';
 const { width, height } = Dimensions.get('window');
 import { ViroARSceneNavigator } from 'react-viro';
@@ -30,63 +29,63 @@ import Photos from './js/Photos';
 import Settings from './js/Settings';
 import Friends from './js/Friends';
 import DogBowl from './js/DogBowl';
+import { appStyles } from './Styles';
+
+export function renderIf(condition, renderedContent) {
+	if (condition) {
+		return renderedContent;
+	} else {
+		return null;
+	}
+}
 
 var InitialARScene = require('./js/BallThrowAR');
 
 export default class AppIos extends Component {
-  constructor() {
-    super();
+	constructor() {
+		super();
 
 		this.state = {
 			pressed: false,
 			menuItem: null,
 		};
-		this.renderComponent = this.renderComponent.bind(this);
 	}
-	renderComponent() {
-		if (this.state.menuItem === 'settings') return <Settings />;
-		else if (this.state.menuItem === 'friends') return <Friends />;
-		else if (this.state.menuItem === 'photos') return <Photos />;
-	}
+
 	render() {
 		return (
-			<View style={localStyles.container}>
+			<View style={appStyles.container}>
 				<View>
+					{/* checks to see if start button was pressed */}
 					{!this.state.pressed ? (
 						<View>
-							<Text style={localStyles.titleText}>go</Text>
+							<Text style={appStyles.titleText}>go</Text>
 
-							<TouchableHighlight
-								style={localStyles.buttons}
+							<TouchableOpacity
+								style={appStyles.buttons}
 								onPress={() => {
 									Vibration.vibrate();
 									this.setState({ pressed: true });
 								}}
 								underlayColor={'transparent'}
 							>
-								<Text style={localStyles.buttonText}>start</Text>
-							</TouchableHighlight>
-							<Text style={localStyles.titleText}>bARk</Text>
+								<Image
+									style={appStyles.logo}
+									source={require('./js/res/shibaFace.png')}
+								/>
+							</TouchableOpacity>
+							<Text style={appStyles.titleText}>bARk</Text>
 						</View>
 					) : (
+						// renders the game menu and the ARScene player
 						<View
 							style={{
-								backgroundColor: '#green',
 								width: width,
 								height: height,
 							}}
 						>
-							<View
-								style={{
-									position: 'absolute',
-									top: 50,
-									left: 0,
-									right: 0,
-									height: 50,
-									backgroundColor: '#fff',
-								}}
-							>
-								<View style={localStyles.menuContainer}>
+							{/* menubar toggles the different menu components */}
+							<View style={appStyles.appleMenu}>
+								<View style={appStyles.menuContainer}>
 									<TouchableOpacity
 										onPress={() => {
 											if (this.state.menuItem === 'settings')
@@ -94,7 +93,7 @@ export default class AppIos extends Component {
 											else this.setState({ menuItem: 'settings' });
 										}}
 									>
-										<Text>Settings</Text>
+										<Text style={appStyles.menuHeadings}>Settings</Text>
 									</TouchableOpacity>
 									<TouchableOpacity
 										onPress={() => {
@@ -103,7 +102,7 @@ export default class AppIos extends Component {
 											else this.setState({ menuItem: 'friends' });
 										}}
 									>
-										<Text>Friends</Text>
+										<Text style={appStyles.menuHeadings}>Friends</Text>
 									</TouchableOpacity>
 									<TouchableOpacity
 										onPress={() => {
@@ -112,108 +111,52 @@ export default class AppIos extends Component {
 											else this.setState({ menuItem: 'photos' });
 										}}
 									>
-										<Text>Photos</Text>
+										<Text style={appStyles.menuHeadings}>Photos</Text>
 									</TouchableOpacity>
 								</View>
 							</View>
-
-							<View
-								style={{
-									position: 'absolute',
-									top: 100,
-									right: 0,
-									bottom: 0,
-									left: 0,
-								}}
-							>
+							{/* scene navigator */}
+							<View style={appStyles.appSceneNav}>
 								<ViroARSceneNavigator
-									{...this.state.sharedProps}
 									initialScene={{ scene: InitialARScene }}
 								/>
 							</View>
-							<View
-								style={{
-									position: 'absolute',
-									left: 0,
-									right: 0,
-									top: 100,
-								}}
-							>
-								{this.state.menuItem === 'settings' ? (
-									<View>
-										<Settings />
+							<View>
+								{renderIf(
+									this.state.menuItem === 'settings',
+									<View style={appStyles.appMenuDropDown}>
+										<ScrollView>
+											<Settings />
+										</ScrollView>
 									</View>
-								) : null}
-								{this.state.menuItem === 'friends' ? (
-									<View>
-										<Friends />
+								)}
+								{renderIf(
+									this.state.menuItem === 'friends',
+									<View style={appStyles.appMenuDropDown}>
+										<ScrollView>
+											<Friends />
+										</ScrollView>
 									</View>
-								) : null}
-								{this.state.menuItem === 'photos' ? (
-									<View>
-										<Photos />
+								)}
+								{renderIf(
+									this.state.menuItem === 'photos',
+									<View style={appStyles.appMenuDropDown}>
+										<ScrollView>
+											<Photos />
+										</ScrollView>
 									</View>
-								) : null}
+								)}
 							</View>
 							<View style={{ position: 'absolute', bottom: 25, right: 10 }}>
 								<Screenshot />
 							</View>
-<View style={{ position: 'absolute', bottom: 25, left: 10 }}>
-                  <DogBowl />
-                </View>
+							<View style={{ position: 'absolute', bottom: 25, left: 10 }}>
+								<DogBowl />
+							</View>
 						</View>
 					)}
 				</View>
 			</View>
 		);
 	}
-
 }
-
-var localStyles = StyleSheet.create({
-  viroContainer: {
-    backgroundColor: 'darkseagreen',
-  },
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    width: width,
-    height: height,
-    flexDirection: 'column',
-    alignItems: 'center',
-  },
-  menuContainer: {
-    flexDirection: 'row',
-    alignContent: 'center',
-    justifyContent: 'space-around',
-    marginTop: 10,
-    backgroundColor: '#fff',
-  },
-
-	titleText: {
-		paddingTop: 30,
-		paddingBottom: 20,
-		color: '#000',
-		textAlign: 'center',
-		fontSize: 25,
-	},
-	buttonText: {
-		color: '#000',
-		textAlign: 'center',
-		fontSize: 20,
-	},
-	buttons: {
-		justifyContent: 'center',
-		height: 150,
-		width: 150,
-		paddingTop: 20,
-		paddingBottom: 20,
-		marginTop: 10,
-		marginBottom: 10,
-		backgroundColor: '#ccff00',
-		borderRadius: 100,
-		borderWidth: 1,
-		borderColor: '#fff',
-	},
-
-});
