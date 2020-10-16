@@ -145,16 +145,15 @@ export default BallThrowAR = createReactClass({
 	},
 
 	_onBallClick(stateValue, position, source) {
-		let pts = this.state.user.points + 1;
-
-		this.state.addPoints({ points: pts });
-
 		if (
 			stateValue === 1 &&
 			this.state.currentAnimation !== ('arc' || 'rollAway')
 		) {
 			const play = this.state.playCount + 1;
 			this.setState({ ...this.state, playCount: play });
+			let pts = this.state.user.points++;
+
+			this.state.addPoints({ points: pts });
 		}
 		console.log(this.state.playCount);
 		if (position[2] >= -5 && this.state.playCount >= 3) {
