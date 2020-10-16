@@ -156,10 +156,7 @@ export default class App extends Component {
 										</View>
 									)} */}
 								<ViroARSceneNavigator
-									initialScene={{
-										scene: InitialARScene,
-									}}
-									// viroAppProps={this.state.viroAppProps}
+									initialScene={{ scene: InitialARScene }}
 								/>
 							</View>
 							{/* conditional renders based on whether that menu item was clicked */}

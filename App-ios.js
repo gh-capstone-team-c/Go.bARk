@@ -118,7 +118,6 @@ export default class AppIos extends Component {
 							{/* scene navigator */}
 							<View style={appStyles.appSceneNav}>
 								<ViroARSceneNavigator
-									{...this.state.sharedProps}
 									initialScene={{ scene: InitialARScene }}
 								/>
 							</View>

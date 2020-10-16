@@ -18,7 +18,6 @@ export default BallThrowAR = createReactClass({
 		return {
 			currentAnimation: 'rotate',
 			text: 'Play with me!',
-			animation: true,
 			dogScale: [0.1, 0.1, 0.1],
 			scale: [0.7, 0.7, 0.7],
 			dogPosition: [0, -10, -20],
@@ -471,3 +470,4 @@ ViroAnimations.registerAnimations({
 		easing: 'EaseOut',
 	},
 });
+module.exports = BallThrowAR;

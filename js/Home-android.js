@@ -8,9 +8,7 @@ import {
 	TextInput,
 	TouchableOpacity,
 	Image,
-	Dimensions,
 } from 'react-native';
-const { width, height } = Dimensions.get('window');
 import { connect } from 'react-redux';
 import App from '../App';
 import { appStyles } from '../Styles';
