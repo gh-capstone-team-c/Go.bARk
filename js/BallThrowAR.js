@@ -151,9 +151,9 @@ export default BallThrowAR = createReactClass({
 		) {
 			const play = this.state.playCount + 1;
 			this.setState({ ...this.state, playCount: play });
-			let pts = this.state.user.points++;
+			let pts = this.state.user.points;
 
-			this.state.addPoints({ points: pts });
+			this.state.addPoints({ points: pts + 1 });
 		}
 		console.log(this.state.playCount);
 		if (position[2] >= -5 && this.state.playCount >= 3) {

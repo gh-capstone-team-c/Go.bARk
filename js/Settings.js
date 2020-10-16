@@ -13,7 +13,7 @@ class Settings extends React.Component {
 	}
 
 	render() {
-		
+		console.log('user in settings', this.props.user);
 		return (
 			<View style={settings.container}>
 				<View>
@@ -21,10 +21,18 @@ class Settings extends React.Component {
 						<Text>Points: {this.props.user.points}</Text>
 					</TouchableOpacity>
 					<TouchableOpacity>
-						<Text>Dog: {this.props.user.dog.name}</Text>
+						<Text>
+							Dog:{' '}
+							{this.props.user.dog ? this.props.user.dog.name : 'no dog yet!'}
+						</Text>
 					</TouchableOpacity>
 					<TouchableOpacity>
-						<Text>Happiness Level: {this.props.user.dog.happiness}</Text>
+						<Text>
+							Happiness Level:{' '}
+							{this.props.user.dog
+								? this.props.user.dog.happiness
+								: 'no happiness levels yet!'}
+						</Text>
 					</TouchableOpacity>
 					<TouchableOpacity>
 						<Text>Edit Settings</Text>
@@ -49,6 +57,5 @@ const mapState = (state) => {
 		user: state.user,
 	};
 };
-
 
 export default connect(mapState)(Settings);

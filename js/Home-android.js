@@ -19,10 +19,12 @@ class HomeAndroid extends React.Component {
 		super(props);
 		this.state = {
 			pressed: false,
+			dogName: '',
 		};
 	}
 
 	render() {
+		// console.log('dog in component', this.props.user.dog);
 		return (
 			<View style={styles.container}>
 				{!this.state.pressed ? (
@@ -33,10 +35,30 @@ class HomeAndroid extends React.Component {
 							source={{ uri: this.props.user.imageUrl }}
 						/>
 
-						<Text>
-							Your dog:{' '}
-							{this.props.user.dog ? this.props.user.dog.name : 'cody'}
-						</Text>
+						{this.props.user.dog ? (
+							<Text>Your Dog: {this.props.user.dog.name}</Text>
+						) : (
+							<View>
+									<TextInput
+										style={styles.input}
+									type="text"
+									placeholder="dog name"
+									onChangeText={(dogName) => {
+										this.setState({ dogName });
+										this.forceUpdate();
+									}}
+									value={this.state.dogName}
+								/>
+								<TouchableOpacity
+									onPress={() => {
+										this.props.myDog({ name: this.state.dogName });
+									}}
+								>
+									<Text>Add my dog!</Text>
+								</TouchableOpacity>
+							</View>
+						)}
+
 						{this.props.user.dog ? (
 							<Image
 								style={styles.image}
@@ -52,7 +74,7 @@ class HomeAndroid extends React.Component {
 						</TouchableOpacity>
 					</View>
 				) : (
-					<App />
+					<AppIos />
 				)}
 			</View>
 		);
@@ -79,6 +101,14 @@ var styles = StyleSheet.create({
 		width: 66,
 		height: 58,
 	},
+	input: {
+		margin: 15,
+		height: 40,
+		borderColor: '#7a42f4',
+		borderWidth: 1,
+		width: 250,
+		padding: 10,
+	},
 });
 
 // connect to redux
@@ -88,4 +118,11 @@ const mapState = (state) => {
 	};
 };
 
-export default connect(mapState)(HomeAndroid);
+//this is associating the dog to the user but it isn't updating on state
+const mapDispatch = (dispatch) => {
+	return {
+		myDog: (obj) => dispatch(myDog(obj)),
+	};
+};
+
+export default connect(mapState, mapDispatch)(HomeAndroid);

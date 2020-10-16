@@ -6,6 +6,7 @@ const GET_USER = 'GET_USER';
 const REMOVE_USER = 'REMOVE_USER';
 const UPDATE_USER = 'UPDATE_USER';
 const ADD_POINTS = 'ADD_POINTS';
+const MY_DOG = 'MY_DOG';
 
 const getUser = (user) => ({ type: GET_USER, user });
 const removeUser = () => ({ type: REMOVE_USER });
@@ -20,7 +21,7 @@ export const addPoints = (stateObj) => {
 				stateObj,
 				state: getState,
 			});
-			console.log("stateobj in redux", stateObj);
+			console.log('stateobj in redux', stateObj);
 		} catch (err) {
 			console.log(err);
 		}
@@ -71,6 +72,26 @@ export const signup = (email, password) => async (dispatch) => {
 	}
 };
 
+//associate a newly signed up user to their new dog
+export const myDog = (stateObj) => {
+	return async (dispatch, getState) => {
+		try {
+			await axios.post(
+				'https://gobark-backend.herokuapp.com/auth/me',
+				stateObj
+			);
+			console.log("state", stateObj);
+			dispatch({
+				type: MY_DOG,
+				stateObj,
+				state: getState
+			});
+		} catch (err) {
+			next(err);
+		}
+	};
+};
+
 //logout
 export const logout = () => async (dispatch) => {
 	try {
@@ -109,6 +130,8 @@ export default function userReducer(state = defaultUser, action) {
 			return defaultUser;
 		case ADD_POINTS:
 			return { ...state, points: action.stateObj.points };
+		case MY_DOG:
+			return { ...state, dog: action.stateObj.dog };
 		// case UPDATE_USER:
 		// 	return {
 		// 		...state,
