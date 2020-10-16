@@ -12,7 +12,7 @@ import {
 import { connect } from 'react-redux';
 import App from '../App';
 import { appStyles } from '../Styles';
-
+import { myDog } from '../store/users';
 class HomeAndroid extends React.Component {
 	constructor(props) {
 		super(props);
@@ -42,7 +42,7 @@ class HomeAndroid extends React.Component {
 									Your Dog: {this.props.user.dog.name}
 								</Text>
 							) : (
-								<View>
+								<View style={appStyles.inputContainer}>
 									<TextInput
 										style={appStyles.input}
 										type="text"
