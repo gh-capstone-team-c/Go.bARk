@@ -4,7 +4,7 @@ import React from 'react';
 import { View, Image, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import { addPoints } from '../store/users';
-
+import { appStyles } from '../Styles';
 class Points extends React.Component {
 	constructor(props) {
 		super(props);
@@ -25,7 +25,7 @@ class Points extends React.Component {
 						this.props.addPoints({ points: this.props.user.points + 1 });
 					}}
 				>
-					<Text style={{ fontSize: 30 }}>{heart}</Text>
+					<Text style={[{ fontSize: 30 }, appStyles.centerText]}>{heart}</Text>
 				</TouchableOpacity>
 			</View>
 		);

@@ -27,56 +27,66 @@ class HomeAndroid extends React.Component {
 		return (
 			<View>
 				{!this.state.pressed ? (
-					<View style={appStyles.homeContainer}>
-						<Image
-							style={appStyles.miniImage}
-							source={{ uri: this.props.user.imageUrl }}
-						/>
-
-						{this.props.user.dog ? (
-							<Text style={appStyles.homeText}>Your Dog: {this.props.user.dog.name}</Text>
-						) : (
-							<View>
-									<TextInput
-										style={appStyles.input}
-									type="text"
-									placeholder="dog name"
-									onChangeText={(dogName) => {
-										this.setState({ dogName });
-										
-									}}
-									value={this.state.dogName}
-								/>
-								<TouchableOpacity
-                  style={appStyles.rectButton}
-									onPress={() => {
-											this.props.myDog({ name: this.state.dogName });
-											this.forceUpdate();
-									}}
-								>
-									<Text style={appStyles.buttonText}>Add my dog!</Text>
-								</TouchableOpacity>
-							</View>
-						)}
-
-						{this.props.user.dog ? (
+					this.props.user.email ? (
+						<View style={appStyles.homeContainer}>
 							<Image
 								style={appStyles.miniImage}
-								source={{ uri: this.props.user.dog.imageUrl }}
+								source={{ uri: this.props.user.imageUrl }}
 							/>
-						) : (
-							<Text style={appStyles.homeText}>No image</Text>
-						)}
-						<Text style={appStyles.homeText}>Are these settings ok?</Text>
-						<TouchableOpacity
-							onPress={() => this.setState({ pressed: true })}
-							style={appStyles.rectButton}
-						>
-							<Text style={appStyles.buttonText}>Yes!</Text>
-						</TouchableOpacity>
-					</View>
+							<Text style={appStyles.homeGreeting}>
+								Welcome back, {this.props.user.email}!
+							</Text>
+
+							{this.props.user.dog ? (
+								<Text style={appStyles.homeText}>
+									Your Dog: {this.props.user.dog.name}
+								</Text>
+							) : (
+								<View>
+									<TextInput
+										style={appStyles.input}
+										type="text"
+										placeholder="dog name"
+										onChangeText={(dogName) => {
+											this.setState({ dogName });
+										}}
+										value={this.state.dogName}
+									/>
+									<TouchableOpacity
+										style={appStyles.rectButton}
+										onPress={() => {
+											this.props.myDog({ name: this.state.dogName });
+											this.forceUpdate();
+										}}
+									>
+										<Text style={appStyles.buttonText}>Add my dog!</Text>
+									</TouchableOpacity>
+								</View>
+							)}
+
+							{this.props.user.dog ? (
+								<Image
+									style={appStyles.miniImage}
+									source={{ uri: this.props.user.dog.imageUrl }}
+								/>
+							) : (
+								<Text style={appStyles.homeText}>No image</Text>
+							)}
+							<Text style={appStyles.homeText}>Are these settings ok?</Text>
+							<TouchableOpacity
+								onPress={() => this.setState({ pressed: true })}
+								style={appStyles.rectButton}
+							>
+								<Text style={appStyles.buttonText}>Yes!</Text>
+							</TouchableOpacity>
+						</View>
+					) : (
+						<Text style={appStyles.homeGreeting}>
+							🐶 Loading~ Please wait! 🐶
+						</Text>
+					)
 				) : (
-					<AppIos />
+					<App />
 				)}
 			</View>
 		);

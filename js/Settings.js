@@ -8,7 +8,6 @@ import Points from './Points';
 
 import { appStyles } from '../Styles';
 
-
 class Settings extends React.Component {
 	constructor(props) {
 		super(props);
@@ -20,36 +19,24 @@ class Settings extends React.Component {
 	render() {
 		return (
 			<View style={appStyles.individualMenu}>
-				<View>
-					<Text style={appStyles.centerText}>
-						Points: {this.props.user.points}
-					</Text>
-
-					<Text style={appStyles.centerText}>
-						Dog: {this.props.user.dog.name}
-					</Text>
-					<Text style={appStyles.centerText}>
-						Happiness Level: {this.props.user.dog.happiness}
-					</Text>
+				<Text style={appStyles.centerText}>
+					Dog: {this.props.user.dog ? this.props.user.dog.name : 'Loading!'}
+				</Text>
+				{this.props.user ? (
+					<View>
+						<Text style={appStyles.centerText}>Happiness:</Text>
 						<Text style={appStyles.centerText}>
-							Dog:{' '}
-							{this.props.user.dog ? this.props.user.dog.name : 'Loading!'}
+							Points: {this.props.user.points}
 						</Text>
-						<Text style={appStyles.centerText}>Points: {this.props.user.points}</Text>
+						<Points style={{ justifyContent: 'center' }} />
+					</View>
+				) : (
+					<Text style={appStyles.centerText}>Happiness: 'Loading!'</Text>
+				)}
 
-						{this.props.user ? (
-							<>
-								<Text style={appStyles.centerText}>Happiness:</Text>
-								<Points />
-							</>
-						) : (
-							<Text style={appStyles.centerText}>Happiness: 'Loading!'</Text>
-						)}
-					
-					<TouchableOpacity>
-						<Text style={appStyles.centerText}>Edit Profile</Text>
-					</TouchableOpacity>
-				</View>
+				<TouchableOpacity>
+					<Text style={appStyles.centerText}>Edit Profile</Text>
+				</TouchableOpacity>
 			</View>
 		);
 	}

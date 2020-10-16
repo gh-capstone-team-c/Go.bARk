@@ -63,7 +63,6 @@ export class AppIos extends Component {
 	}
 
 	render() {
-
 		return (
 			<View style={appStyles.container}>
 				<View>
@@ -125,7 +124,7 @@ export class AppIos extends Component {
 									>
 										<Text style={appStyles.menuHeadings}>Photos</Text>
 									</TouchableOpacity>
-									<View>
+									<View style={{ top: -20 }}>
 										<Points />
 									</View>
 								</View>
@@ -178,7 +177,6 @@ export class AppIos extends Component {
 	}
 }
 
-
 // connect to redux
 const mapState = (state) => {
 	return {
@@ -193,4 +191,3 @@ const mapDispatch = (dispatch) => {
 };
 
 export default connect(mapState, mapDispatch)(AppIos);
-

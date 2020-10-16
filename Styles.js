@@ -59,6 +59,7 @@ export const appStyles = StyleSheet.create({
 		alignContent: 'center',
 		justifyContent: 'space-around',
 		marginTop: 10,
+		height: 40,
 	},
 	menuDropDown: {
 		position: 'absolute',

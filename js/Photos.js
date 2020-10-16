@@ -14,7 +14,7 @@ export default class Photos extends React.Component {
 				<Text style={appStyles.centerText}>
 					Photos will eventually be here.
 				</Text>
-				<Text style={appStyles.centerText}>Thank you for your support</Text>]
+				<Text style={appStyles.centerText}>Thank you for your support</Text>
 			</View>
 		);
 	}
