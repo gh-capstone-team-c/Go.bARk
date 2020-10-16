@@ -48,8 +48,14 @@ class LoginIos extends React.Component {
 						<View style={appStyles.options}>
 							<TouchableOpacity
 								onPress={() => {
-									this.props.login(this.state.email, this.state.password);
-
+									if (
+										this.state.email.trim() === '' ||
+										this.state.password.trim() === ''
+									) {
+										return ( <Text>Email and password are required</Text>)
+									} else {
+										this.props.login(this.state.email, this.state.password);
+									}
 									if (this.props.user) {
 										this.setState({ isLoggedIn: true });
 									}
@@ -61,7 +67,14 @@ class LoginIos extends React.Component {
 
 							<TouchableOpacity
 								onPress={() => {
-									this.props.signup(this.state.email, this.state.password);
+									if (
+										this.state.email.trim() === '' ||
+										this.state.password.trim() === ''
+									) {
+										return (<Text>Email and password are required</Text>)
+									} else {
+										this.props.signup(this.state.email, this.state.password)
+									}
 
 									if (this.props.user) {
 										this.setState({ isLoggedIn: true });

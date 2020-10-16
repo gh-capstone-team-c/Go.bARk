@@ -48,25 +48,39 @@ class LoginAndroid extends React.Component {
 							<TouchableOpacity
 								style={appStyles.rectButton}
 								onPress={() => {
-									this.props.login(this.state.email, this.state.password);
-
+									if (
+										this.state.email.trim() === '' ||
+										this.state.password.trim() === ''
+									) {
+										return ( <Text>Email and password are required</Text>)
+									} else {
+										this.props.login(this.state.email, this.state.password);
+									}
 									if (this.props.user) {
 										this.setState({ isLoggedIn: true });
 									}
 								}}
+								style={appStyles.rectButton}
 							>
 								<Text style={appStyles.buttonText}>Login</Text>
 							</TouchableOpacity>
 
 							<TouchableOpacity
-								style={appStyles.rectButton}
 								onPress={() => {
-									this.props.signup(this.state.email, this.state.password);
+									if (
+										this.state.email.trim() === '' ||
+										this.state.password.trim() === ''
+									) {
+										return (<Text>Email and password are required</Text>)
+									} else {
+										this.props.signup(this.state.email, this.state.password)
+									}
 
 									if (this.props.user) {
 										this.setState({ isLoggedIn: true });
 									}
 								}}
+								style={appStyles.rectButton}
 							>
 								<Text style={appStyles.buttonText}>Sign up</Text>
 							</TouchableOpacity>
