@@ -132,7 +132,8 @@ export default function userReducer(state = defaultUser, action) {
 			return {
 				...state,
 				email: action.stateObj.email,
-				dog: action.stateObj.dog,
+				//dog isn't persisting in the db. need to fix!
+				dog: { ...state, name: action.stateObj.name },
 			};
 		default:
 			return state;

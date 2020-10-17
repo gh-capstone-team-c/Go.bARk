@@ -14,7 +14,7 @@ class Settings extends React.Component {
 		this.state = {
 			editSettings: false,
 			email: '',
-			dog: { name: '' },
+			name: '',
 		};
 	}
 
@@ -55,36 +55,39 @@ class Settings extends React.Component {
 					</>
 				) : (
 					<>
-						<TextInput
-							style={appStyles.input}
-							type="text"
-							onChangeText={(email) => this.setState({ email })}
-							placeholder="email"
-							value={this.state.email}
-						/>
-						<TextInput
-							style={appStyles.input}
-							type="text"
-							onChangeText={(name) => this.setState({ dog: { name } })}
-							placeholder="dog name"
-							value={this.state.dog.name}
-						/>
-						<TouchableOpacity>
-							<Text
-								style={appStyles.centerText}
-								onPress={() => {
-									let dog = this.state.dog;
-									let email = this.state.email;
-									console.log(dog, email);
-									this.props.update({ email, dog });
-									this.setState({
-										editSettings: false,
-									});
-								}}
-							>
-								Submit
-							</Text>
-						</TouchableOpacity>
+						<Text style={appStyles.centerText}>Update Your Settings!</Text>
+						<View style={appStyles.inputContainer}>
+							<TextInput
+								style={appStyles.input}
+								type="text"
+								onChangeText={(email) => this.setState({ email })}
+								placeholder="email"
+								value={this.state.email}
+							/>
+							<TextInput
+								style={appStyles.input}
+								type="text"
+								onChangeText={(name) => this.setState({ name })}
+								placeholder="dog name"
+								value={this.state.name}
+							/>
+							<TouchableOpacity>
+								<Text
+									style={appStyles.centerText}
+									onPress={() => {
+										let name = this.state.name;
+										let email = this.state.email;
+										console.log(name, email);
+										this.props.update({ email, name });
+										this.setState({
+											editSettings: false,
+										});
+									}}
+								>
+									Submit
+								</Text>
+							</TouchableOpacity>
+						</View>
 					</>
 				)}
 			</View>
