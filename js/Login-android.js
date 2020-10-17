@@ -48,14 +48,15 @@ class LoginAndroid extends React.Component {
 							<TouchableOpacity
 								style={appStyles.rectButton}
 								onPress={() => {
-									if (
-										this.state.email.trim() === '' ||
-										this.state.password.trim() === ''
-									) {
-										return ( <Text>Email and password are required</Text>)
-									} else {
-										this.props.login(this.state.email, this.state.password);
-									}
+									this.props.login(this.state.email, this.state.password);
+									// if (
+									// 	this.state.email.trim() === '' ||
+									// 	this.state.password.trim() === ''
+									// ) {
+									// 	return ( <Text>Email and password are required</Text>)
+									// } else {
+									// 	this.props.login(this.state.email, this.state.password);
+									// }
 									if (this.props.user) {
 										this.setState({ isLoggedIn: true });
 									}
@@ -67,14 +68,15 @@ class LoginAndroid extends React.Component {
 
 							<TouchableOpacity
 								onPress={() => {
-									if (
-										this.state.email.trim() === '' ||
-										this.state.password.trim() === ''
-									) {
-										return (<Text>Email and password are required</Text>)
-									} else {
-										this.props.signup(this.state.email, this.state.password)
-									}
+									this.props.signup(this.state.email, this.state.password);
+									// if (
+									// 	this.state.email.trim() === '' ||
+									// 	this.state.password.trim() === ''
+									// ) {
+									// 	return <Text>Email and password are required</Text>;
+									// } else {
+									// 	this.props.signup(this.state.email, this.state.password);
+									// }
 
 									if (this.props.user) {
 										this.setState({ isLoggedIn: true });
