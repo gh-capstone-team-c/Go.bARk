@@ -114,6 +114,7 @@ export default BallThrowAR = createReactClass({
 					/>
 				</ViroNode>
 
+				{/* poop emoji next to the portal */}
 				<ViroNode
 					position={[-1, 0, 2]}
 					onClick={() =>
@@ -130,6 +131,7 @@ export default BallThrowAR = createReactClass({
 						position={[-1, 0, 2]}
 						type="VRX"
 					/>
+					{/* <ViroText text="Walk me!" position={[-1, 0, 2]} /> */}
 				</ViroNode>
 
 				<ViroPortalScene

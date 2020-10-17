@@ -76,10 +76,7 @@ export const signup = (email, password) => async (dispatch) => {
 export const myDog = (dog) => {
 	return async (dispatch, getState) => {
 		try {
-			await axios.post(
-				'https://gobark-backend.herokuapp.com/auth/me',
-				dog
-			);
+			await axios.post('https://gobark-backend.herokuapp.com/auth/me', dog);
 
 			dispatch({
 				type: MY_DOG,
@@ -104,13 +101,12 @@ export const logout = () => async (dispatch) => {
 };
 
 //edit user
-export const updateUser = (id, stateObj) => {
+export const updateUser = (stateObj) => {
 	return async (dispatch, getState) => {
 		try {
 			await axios.put(`https://gobark-backend.herokuapp.com/auth/me`, stateObj);
 			dispatch({
 				type: UPDATE_USER,
-				id,
 				stateObj,
 				state: getState,
 			});
@@ -132,14 +128,12 @@ export default function userReducer(state = defaultUser, action) {
 			return { ...state, points: action.stateObj.points };
 		case MY_DOG:
 			return { ...state, dog: action.dog };
-		// case UPDATE_USER:
-		// 	return {
-		// 		...state,
-		// 		firstName: action.stateObj.firstName,
-		// 		lastName: action.stateObj.lastName,
-		// 		email: action.stateObj.email,
-		// 		imageUrl: action.stateObj.imageUrl,
-		// 	};
+		case UPDATE_USER:
+			return {
+				...state,
+				email: action.stateObj.email,
+				dog: action.stateObj.dog,
+			};
 		default:
 			return state;
 	}
