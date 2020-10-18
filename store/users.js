@@ -9,8 +9,10 @@ const ADD_POINTS = 'ADD_POINTS';
 const MY_DOG = 'MY_DOG';
 const UPDATE_DOG = 'UPDATE_DOG';
 
+
 const getUser = (user) => ({ type: GET_USER, user });
 const removeUser = () => ({ type: REMOVE_USER });
+
 
 //add points
 export const addPoints = (stateObj) => {

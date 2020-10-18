@@ -1,3 +1,5 @@
+/** @format */
+
 import { StyleSheet, Dimensions } from 'react-native';
 const { width, height } = Dimensions.get('window');
 const palette = {
@@ -28,6 +30,11 @@ export const appStyles = StyleSheet.create({
 		alignItems: 'center',
 		backgroundColor: palette.highlight,
 		color: palette.lightest,
+	},
+	//attempted to make the friend stuff into neat rows???
+	friendContainer: {
+		flexDirection: 'row',
+		justifyContent: 'space-between',
 	},
 	/******   misc styles ****** */
 	logo: {
@@ -175,6 +182,11 @@ export const appStyles = StyleSheet.create({
 	miniImage: {
 		width: 80,
 		height: 70,
+		borderRadius: 10,
+	},
+	tinyImage: {
+		width: 30,
+		height: 20,
 		borderRadius: 10,
 	},
 	homeText: {

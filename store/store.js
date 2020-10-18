@@ -7,6 +7,7 @@ import { createLogger } from 'redux-logger'; // https://github.com/evgenyrodiono
 import { composeWithDevTools } from 'redux-devtools-extension';
 import thunkMiddleware from 'redux-thunk';
 import userReducer from './users';
+import allUsersReducer from './allUsers';
 
 let middleware = [
 	// `withExtraArgument` gives us access to axios in our async action creators!
@@ -21,6 +22,7 @@ if (process.browser) {
 
 const rootReducer = combineReducers({
 	user: userReducer,
+	allUsers: allUsersReducer,
 });
 
 export default createStore(
