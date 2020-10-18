@@ -12,6 +12,11 @@ import {
   ViroQuad,
 } from 'react-viro';
 var createReactClass = require('create-react-class');
+const dog = {
+  red: require('./res/dogColors/redDog.vrx'),
+  blackTan: require('./res/dogColors/blackTanDog.vrx'),
+  cream: require('./res/dogColors/creamDog.vrx'),
+};
 
 export default BallThrowAR = createReactClass({
   getInitialState() {
@@ -33,6 +38,7 @@ export default BallThrowAR = createReactClass({
 
   render() {
     // console.log('user in ar', this.state.user);
+    const dogColor = this.state.user.dog.color;
     return (
       <ViroARScene
         ref="arscene"
@@ -56,7 +62,7 @@ export default BallThrowAR = createReactClass({
           rotation={this.state.rotation}
         >
           <Viro3DObject
-            source={require('./res/dogColors/creamDog.vrx')}
+            source={dog[dogColor]}
             position={[0, -10, -20]}
             animation={{
               name: this.state.dogAnimation,
