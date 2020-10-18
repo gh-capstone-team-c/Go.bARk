@@ -8,11 +8,29 @@ const UPDATE_USER = 'UPDATE_USER';
 const ADD_POINTS = 'ADD_POINTS';
 const MY_DOG = 'MY_DOG';
 const UPDATE_DOG = 'UPDATE_DOG';
-
+const ADD_FOLLOW = 'ADD_FOLLOW';
 
 const getUser = (user) => ({ type: GET_USER, user });
 const removeUser = () => ({ type: REMOVE_USER });
 
+//add following
+export const addFollowing = (id, obj) => {
+	return async (dispatch, getState) => {
+		try {
+			await axios.put(
+				`https://gobark-backend.herokuapp.com/auth/me/${id}`,
+				obj
+			);
+			dispatch({
+				type: ADD_FOLLOW,
+				obj,
+				state: getState,
+			});
+		} catch (err) {
+			console.log(err);
+		}
+	};
+};
 
 //add points
 export const addPoints = (stateObj) => {
@@ -161,6 +179,11 @@ export default function userReducer(state = defaultUser, action) {
 			return {
 				...state,
 				dog: { ...state.dog, name: action.nameObj.name },
+			};
+		case ADD_FOLLOW:
+			return {
+				...state,
+				following: [...state.following, action.obj],
 			};
 		default:
 			return state;

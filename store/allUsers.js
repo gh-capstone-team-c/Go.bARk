@@ -4,6 +4,7 @@ import axios from 'axios';
 
 const GET_USERS = 'GET_USERS';
 
+
 const getAllUsers = (users) => {
 	return {
 		type: GET_USERS,
@@ -19,6 +20,8 @@ export const getUsers = () => {
 		dispatch(getAllUsers(response.data));
 	};
 };
+
+
 
 export default function allUsersReducer(state = [], action) {
 	switch (action.type) {

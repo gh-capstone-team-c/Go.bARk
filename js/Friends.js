@@ -5,6 +5,7 @@ import { View, Image, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { appStyles } from '../Styles';
 import { connect } from 'react-redux';
 import { getUsers } from '../store/allUsers';
+import { addFollowing } from '../store/users';
 
 class Friends extends React.Component {
 	constructor(props) {
@@ -139,6 +140,14 @@ class Friends extends React.Component {
 									<Text style={[{ fontSize: 30 }, appStyles.centerText]}>
 										{heart}
 									</Text>
+
+									<TouchableOpacity
+										onPress={() => {
+											this.props.addFollowing(user.id, user);
+										}}
+									>
+										<Text>Follow!</Text>
+									</TouchableOpacity>
 								</View>
 							);
 						})}
@@ -160,6 +169,7 @@ const mapState = (state) => {
 const mapDispatch = (dispatch) => {
 	return {
 		getUsers: () => dispatch(getUsers()),
+		addFollowing: (id, obj) => dispatch(addFollowing(id, obj)),
 	};
 };
 
