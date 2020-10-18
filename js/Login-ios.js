@@ -8,12 +8,14 @@ import {
 	TextInput,
 	TouchableOpacity,
 	Dimensions,
+	Alert,
 } from 'react-native';
 const { width, height } = Dimensions.get('window');
 import { connect } from 'react-redux';
 import { login, signup } from '../store/users';
 import HomeIos from './Home-ios';
 import { appStyles } from '../Styles';
+import AwesomeAlert from 'react-native-awesome-alerts';
 
 class LoginIos extends React.Component {
 	constructor(props) {
@@ -22,10 +24,24 @@ class LoginIos extends React.Component {
 			isLoggedIn: false,
 			email: '',
 			password: '',
+			showAlert: false,
 		};
 	}
 
+	showAlert = () => {
+		this.setState({
+			showAlert: true,
+		});
+	};
+
+	hideAlert = () => {
+		this.setState({
+			showAlert: false,
+		});
+	};
+
 	render() {
+		const { showAlert } = this.state;
 		return (
 			<View style={appStyles.containerApp}>
 				{!this.state.isLoggedIn ? (
@@ -48,16 +64,11 @@ class LoginIos extends React.Component {
 						<View style={appStyles.options}>
 							<TouchableOpacity
 								onPress={() => {
-									this.props.login(this.state.email, this.state.password)
-									// if (
-									// 	this.state.email.trim() !== '' ||
-									// 	this.state.password.trim() !== ''
-									// ) {
-									// 	this.props.login(this.state.email, this.state.password);
-									// } else {
-									// 	console.log('Email and password are required');
-									// }
-									if (this.props.user.email) {
+									this.props.login(this.state.email, this.state.password);
+
+									if (!this.props.user.email) {
+										this.showAlert();
+									} else {
 										this.setState({ isLoggedIn: true });
 									}
 								}}
@@ -69,16 +80,10 @@ class LoginIos extends React.Component {
 							<TouchableOpacity
 								onPress={() => {
 									this.props.signup(this.state.email, this.state.password);
-									// if (
-									// 	this.state.email.trim() === '' ||
-									// 	this.state.password.trim() === ''
-									// ) {
-									// 	return <Text>Email and password are required</Text>;
-									// } else {
-									// 	this.props.signup(this.state.email, this.state.password);
-									// }
 
-									if (this.props.user) {
+									if (!this.props.user.email) {
+										this.showAlert();
+									} else {
 										this.setState({ isLoggedIn: true });
 									}
 								}}
@@ -87,6 +92,22 @@ class LoginIos extends React.Component {
 								<Text style={appStyles.buttonText}>Sign up</Text>
 							</TouchableOpacity>
 						</View>
+
+						<AwesomeAlert
+							show={showAlert}
+							showProgress={false}
+							title="Not Found"
+							message="Invalid Email/Password!"
+							closeOnTouchOutside={true}
+							closeOnHardwareBackPress={false}
+							showCancelButton={false}
+							showConfirmButton={true}
+							confirmText="Try Again"
+							confirmButtonColor="#008080"
+							onConfirmPressed={() => {
+								this.hideAlert();
+							}}
+						/>
 					</View>
 				) : (
 					<HomeIos />

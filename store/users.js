@@ -53,7 +53,7 @@ export const login = (email, password) => async (dispatch) => {
 
 		dispatch(getUser(res.data));
 	} catch (dispatchOrHistoryErr) {
-		console.error(dispatchOrHistoryErr);
+		console.log(dispatchOrHistoryErr);
 	}
 };
 
@@ -68,7 +68,7 @@ export const signup = (email, password) => async (dispatch) => {
 		);
 		dispatch(getUser(res.data));
 	} catch (dispatchOrHistoryErr) {
-		console.error(dispatchOrHistoryErr);
+		console.log(dispatchOrHistoryErr);
 	}
 };
 
