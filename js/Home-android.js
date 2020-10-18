@@ -19,6 +19,7 @@ class HomeAndroid extends React.Component {
     this.state = {
       pressed: false,
       dogName: '',
+      dogColor: '',
     };
   }
 
@@ -52,10 +53,25 @@ class HomeAndroid extends React.Component {
                     }}
                     value={this.state.dogName}
                   />
+                  <Text style={appStyles.homeText}>
+                    Choose dog's color: red, blackTan, or cream{' '}
+                  </Text>
+                  <TextInput
+                    style={appStyles.input}
+                    type="text"
+                    placeholder="dog color"
+                    onChangeText={(dogColor) => {
+                      this.setState({ dogColor });
+                    }}
+                    value={this.state.dogColor}
+                  />
                   <TouchableOpacity
                     style={appStyles.rectButton}
                     onPress={() => {
-                      this.props.myDog({ name: this.state.dogName });
+                      this.props.myDog({
+                        name: this.state.dogName,
+                        color: this.state.dogColor,
+                      });
                       this.forceUpdate();
                     }}
                   >
