@@ -5,7 +5,7 @@ import { View, Text, TextInput, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 
 import Points from './Points';
-import { updateUser } from '../store/users';
+import { updateUser, updateDog } from '../store/users';
 import { appStyles } from '../Styles';
 
 class Settings extends React.Component {
@@ -19,7 +19,6 @@ class Settings extends React.Component {
 	}
 
 	render() {
-		console.log('settings', this.props.user);
 		return (
 			<View style={appStyles.individualMenu}>
 				{!this.state.editSettings ? (
@@ -79,8 +78,9 @@ class Settings extends React.Component {
 										let name = this.state.name;
 
 										let email = this.state.email;
-										console.log(name, email);
+
 										this.props.update({ email, name });
+										this.props.updateDog({ name }, this.props.user.dog.id);
 										this.setState({
 											editSettings: false,
 										});
@@ -107,6 +107,7 @@ const mapState = (state) => {
 const mapDispatch = (dispatch) => {
 	return {
 		update: (obj) => dispatch(updateUser(obj)),
+		updateDog: (nameObj, id) => dispatch(updateDog(nameObj, id)),
 	};
 };
 

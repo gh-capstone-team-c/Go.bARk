@@ -7,6 +7,7 @@ const REMOVE_USER = 'REMOVE_USER';
 const UPDATE_USER = 'UPDATE_USER';
 const ADD_POINTS = 'ADD_POINTS';
 const MY_DOG = 'MY_DOG';
+const UPDATE_DOG = 'UPDATE_DOG';
 
 const getUser = (user) => ({ type: GET_USER, user });
 const removeUser = () => ({ type: REMOVE_USER });
@@ -105,10 +106,29 @@ export const updateUser = (stateObj) => {
 	return async (dispatch, getState) => {
 		try {
 			await axios.put(`https://gobark-backend.herokuapp.com/auth/me`, stateObj);
-			console.log('redux', stateObj);
 			dispatch({
 				type: UPDATE_USER,
 				stateObj,
+				state: getState,
+			});
+			console.log('redux', state);
+		} catch (err) {
+			console.log(err);
+		}
+	};
+};
+
+//update the user's dog
+export const updateDog = (nameObj, id) => {
+	return async (dispatch, getState) => {
+		try {
+			await axios.put(
+				`https://gobark-backend.herokuapp.com/api/dogs/${id}`,
+				nameObj
+			);
+			dispatch({
+				type: UPDATE_DOG,
+				nameObj,
 				state: getState,
 			});
 		} catch (err) {
@@ -133,8 +153,12 @@ export default function userReducer(state = defaultUser, action) {
 			return {
 				...state,
 				email: action.stateObj.email,
-				//dog isn't persisting in the db. need to fix backend!
 				dog: { ...state.dog, name: action.stateObj.name },
+			};
+		case UPDATE_DOG:
+			return {
+				...state,
+				dog: { ...state.dog, name: action.nameObj.name },
 			};
 		default:
 			return state;
