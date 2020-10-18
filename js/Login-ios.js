@@ -66,11 +66,10 @@ class LoginIos extends React.Component {
 								onPress={() => {
 									this.props.login(this.state.email, this.state.password);
 
-									if (!this.props.user.email) {
-										this.showAlert();
-									} else {
-										this.setState({ isLoggedIn: true });
-									}
+									//still debugging this
+									this.props.user
+										? this.setState({ isLoggedIn: true })
+										: this.showAlert();
 								}}
 								style={appStyles.rectButton}
 							>
@@ -81,11 +80,10 @@ class LoginIos extends React.Component {
 								onPress={() => {
 									this.props.signup(this.state.email, this.state.password);
 
-									if (!this.props.user.email) {
-										this.showAlert();
-									} else {
-										this.setState({ isLoggedIn: true });
-									}
+									//still debugging this
+									this.props.user
+										? this.setState({ isLoggedIn: true })
+										: this.showAlert();
 								}}
 								style={appStyles.rectButton}
 							>

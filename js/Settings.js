@@ -19,6 +19,7 @@ class Settings extends React.Component {
 	}
 
 	render() {
+		console.log('settings', this.props.user);
 		return (
 			<View style={appStyles.individualMenu}>
 				{!this.state.editSettings ? (
@@ -76,6 +77,7 @@ class Settings extends React.Component {
 									style={appStyles.centerText}
 									onPress={() => {
 										let name = this.state.name;
+
 										let email = this.state.email;
 										console.log(name, email);
 										this.props.update({ email, name });

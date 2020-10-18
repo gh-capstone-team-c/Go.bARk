@@ -105,6 +105,7 @@ export const updateUser = (stateObj) => {
 	return async (dispatch, getState) => {
 		try {
 			await axios.put(`https://gobark-backend.herokuapp.com/auth/me`, stateObj);
+			console.log('redux', stateObj);
 			dispatch({
 				type: UPDATE_USER,
 				stateObj,
@@ -132,8 +133,8 @@ export default function userReducer(state = defaultUser, action) {
 			return {
 				...state,
 				email: action.stateObj.email,
-				//dog isn't persisting in the db. need to fix!
-				dog: { ...state, name: action.stateObj.name },
+				//dog isn't persisting in the db. need to fix backend!
+				dog: { ...state.dog, name: action.stateObj.name },
 			};
 		default:
 			return state;
