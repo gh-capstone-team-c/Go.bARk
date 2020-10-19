@@ -124,8 +124,9 @@ export const signup = (email, password) => async (dispatch, getState) => {
 export const myDog = (dog) => {
 	return async (dispatch, getState) => {
 		try {
+			console.log("before", dog);
 			await axios.post('https://gobark-backend.herokuapp.com/auth/me', dog);
-
+			console.log(dog);
 			dispatch({
 				type: MY_DOG,
 				dog,

@@ -38,7 +38,7 @@ class Friends extends React.Component {
 	}
 
 	render() {
-		console.log(this.props.user);
+		// console.log(this.props.user);
 		return (
 			<View style={appStyles.individualMenu}>
 				{this.state.loading && <Text>Loading!</Text>}
