@@ -37,8 +37,8 @@ export default FoodTime = createReactClass({
             }
           >
             <ViroImage
-              height={0.04}
-              width={0.04}
+              height={0.05}
+              width={0.05}
               source={require('./res/bone.png')}
               position={[-0.08, -0.16, -0.3]}
             />
