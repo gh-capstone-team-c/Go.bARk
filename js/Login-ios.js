@@ -27,7 +27,7 @@ class LoginIos extends React.Component {
 
 	render() {
 		return (
-			<View style={appStyles.containerApp}>
+			<View style={appStyles.container}>
 				{!this.state.isLoggedIn ? (
 					<View style={appStyles.inputContainer}>
 						<Text styles={appStyles.titleText}>go.bARk!</Text>

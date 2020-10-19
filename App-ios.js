@@ -64,7 +64,7 @@ export class AppIos extends Component {
 
 	render() {
 		return (
-			<View style={appStyles.container}>
+			<View style={appStyles.containerApp}>
 				<View>
 					{/* checks to see if start button was pressed */}
 					{!this.state.pressed ? (
