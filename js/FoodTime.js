@@ -22,10 +22,10 @@ export default FoodTime = createReactClass({
       <ViroARScene>
         <ViroARCamera>
           <ViroImage
-            height={0.5}
-            width={0.5}
+            height={0.04}
+            width={0.04}
             source={require('./res/camera.png')}
-            position={[1.8, -3.4, -6]}
+            position={[0.08, -0.16, -0.3]}
             onDrag={this._onPress}
           />
           <ViroNode
@@ -37,10 +37,10 @@ export default FoodTime = createReactClass({
             }
           >
             <ViroImage
-              height={0.5}
-              width={0.5}
+              height={0.04}
+              width={0.04}
               source={require('./res/bone.png')}
-              position={[-1.2, -2.8, -5]}
+              position={[-0.08, -0.16, -0.3]}
             />
           </ViroNode>
         </ViroARCamera>
