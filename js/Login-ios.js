@@ -41,6 +41,8 @@ class LoginIos extends React.Component {
 	};
 
 	render() {
+		// console.log('user', this.props.user);
+		// console.log('bool', this.props.user.id > 0);
 		const { showAlert } = this.state;
 		return (
 			<View style={appStyles.containerApp}>
@@ -63,13 +65,15 @@ class LoginIos extends React.Component {
 						/>
 						<View style={appStyles.options}>
 							<TouchableOpacity
-								onPress={() => {
-									this.props.login(this.state.email, this.state.password);
+								onPress={async () => {
+									await this.props.login(this.state.email, this.state.password);
 
 									//still debugging this
-									this.props.user
-										? this.setState({ isLoggedIn: true })
-										: this.showAlert();
+									if (this.props.user.id > 0) {
+										this.setState({ isLoggedIn: true });
+									} else {
+										this.showAlert();
+									}
 								}}
 								style={appStyles.rectButton}
 							>
@@ -77,13 +81,18 @@ class LoginIos extends React.Component {
 							</TouchableOpacity>
 
 							<TouchableOpacity
-								onPress={() => {
-									this.props.signup(this.state.email, this.state.password);
+								onPress={async () => {
+									await this.props.signup(
+										this.state.email,
+										this.state.password
+									);
 
-									//still debugging this
-									this.props.user
-										? this.setState({ isLoggedIn: true })
-										: this.showAlert();
+									
+									if (this.props.user.id > 0) {
+										this.setState({ isLoggedIn: true });
+									} else {
+										this.showAlert();
+									}
 								}}
 								style={appStyles.rectButton}
 							>

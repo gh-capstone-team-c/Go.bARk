@@ -11,7 +11,6 @@ const UPDATE_DOG = 'UPDATE_DOG';
 const ADD_FOLLOW = 'ADD_FOLLOW';
 const REMOVE_FOLLOW = 'REMOVE_FOLLOW';
 
-const getUser = (user) => ({ type: GET_USER, user });
 const removeUser = () => ({ type: REMOVE_USER });
 
 //add following
@@ -83,7 +82,7 @@ export const me = () => {
 };
 
 //login
-export const login = (email, password) => async (dispatch) => {
+export const login = (email, password) => async (dispatch, getState) => {
 	try {
 		let object = { email, password };
 
@@ -92,9 +91,13 @@ export const login = (email, password) => async (dispatch) => {
 			object
 		);
 
-		dispatch(getUser(res.data));
-	} catch (dispatchOrHistoryErr) {
-		console.log(dispatchOrHistoryErr);
+		dispatch({
+			type: GET_USER,
+			user: res.data,
+			state: getState,
+		});
+	} catch (err) {
+		console.log(err);
 	}
 };
 

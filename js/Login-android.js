@@ -40,6 +40,7 @@ class LoginAndroid extends React.Component {
 	};
 
 	render() {
+		console.log('user', this.props.user);
 		const { showAlert } = this.state;
 		return (
 			<View style={appStyles.container}>
@@ -63,13 +64,14 @@ class LoginAndroid extends React.Component {
 						<View style={appStyles.options}>
 							<TouchableOpacity
 								style={appStyles.rectButton}
-								onPress={() => {
-									this.props.login(this.state.email, this.state.password);
+								onPress={async () => {
+									await this.props.login(this.state.email, this.state.password);
 
-									//still debugging this
-									this.props.user
-										? this.setState({ isLoggedIn: true })
-										: this.showAlert();
+									if (this.props.user.id > 0) {
+										this.setState({ isLoggedIn: true });
+									} else {
+										this.showAlert();
+									}
 								}}
 								style={appStyles.rectButton}
 							>
@@ -77,13 +79,17 @@ class LoginAndroid extends React.Component {
 							</TouchableOpacity>
 
 							<TouchableOpacity
-								onPress={() => {
-									this.props.signup(this.state.email, this.state.password);
+								onPress={async () => {
+									await this.props.signup(
+										this.state.email,
+										this.state.password
+									);
 
-									//still debugging this
-									this.props.user
-										? this.setState({ isLoggedIn: true })
-										: this.showAlert();
+									if (this.props.user.id > 0) {
+										this.setState({ isLoggedIn: true });
+									} else {
+										this.showAlert();
+									}
 								}}
 								style={appStyles.rectButton}
 							>
