@@ -37,7 +37,8 @@ export default BallThrowAR = createReactClass({
 			playCount: 0,
 			rotation: [0, 0, 0],
 			dogAnimation: 'waiting',
-			//trying to pass function to AR component
+			showPortal: false,
+			//passing redux function to AR component
 			user: this.props.arSceneNavigator.viroAppProps.user,
 			addPoints: this.props.arSceneNavigator.viroAppProps.addPoints,
 			// displayObject: false,
@@ -60,7 +61,7 @@ export default BallThrowAR = createReactClass({
 				ref="arscene"
 				//  _onTrackingUpdated={this._onTrackingUpdated}
 			>
-				<ViroARCamera>
+				{/* <ViroARCamera>
 					<ViroImage
 						height={0.5}
 						width={0.5}
@@ -75,7 +76,7 @@ export default BallThrowAR = createReactClass({
 						position={[-1.8, -3.5, -6]}
 						onClick={this._onPress}
 					/>
-				</ViroARCamera>
+				</ViroARCamera> */}
 				<ViroText
 					text={this.state.text}
 					scale={[1, 1, 1]}
@@ -152,9 +153,12 @@ export default BallThrowAR = createReactClass({
 				{/* poop emoji next to the portal */}
 				<ViroNode
 					position={[-1, 0, 2]}
-					onClick={() =>
-						this.state.addPoints({ points: this.state.user.points++ })
-					}
+					onClick={() => {
+						this.state.addPoints({ points: this.state.user.points++ });
+						this.setState({
+							showPortal: !this.state.showPortal,
+						});
+					}}
 				>
 					<Viro3DObject
 						source={require('./res/emoji_poop/emoji_poop.vrx')}
@@ -169,32 +173,40 @@ export default BallThrowAR = createReactClass({
 					{/* <ViroText text="Walk me!" position={[-1, 0, 2]} /> */}
 				</ViroNode>
 
-				<ViroPortalScene
-					passable={true}
+				{this.state.showPortal ? (
+					<ViroPortalScene
+						passable={true}
 
-					// dragType="FixedDistance"
-					// onDrag={() => {}}
-				>
-					{/* render the portal on the other side of the user */}
-					<ViroPortal position={[0, 0, 3]} scale={[1, 1, 1]}>
-						<Viro3DObject
-							source={require('./res/portal/portal_picture_frame.vrx')}
-							resources={[
-								require('./res/portal/portal_picture_frame_diffuse.png'),
-								require('./res/portal/portal_picture_frame_normal.png'),
-								require('./res/portal/portal_picture_frame_specular.png'),
-							]}
-							type="VRX"
-						/>
-					</ViroPortal>
-					<Viro360Image source={require('./res/360_park.jpg')} />
+						// dragType="FixedDistance"
+						// onDrag={() => {}}
+					>
+						{/* render the portal on the other side of the user */}
+						<ViroPortal position={[0, 0, 3]} scale={[1, 1, 1]}>
+							<Viro3DObject
+								source={require('./res/portal/portal_picture_frame.vrx')}
+								resources={[
+									require('./res/portal/portal_picture_frame_diffuse.png'),
+									require('./res/portal/portal_picture_frame_normal.png'),
+									require('./res/portal/portal_picture_frame_specular.png'),
+								]}
+								type="VRX"
+							/>
+						</ViroPortal>
+						<Viro360Image source={require('./res/360_park.jpg')} />
 
-					{/* <ViroText
+						{/* <ViroText
 						text="welcome to the portal"
 						scale={[0.5, 0.5, 0.5]}
 						position={[0, 0.4, -3]}
 					/> */}
-				</ViroPortalScene>
+					</ViroPortalScene>
+				) : (
+					<ViroText
+						text="click the poopmoji"
+						scale={[1, 1, 1]}
+						position={[0, 0, 3]}
+					/>
+				)}
 			</ViroARScene>
 		);
 	},
