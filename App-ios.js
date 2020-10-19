@@ -35,7 +35,6 @@ import DogBowl from './js/DogBowl';
 import Points from './js/Points';
 
 var InitialARScene = require('./js/BallThrowAR');
-var FoodTime = require('./js/FoodTime');
 
 export function renderIf(condition, renderedContent) {
   if (condition) {
@@ -54,14 +53,28 @@ export class AppIos extends Component {
     this.state = {
       pressed: false,
       menuItem: null,
-
       //trying to pass the addpoints redux function to AR scene
       viroAppProps: {
         user: this.props.user,
         addPoints: this.props.addPoints,
+        // displayObject: false,
       },
     };
+    // this.changeScene = this.changeScene.bind(this);
   }
+
+  // changeScene() {
+  //   if (!this.state.displayObject) {
+  //     this.setState({ displayObject: true });
+  //     this.forceUpdate(() => {});
+  //     alert(`in the force update ${this.state.displayObject}`);
+  //   } else {
+  //     this.setState({
+  //       displayObject: !this.state.viroAppProps.displayObject,
+  //     });
+  //     alert(`${this.state.displayObject}`);
+  //   }
+  // }
 
   render() {
     return (
@@ -133,7 +146,9 @@ export class AppIos extends Component {
               {/* scene navigator */}
               <View style={appStyles.appSceneNav}>
                 <ViroARSceneNavigator
-                  initialScene={{ scene: InitialARScene }}
+                  initialScene={{
+                    scene: InitialARScene,
+                  }}
                   viroAppProps={this.state.viroAppProps}
                 />
               </View>
@@ -164,12 +179,12 @@ export class AppIos extends Component {
                 )}
               </View>
 
-              <View style={{ position: 'absolute', bottom: 25, right: 10 }}>
+              {/* <View style={{ position: 'absolute', bottom: 25, right: 10 }}>
                 <Screenshot />
-              </View>
-              <View style={{ position: 'absolute', bottom: 25, left: 10 }}>
-                <DogBowl />
-              </View>
+              </View> */}
+              {/* <View style={{ position: 'absolute', bottom: 25, left: 10 }}>
+                <DogBowl changeScene={this.changeScene} />
+              </View> */}
             </View>
           )}
         </View>

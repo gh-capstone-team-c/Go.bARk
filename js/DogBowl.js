@@ -11,27 +11,26 @@ import {
   Viro3DObject,
   ViroScene,
 } from 'react-native';
-import { ViroARScene, ViroARSceneNavigator } from 'react-viro';
+import { ViroARCamera, ViroImage } from 'react-viro';
 import { appStyles } from '../Styles';
-import FoodTime from './FoodTime';
+// import FoodTime from './FoodTime';
+// var FoodTime = require('./FoodTime');
 
 export default class DogBowl extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      view: false,
-    };
-    this._testPress = this._testPress.bind(this);
+    // this._testPress = this._testPress.bind(this);
   }
 
-  _testPress() {
-    alert('you want to see the food scene');
-  }
+  // _testPress() {
+  //   const type = typeof FoodTime;
+  //   alert(type);
+  // }
 
   render() {
     return (
       <View>
-        <TouchableOpacity onPress={this._testPress}>
+        <TouchableOpacity onPress={this.props.changeScene}>
           <Text style={appStyles.menuButton}>🦴</Text>
         </TouchableOpacity>
       </View>

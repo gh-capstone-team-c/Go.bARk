@@ -10,8 +10,12 @@ import {
   ViroAnimations,
   ViroText,
   ViroQuad,
+  ViroARCamera,
+  ViroImage,
 } from 'react-viro';
 var createReactClass = require('create-react-class');
+// import FoodTime from './FoodTime';
+var FoodTime = require('./FoodTime');
 const dog = {
   red: require('./res/dogColors/redDog.vrx'),
   blackTan: require('./res/dogColors/blackTanDog.vrx'),
@@ -33,17 +37,41 @@ export default BallThrowAR = createReactClass({
       //trying to pass function to AR component
       user: this.props.arSceneNavigator.viroAppProps.user,
       addPoints: this.props.arSceneNavigator.viroAppProps.addPoints,
+      // displayObject: false,
     };
   },
 
   render() {
     // console.log('user in ar', this.state.user);
     const dogColor = this.state.user.dog.color;
+    // if (
+    //   this.state.displayObject !==
+    //   this.props.arSceneNavigator.viroAppProps.displayObject
+    // ) {
+    //   this.props.arSceneNavigator.replace({ scene: FoodTime });
+    //   return null;
+    // } else {
+
     return (
       <ViroARScene
         ref="arscene"
         //  _onTrackingUpdated={this._onTrackingUpdated}
       >
+        <ViroARCamera>
+          <ViroImage
+            height={0.5}
+            width={0.5}
+            source={require('./res/camera.png')}
+            position={[1.8, -3.4, -6]}
+          />
+          <ViroImage
+            height={0.7}
+            width={0.7}
+            source={require('./res/bone.png')}
+            position={[-1.8, -3.5, -6]}
+            onClick={this._onPress}
+          />
+        </ViroARCamera>
         <ViroText
           text={this.state.text}
           scale={[1, 1, 1]}
@@ -118,6 +146,12 @@ export default BallThrowAR = createReactClass({
         </ViroNode>
       </ViroARScene>
     );
+    // }
+  },
+
+  _onPress() {
+    alert('you pressed me');
+    // this.props.arSceneNavigator.push({ scene: FoodTime });
   },
 
   _onBallClick(stateValue, position, source) {
