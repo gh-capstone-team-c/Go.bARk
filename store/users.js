@@ -53,32 +53,32 @@ export const removeFollowing = (id, obj) => {
 
 //add points
 export const addPoints = (stateObj) => {
-  return async (dispatch, getState) => {
-    try {
-      await axios.put('https://gobark-backend.herokuapp.com/auth/me', stateObj);
-      dispatch({
-        type: ADD_POINTS,
-        stateObj,
-        state: getState,
-      });
-      console.log('stateobj in redux', stateObj);
-    } catch (err) {
-      console.log(err);
-    }
-  };
+	return async (dispatch, getState) => {
+		try {
+			await axios.put('https://gobark-backend.herokuapp.com/auth/me', stateObj);
+			dispatch({
+				type: ADD_POINTS,
+				stateObj,
+				state: getState,
+			});
+			console.log('stateobj in redux', stateObj);
+		} catch (err) {
+			console.log(err);
+		}
+	};
 };
 
 export const me = () => {
-  return async (dispatch) => {
-    try {
-      const res = await axios.get(
-        'https://gobark-backend.herokuapp.com/auth/me'
-      );
-      dispatch(getUser(res.data || defaultUser));
-    } catch (err) {
-      console.error(err);
-    }
-  };
+	return async (dispatch) => {
+		try {
+			const res = await axios.get(
+				'https://gobark-backend.herokuapp.com/auth/me'
+			);
+			dispatch(getUser(res.data || defaultUser));
+		} catch (err) {
+			console.error(err);
+		}
+	};
 };
 
 //login
@@ -102,7 +102,7 @@ export const login = (email, password) => async (dispatch, getState) => {
 };
 
 // signup;
-export const signup = (email, password) => async (dispatch) => {
+export const signup = (email, password) => async (dispatch, getState) => {
 	try {
 		let object = { email, password };
 
@@ -110,7 +110,11 @@ export const signup = (email, password) => async (dispatch) => {
 			`https://gobark-backend.herokuapp.com/auth/signup`,
 			object
 		);
-		dispatch(getUser(res.data));
+		dispatch({
+			type: GET_USER,
+			user: res.data,
+			state: getState,
+		});
 	} catch (dispatchOrHistoryErr) {
 		console.log(dispatchOrHistoryErr);
 	}
@@ -135,13 +139,13 @@ export const myDog = (dog) => {
 
 //logout
 export const logout = () => async (dispatch) => {
-  try {
-    await axios.post('https://gobark-backend.herokuapp.com/auth/logout');
-    dispatch(removeUser());
-    history.push('/login');
-  } catch (err) {
-    console.error(err);
-  }
+	try {
+		await axios.post('https://gobark-backend.herokuapp.com/auth/logout');
+		dispatch(removeUser());
+		history.push('/login');
+	} catch (err) {
+		console.error(err);
+	}
 };
 
 //edit user

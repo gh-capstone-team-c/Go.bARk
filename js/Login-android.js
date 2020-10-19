@@ -67,7 +67,7 @@ class LoginAndroid extends React.Component {
 								onPress={async () => {
 									await this.props.login(this.state.email, this.state.password);
 
-									if (this.props.user.id > 0) {
+									if (this.props.user.id) {
 										this.setState({ isLoggedIn: true });
 									} else {
 										this.showAlert();
@@ -85,7 +85,7 @@ class LoginAndroid extends React.Component {
 										this.state.password
 									);
 
-									if (this.props.user.id > 0) {
+									if (this.props.user.id) {
 										this.setState({ isLoggedIn: true });
 									} else {
 										this.showAlert();

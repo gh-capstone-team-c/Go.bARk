@@ -41,8 +41,7 @@ class LoginIos extends React.Component {
 	};
 
 	render() {
-		// console.log('user', this.props.user);
-		// console.log('bool', this.props.user.id > 0);
+		
 		const { showAlert } = this.state;
 		return (
 			<View style={appStyles.container}>
@@ -68,8 +67,8 @@ class LoginIos extends React.Component {
 								onPress={async () => {
 									await this.props.login(this.state.email, this.state.password);
 
-									//still debugging this
-									if (this.props.user.id > 0) {
+
+									if (this.props.user.id) {
 										this.setState({ isLoggedIn: true });
 									} else {
 										this.showAlert();
@@ -87,8 +86,7 @@ class LoginIos extends React.Component {
 										this.state.password
 									);
 
-									
-									if (this.props.user.id > 0) {
+									if (this.props.user.id) {
 										this.setState({ isLoggedIn: true });
 									} else {
 										this.showAlert();
