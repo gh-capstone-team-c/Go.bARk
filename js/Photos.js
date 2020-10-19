@@ -1,8 +1,9 @@
 import React from 'react';
 import { View, Image, Text, TouchableOpacity } from 'react-native';
 import { appStyles } from '../Styles';
+import { connect } from 'react-redux';
 
-export default class Photos extends React.Component {
+export class Photos extends React.Component {
 	constructor(props) {
 		super(props);
 	}
@@ -10,7 +11,12 @@ export default class Photos extends React.Component {
 	render() {
 		return (
 			<View style={appStyles.individualMenu}>
-				<Text style={appStyles.centerText}>Hello</Text>
+				<Text style={appStyles.centerText}>Photo Gallery</Text>
+				{this.props.photos.length ? (
+					this.props.photos.map((photo) => <Image src={photo} />)
+				) : (
+					<Text style={appStyles.centerText}>No photos in your gallery!</Text>
+				)}
 				<Text style={appStyles.centerText}>
 					Photos will eventually be here.
 				</Text>
@@ -19,3 +25,11 @@ export default class Photos extends React.Component {
 		);
 	}
 }
+// connect to redux
+const mapState = (state) => {
+	return {
+		photos: state.photos,
+	};
+};
+
+export default connect(mapState)(Photos);

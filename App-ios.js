@@ -84,7 +84,6 @@ export class AppIos extends Component {
           {!this.state.pressed ? (
             <View>
               <Text style={appStyles.titleText}>go</Text>
-
               <TouchableOpacity
                 style={appStyles.buttons}
                 onPress={() => {
