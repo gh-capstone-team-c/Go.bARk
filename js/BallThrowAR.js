@@ -56,6 +56,7 @@ export default BallThrowAR = createReactClass({
 		//   return null;
 		// } else {
 
+		console.log('state', this.state.showPortal);
 		return (
 			<ViroARScene
 				ref="arscene"
@@ -153,8 +154,8 @@ export default BallThrowAR = createReactClass({
 				{/* poop emoji next to the portal */}
 				<ViroNode
 					position={[-1, 0, 2]}
-					onClick={() => {
-						this.state.addPoints({ points: this.state.user.points++ });
+					onDrag={() => {
+						// this.state.addPoints({ points: this.state.user.points++ });
 						this.setState({
 							showPortal: !this.state.showPortal,
 						});
@@ -173,10 +174,22 @@ export default BallThrowAR = createReactClass({
 					{/* <ViroText text="Walk me!" position={[-1, 0, 2]} /> */}
 				</ViroNode>
 
+				{/* this isnt displaying and idk why */}
+				<ViroText
+					text="swipe the emoji"
+					scale={[1, 1, 1]}
+					position={[-1.5, 0, 3]}
+				/>
+
 				{this.state.showPortal ? (
 					<ViroPortalScene
 						passable={true}
-
+						onPortalEnter={() =>
+							this.state.addPoints({ points: this.state.user.points++ })
+						}
+						onPortalExit={() =>
+							this.state.addPoints({ points: this.state.user.points++ })
+						}
 						// dragType="FixedDistance"
 						// onDrag={() => {}}
 					>
@@ -202,7 +215,7 @@ export default BallThrowAR = createReactClass({
 					</ViroPortalScene>
 				) : (
 					<ViroText
-						text="click the poopmoji"
+						text="click the emoji"
 						scale={[1, 1, 1]}
 						position={[0, 0, 3]}
 					/>
