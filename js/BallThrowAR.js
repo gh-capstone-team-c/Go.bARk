@@ -17,7 +17,6 @@ import {
   ViroImage,
 } from 'react-viro';
 var createReactClass = require('create-react-class');
-// import FoodTime from './FoodTime';
 var FoodTime = require('./FoodTime');
 const dog = {
   red: require('./res/dogColors/redDog.vrx'),
@@ -45,16 +44,7 @@ export default BallThrowAR = createReactClass({
   },
 
   render() {
-    // console.log('user in ar', this.state.user);
     const dogColor = this.state.user.dog.color;
-    // if (
-    //   this.state.displayObject !==
-    //   this.props.arSceneNavigator.viroAppProps.displayObject
-    // ) {
-    //   this.props.arSceneNavigator.replace({ scene: FoodTime });
-    //   return null;
-    // } else {
-
     return (
       <ViroARScene
         ref="arscene"
@@ -73,7 +63,10 @@ export default BallThrowAR = createReactClass({
             onDrag={() =>
               this.props.arSceneNavigator.push({
                 scene: FoodTime,
-                // passProps: { dog: dog[dogColor] },
+                passProps: {
+                  user: this.state.user,
+                  addPoints: this.state.addPoints,
+                },
               })
             }
           >
@@ -177,7 +170,6 @@ export default BallThrowAR = createReactClass({
           />
           {/* <ViroText text="Walk me!" position={[-1, 0, 2]} /> */}
         </ViroNode>
-
         <ViroPortalScene
           passable={true}
 
