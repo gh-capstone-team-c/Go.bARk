@@ -125,7 +125,7 @@ class Friends extends React.Component {
 						)}
 					</View>
 				) : (
-					// if my friends is false, show all the users
+					// if my friends is false, show all the users--need to make it so you only show the users who i don't follow
 					<View>
 						{this.props.allUsers.map((user) => {
 							let heart = '🤍';
