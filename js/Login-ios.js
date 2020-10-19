@@ -45,10 +45,10 @@ class LoginIos extends React.Component {
 		// console.log('bool', this.props.user.id > 0);
 		const { showAlert } = this.state;
 		return (
-			<View style={appStyles.containerApp}>
+			<View style={appStyles.container}>
 				{!this.state.isLoggedIn ? (
 					<View style={appStyles.inputContainer}>
-						<Text styles={appStyles.titleText}>go.bARk!</Text>
+						<Text style={appStyles.titleText}>go.bARk!</Text>
 						<TextInput
 							style={appStyles.input}
 							type="text"

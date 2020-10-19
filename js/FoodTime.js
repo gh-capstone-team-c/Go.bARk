@@ -1,12 +1,25 @@
-import React, { Component } from 'react';
-import { ViroScene, ViroNode, Viro3DObject } from 'react-native';
+import React from 'react';
+import { ViroARScene, ViroNode, Viro3DObject } from 'react-native';
+var createReactClass = require('create-react-class');
 
-export default class FoodTime extends Component {
+export default FoodTime = createReactClass({
+  getInitialState() {
+    return {
+      dog: '',
+    };
+  },
+
   render() {
     return (
-      <ViroScene>
-        <ViroNode position={[0, 0, 0]}>
+      <ViroARScene>
+        <ViroNode position={[0, -10, -20]} scale={[0.1, 0.1, 0.1]}>
           <Viro3DObject
+            source={require('./res/dogColors/creamDog.vrx')}
+            position={[0, -10, -20]}
+            scale={[0.1, 0.1, 0.1]}
+            type="VRX"
+          />
+          {/* <Viro3DObject
             source={require('./res/Dog-Graphics/DogBowl_NoFood.vrx')}
             resources={[
               require('./res/Dog-Graphics/Dogbowl2_UV.png'),
@@ -17,9 +30,11 @@ export default class FoodTime extends Component {
             position={[0, 0, 0]}
             scale={[0.02, 0.02, 0.02]}
             type="VRX"
-          />
+          /> */}
         </ViroNode>
-      </ViroScene>
+      </ViroARScene>
     );
-  }
-}
+  },
+});
+
+module.exports = FoodTime;
