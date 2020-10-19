@@ -8,12 +8,14 @@ import {
 	TextInput,
 	TouchableOpacity,
 	Dimensions,
+	Alert,
 } from 'react-native';
 const { width, height } = Dimensions.get('window');
 import { connect } from 'react-redux';
 import { login, signup } from '../store/users';
 import HomeIos from './Home-ios';
 import { appStyles } from '../Styles';
+import AwesomeAlert from 'react-native-awesome-alerts';
 
 class LoginIos extends React.Component {
 	constructor(props) {
@@ -22,10 +24,26 @@ class LoginIos extends React.Component {
 			isLoggedIn: false,
 			email: '',
 			password: '',
+			showAlert: false,
 		};
 	}
 
+	showAlert = () => {
+		this.setState({
+			showAlert: true,
+		});
+	};
+
+	hideAlert = () => {
+		this.setState({
+			showAlert: false,
+		});
+	};
+
 	render() {
+		// console.log('user', this.props.user);
+		// console.log('bool', this.props.user.id > 0);
+		const { showAlert } = this.state;
 		return (
 			<View style={appStyles.container}>
 				{!this.state.isLoggedIn ? (
@@ -47,11 +65,14 @@ class LoginIos extends React.Component {
 						/>
 						<View style={appStyles.options}>
 							<TouchableOpacity
-								onPress={() => {
-									this.props.login(this.state.email, this.state.password);
+								onPress={async () => {
+									await this.props.login(this.state.email, this.state.password);
 
-									if (this.props.user) {
+									//still debugging this
+									if (this.props.user.id > 0) {
 										this.setState({ isLoggedIn: true });
+									} else {
+										this.showAlert();
 									}
 								}}
 								style={appStyles.rectButton}
@@ -60,11 +81,17 @@ class LoginIos extends React.Component {
 							</TouchableOpacity>
 
 							<TouchableOpacity
-								onPress={() => {
-									this.props.signup(this.state.email, this.state.password);
+								onPress={async () => {
+									await this.props.signup(
+										this.state.email,
+										this.state.password
+									);
 
-									if (this.props.user) {
+									
+									if (this.props.user.id > 0) {
 										this.setState({ isLoggedIn: true });
+									} else {
+										this.showAlert();
 									}
 								}}
 								style={appStyles.rectButton}
@@ -72,6 +99,22 @@ class LoginIos extends React.Component {
 								<Text style={appStyles.buttonText}>Sign up</Text>
 							</TouchableOpacity>
 						</View>
+
+						<AwesomeAlert
+							show={showAlert}
+							showProgress={false}
+							title="Not Found"
+							message="Invalid Email/Password!"
+							closeOnTouchOutside={true}
+							closeOnHardwareBackPress={false}
+							showCancelButton={false}
+							showConfirmButton={true}
+							confirmText="Try Again"
+							confirmButtonColor="#008080"
+							onConfirmPressed={() => {
+								this.hideAlert();
+							}}
+						/>
 					</View>
 				) : (
 					<HomeIos />

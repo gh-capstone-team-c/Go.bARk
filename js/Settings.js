@@ -1,11 +1,11 @@
 /** @format */
 
 import React from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 
 import Points from './Points';
-
+import { updateUser, updateDog } from '../store/users';
 import { appStyles } from '../Styles';
 
 class Settings extends React.Component {
@@ -13,30 +13,85 @@ class Settings extends React.Component {
 		super(props);
 		this.state = {
 			editSettings: false,
+			email: '',
+			name: '',
 		};
 	}
 
 	render() {
 		return (
 			<View style={appStyles.individualMenu}>
-				<Text style={appStyles.centerText}>
-					Dog: {this.props.user.dog ? this.props.user.dog.name : 'Loading!'}
-				</Text>
-				{this.props.user ? (
-					<View>
-						<Text style={appStyles.centerText}>Happiness:</Text>
+				{!this.state.editSettings ? (
+					<>
 						<Text style={appStyles.centerText}>
-							Points: {this.props.user.points}
+							Dog: {this.props.user.dog ? this.props.user.dog.name : 'Loading!'}
 						</Text>
-						<Points style={{ justifyContent: 'center' }} />
-					</View>
-				) : (
-					<Text style={appStyles.centerText}>Happiness: 'Loading!'</Text>
-				)}
+						{this.props.user ? (
+							<View>
+								<Text style={appStyles.centerText}>
+									Email: {this.props.user.email}
+								</Text>
+								<Text style={appStyles.centerText}>
+									Points: {this.props.user.points}
+								</Text>
+								<Points style={{ justifyContent: 'center' }} />
+							</View>
+						) : (
+							<Text style={appStyles.centerText}>Happiness: 'Loading!'</Text>
+						)}
 
-				<TouchableOpacity>
-					<Text style={appStyles.centerText}>Edit Profile</Text>
-				</TouchableOpacity>
+						<TouchableOpacity>
+							<Text
+								style={appStyles.centerText}
+								onPress={() => {
+									this.setState({
+										editSettings: true,
+									});
+								}}
+							>
+								Edit Profile
+							</Text>
+						</TouchableOpacity>
+					</>
+				) : (
+					<>
+						<Text style={appStyles.centerText}>Update Your Settings!</Text>
+						<View style={appStyles.inputContainer}>
+							<TextInput
+								style={appStyles.input}
+								type="text"
+								onChangeText={(email) => this.setState({ email })}
+								placeholder="email"
+								value={this.state.email}
+							/>
+							<TextInput
+								style={appStyles.input}
+								type="text"
+								onChangeText={(name) => this.setState({ name })}
+								placeholder="dog name"
+								value={this.state.name}
+							/>
+							<TouchableOpacity>
+								<Text
+									style={appStyles.centerText}
+									onPress={() => {
+										let name = this.state.name;
+
+										let email = this.state.email;
+
+										this.props.update({ email, name });
+										this.props.updateDog({ name }, this.props.user.dog.id);
+										this.setState({
+											editSettings: false,
+										});
+									}}
+								>
+									Submit
+								</Text>
+							</TouchableOpacity>
+						</View>
+					</>
+				)}
 			</View>
 		);
 	}
@@ -49,4 +104,11 @@ const mapState = (state) => {
 	};
 };
 
-export default connect(mapState)(Settings);
+const mapDispatch = (dispatch) => {
+	return {
+		update: (obj) => dispatch(updateUser(obj)),
+		updateDog: (nameObj, id) => dispatch(updateDog(nameObj, id)),
+	};
+};
+
+export default connect(mapState, mapDispatch)(Settings);

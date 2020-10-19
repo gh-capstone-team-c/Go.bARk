@@ -20,13 +20,7 @@ class Points extends React.Component {
 
 		return (
 			<View>
-				<TouchableOpacity
-					onPress={() => {
-						this.props.addPoints({ points: this.props.user.points + 1 });
-					}}
-				>
-					<Text style={[{ fontSize: 30 }, appStyles.centerText]}>{heart}</Text>
-				</TouchableOpacity>
+				<Text style={[{ fontSize: 30 }, appStyles.centerText]}>{heart}</Text>
 			</View>
 		);
 	}

@@ -7,6 +7,7 @@ import { createLogger } from 'redux-logger'; // https://github.com/evgenyrodiono
 import { composeWithDevTools } from 'redux-devtools-extension';
 import thunkMiddleware from 'redux-thunk';
 import userReducer from './users';
+import allUsersReducer from './allUsers';
 import photoReducer from './photos';
 
 let middleware = [
@@ -22,6 +23,7 @@ if (process.browser) {
 
 const rootReducer = combineReducers({
 	user: userReducer,
+	allUsers: allUsersReducer,
 	photos: photoReducer,
 });
 
