@@ -66,6 +66,7 @@ export default BallThrowAR = createReactClass({
 						width={0.5}
 						source={require('./res/camera.png')}
 						position={[1.8, -3.4, -6]}
+						onClick={this._onPress}
 					/>
 					<ViroImage
 						height={0.7}
@@ -200,7 +201,7 @@ export default BallThrowAR = createReactClass({
 
 	_onPress() {
 		alert('you pressed me');
-		// this.props.arSceneNavigator.push({ scene: FoodTime });
+		this.props.arSceneNavigator.push({ scene: FoodTime });
 	},
 
 	_onBallClick(stateValue, position, source) {
