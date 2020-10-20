@@ -9,6 +9,7 @@ import {
 	ViroPortalScene,
 	ViroPortal,
 	ViroImage,
+	ViroSound,
 	ViroText,
 	ViroAmbientLight,
 } from 'react-viro';
@@ -25,6 +26,7 @@ export default WalkPortal = createReactClass({
 		return {
 			user: this.props.user,
 			addPoints: this.props.addPoints,
+			playSound: true,
 		};
 	},
 
@@ -33,12 +35,18 @@ export default WalkPortal = createReactClass({
 		return (
 			<ViroPortalScene
 				passable={true}
-				onPortalEnter={() =>
-					this.state.addPoints({ points: this.state.user.points++ })
-				}
-				onPortalExit={() =>
-					this.state.addPoints({ points: this.state.user.points++ })
-				}
+				onPortalEnter={() => {
+					this.state.addPoints({ points: this.state.user.points++ });
+					this.setState({
+						playSound: !this.state.playSound,
+					});
+				}}
+				onPortalExit={() => {
+					this.state.addPoints({ points: this.state.user.points++ });
+					this.setState({
+						playSound: !this.state.playSound,
+					});
+				}}
 				// dragType="FixedDistance"
 				// onDrag={() => {}}
 			>
@@ -71,6 +79,14 @@ export default WalkPortal = createReactClass({
 						type="VRX"
 					/>
 				</ViroNode>
+
+				<ViroSound
+					paused={this.state.playSound}
+					muted={false}
+					source={require('./sounds/birdsPark.mp3')}
+					loop={true}
+					volume={1.0}
+				/>
 			</ViroPortalScene>
 		);
 	},

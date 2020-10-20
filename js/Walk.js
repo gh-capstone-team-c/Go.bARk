@@ -35,23 +35,12 @@ export default Walk = createReactClass({
 			<ViroARScene>
 				<ViroAmbientLight color={'#e8e0dc'} />
 
-				{/* dog */}
-				{/* <ViroNode position={[0, -10, -20]} scale={[0.1, 0.1, 0.1]}>
-					<Viro3DObject
-						source={dog[dogColor]}
-						/* position={[0, -10, -10]}
-            scale={[0.1, 0.1, 0.1]} */
-				// 		type="VRX"
-				// 	/>
-				// </ViroNode> */}
-
 				<ViroText
 					text={'Go for a walk!'}
 					scale={[1, 1, 1]}
 					position={[0, 1, -4]}
 				/>
 
-				// {/* poop emoji next to the portal */}
 				<ViroNode
 					position={[-1, 0, 2]}
 					// this.state.addPoints({ points: this.state.user.points++ });
