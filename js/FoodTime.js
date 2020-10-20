@@ -1,3 +1,5 @@
+/** @format */
+
 import React from 'react';
 import {
   ViroARScene,
@@ -22,21 +24,22 @@ const dogStand = {
   red: require('./res/dogColors/redDog.vrx'),
   blackTan: require('./res/dogColors/blackTanDog.vrx'),
   cream: require('./res/dogColors/creamDog.vrx'),
+
 };
 
 export default FoodTime = createReactClass({
-  getInitialState() {
-    return {
-      user: this.props.user,
-      addPoints: this.props.addPoints,
-    };
-  },
+	getInitialState() {
+		return {
+			user: this.props.user,
+			addPoints: this.props.addPoints,
+		};
+	},
 
-  render() {
-    const dogColor = this.state.user.dog.color;
-    return (
-      <ViroARScene>
-        <ViroARCamera>
+	render() {
+		const dogColor = this.state.user.dog.color;
+		return (
+			<ViroARScene>
+				<ViroARCamera>
           <ViroNode>
             <ViroImage
               height={0.04}
