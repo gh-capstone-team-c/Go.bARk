@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import Points from './Points';
 import { updateUser, updateDog } from '../store/users';
 import { appStyles } from '../Styles';
+import AwesomeAlert from 'react-native-awesome-alerts';
 
 class Settings extends React.Component {
 	constructor(props) {
@@ -15,10 +16,24 @@ class Settings extends React.Component {
 			editSettings: false,
 			email: '',
 			name: '',
+			showAlert: false,
 		};
 	}
 
+	showAlert = () => {
+		this.setState({
+			showAlert: true,
+		});
+	};
+
+	hideAlert = () => {
+		this.setState({
+			showAlert: false,
+		});
+	};
+
 	render() {
+		const { showAlert } = this.state;
 		return (
 			<View style={appStyles.individualMenu}>
 				{!this.state.editSettings ? (
@@ -76,14 +91,17 @@ class Settings extends React.Component {
 									style={appStyles.centerText}
 									onPress={() => {
 										let name = this.state.name;
-
 										let email = this.state.email;
 
-										this.props.update({ email, name });
-										this.props.updateDog({ name }, this.props.user.dog.id);
-										this.setState({
-											editSettings: false,
-										});
+										if (email.trim() === '' || name.trim() === '') {
+											this.showAlert();
+										} else {
+											this.props.update({ email, name });
+											this.props.updateDog({ name }, this.props.user.dog.id);
+											this.setState({
+												editSettings: false,
+											});
+										}
 									}}
 								>
 									Submit
@@ -92,6 +110,21 @@ class Settings extends React.Component {
 						</View>
 					</>
 				)}
+				<AwesomeAlert
+					show={showAlert}
+					showProgress={false}
+					title="Uh Oh..."
+					message="Please enter an email and dog name!"
+					closeOnTouchOutside={true}
+					closeOnHardwareBackPress={false}
+					showCancelButton={false}
+					showConfirmButton={true}
+					confirmText="Ok"
+					confirmButtonColor="#008080"
+					onConfirmPressed={() => {
+						this.hideAlert();
+					}}
+				/>
 			</View>
 		);
 	}

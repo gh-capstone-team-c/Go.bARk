@@ -159,7 +159,7 @@ export const updateUser = (stateObj) => {
 				stateObj,
 				state: getState,
 			});
-			console.log('redux', state);
+		
 		} catch (err) {
 			console.log(err);
 		}
