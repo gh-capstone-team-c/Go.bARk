@@ -26,6 +26,7 @@ class HomeAndroid extends React.Component {
 			showAlert: false,
 		};
 	}
+
 	showAlert = () => {
 		this.setState({
 			showAlert: true,
@@ -37,6 +38,7 @@ class HomeAndroid extends React.Component {
 			showAlert: false,
 		});
 	};
+
 
 	render() {
 		return (
@@ -141,6 +143,7 @@ class HomeAndroid extends React.Component {
 				) : (
 					<App />
 				)}
+
 			</View>
 		);
 	}
