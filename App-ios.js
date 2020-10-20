@@ -30,7 +30,6 @@ import Screenshot from './js/Screenshot';
 import Photos from './js/Photos';
 import Settings from './js/Settings';
 import Friends from './js/Friends';
-import DogBowl from './js/DogBowl';
 
 import Points from './js/Points';
 
@@ -50,140 +49,122 @@ export class AppIos extends Component {
 	constructor(props) {
 		super(props);
 
-		this.state = {
-			pressed: false,
-			menuItem: null,
-			//trying to pass the addpoints redux function to AR scene
-			viroAppProps: {
-				user: this.props.user,
-				addPoints: this.props.addPoints,
-				// displayObject: false,
-			},
-		};
-		// this.changeScene = this.changeScene.bind(this);
-	}
+    this.state = {
+      pressed: false,
+      menuItem: null,
+      //trying to pass the addpoints redux function to AR scene
+      viroAppProps: {
+        user: this.props.user,
+        addPoints: this.props.addPoints,
+      },
+    };
+  }
 
-	// changeScene() {
-	//   if (!this.state.displayObject) {
-	//     this.setState({ displayObject: true });
-	//     this.forceUpdate(() => {});
-	//     alert(`in the force update ${this.state.displayObject}`);
-	//   } else {
-	//     this.setState({
-	//       displayObject: !this.state.viroAppProps.displayObject,
-	//     });
-	//     alert(`${this.state.displayObject}`);
-	//   }
-	// }
+  render() {
+    return (
+      <View style={appStyles.container}>
+        <View>
+          {/* checks to see if start button was pressed */}
+          {!this.state.pressed ? (
+            <View>
+              <Text style={appStyles.titleText}>go</Text>
+              <TouchableOpacity
+                style={appStyles.buttons}
+                onPress={() => {
+                  Vibration.vibrate();
+                  this.setState({ pressed: true });
+                }}
+                underlayColor={'transparent'}
+              >
+                <Image
+                  style={appStyles.logo}
+                  source={require('./js/res/shibaFace.png')}
+                />
+              </TouchableOpacity>
+              <Text style={appStyles.titleText}>bARk</Text>
+            </View>
+          ) : (
+            // renders the game menu and the ARScene player
+            <View
+              style={{
+                width: width,
+                height: height,
+              }}
+            >
+              {/* menubar toggles the different menu components */}
+              <View style={appStyles.appleMenu}>
+                <View style={appStyles.menuContainer}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      if (this.state.menuItem === 'settings')
+                        this.setState({ menuItem: null });
+                      else this.setState({ menuItem: 'settings' });
+                    }}
+                  >
+                    <Text style={appStyles.menuHeadings}>My Profile</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() => {
+                      if (this.state.menuItem === 'friends')
+                        this.setState({ menuItem: null });
+                      else this.setState({ menuItem: 'friends' });
+                    }}
+                  >
+                    <Text style={appStyles.menuHeadings}>Friends</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() => {
+                      if (this.state.menuItem === 'photos')
+                        this.setState({ menuItem: null });
+                      else this.setState({ menuItem: 'photos' });
+                    }}
+                  >
+                    <Text style={appStyles.menuHeadings}>Photos</Text>
+                  </TouchableOpacity>
+                  <View style={{ top: -20 }}>
+                    <Points />
+                  </View>
+                </View>
+              </View>
+              {/* scene navigator */}
+              <View style={appStyles.appSceneNav}>
+                <ViroARSceneNavigator
+                  initialScene={{
+                    scene: InitialARScene,
+                  }}
+                  viroAppProps={this.state.viroAppProps}
+                />
+              </View>
+              <View>
+                {renderIf(
+                  this.state.menuItem === 'settings',
+                  <View style={appStyles.appMenuDropDown}>
+                    <ScrollView>
+                      <Settings />
+                    </ScrollView>
+                  </View>
+                )}
+                {renderIf(
+                  this.state.menuItem === 'friends',
+                  <View style={appStyles.appMenuDropDown}>
+                    <ScrollView>
+                      <Friends />
+                    </ScrollView>
+                  </View>
+                )}
+                {renderIf(
+                  this.state.menuItem === 'photos',
+                  <View style={appStyles.appMenuDropDown}>
+                    <ScrollView>
+                      <Photos />
+                    </ScrollView>
+                  </View>
+                )}
+              </View>
 
-	render() {
-		console.log(this.props.user);
-		return (
-			<View style={appStyles.container}>
-				<View>
-					{/* checks to see if start button was pressed */}
-					{!this.state.pressed ? (
-						<View>
-							<Text style={appStyles.titleText}>go</Text>
-							<TouchableOpacity
-								style={appStyles.buttons}
-								onPress={() => {
-									Vibration.vibrate();
-									this.setState({ pressed: true });
-								}}
-								underlayColor={'transparent'}
-							>
-								<Image
-									style={appStyles.logo}
-									source={require('./js/res/shibaFace.png')}
-								/>
-							</TouchableOpacity>
-							<Text style={appStyles.titleText}>bARk</Text>
-						</View>
-					) : (
-						// renders the game menu and the ARScene player
-						<View
-							style={{
-								width: width,
-								height: height,
-							}}
-						>
-							{/* menubar toggles the different menu components */}
-							<View style={appStyles.appleMenu}>
-								<View style={appStyles.menuContainer}>
-									<TouchableOpacity
-										onPress={() => {
-											if (this.state.menuItem === 'settings')
-												this.setState({ menuItem: null });
-											else this.setState({ menuItem: 'settings' });
-										}}
-									>
-										<Text style={appStyles.menuHeadings}>My Profile</Text>
-									</TouchableOpacity>
-									<TouchableOpacity
-										onPress={() => {
-											if (this.state.menuItem === 'friends')
-												this.setState({ menuItem: null });
-											else this.setState({ menuItem: 'friends' });
-										}}
-									>
-										<Text style={appStyles.menuHeadings}>Friends</Text>
-									</TouchableOpacity>
-									<TouchableOpacity
-										onPress={() => {
-											if (this.state.menuItem === 'photos')
-												this.setState({ menuItem: null });
-											else this.setState({ menuItem: 'photos' });
-										}}
-									>
-										<Text style={appStyles.menuHeadings}>Photos</Text>
-									</TouchableOpacity>
-									<View style={{ top: -20 }}>
-										<Points />
-									</View>
-								</View>
-							</View>
-							{/* scene navigator */}
-							<View style={appStyles.appSceneNav}>
-								<ViroARSceneNavigator
-									initialScene={{
-										scene: InitialARScene,
-									}}
-									viroAppProps={this.state.viroAppProps}
-								/>
-							</View>
-							<View>
-								{renderIf(
-									this.state.menuItem === 'settings',
-									<View style={appStyles.appMenuDropDown}>
-										<ScrollView>
-											<Settings />
-										</ScrollView>
-									</View>
-								)}
-								{renderIf(
-									this.state.menuItem === 'friends',
-									<View style={appStyles.appMenuDropDown}>
-										<ScrollView>
-											<Friends />
-										</ScrollView>
-									</View>
-								)}
-								{renderIf(
-									this.state.menuItem === 'photos',
-									<View style={appStyles.appMenuDropDown}>
-										<ScrollView>
-											<Photos />
-										</ScrollView>
-									</View>
-								)}
-							</View>
 
 							{/* <View style={{ position: 'absolute', bottom: 25, right: 10 }}>
                 <Screenshot />
-              </View> */}
-							{/* <View style={{ position: 'absolute', bottom: 25, left: 10 }}>
-                <DogBowl changeScene={this.changeScene} />
               </View> */}
 						</View>
 					)}
