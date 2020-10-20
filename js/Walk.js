@@ -13,6 +13,7 @@ import {
 	ViroAmbientLight,
 } from 'react-viro';
 var createReactClass = require('create-react-class');
+var WalkPortal = require('./WalkPortal');
 
 const dog = {
 	red: require('./res/dogColors/redDog.vrx'),
@@ -35,14 +36,14 @@ export default Walk = createReactClass({
 				<ViroAmbientLight color={'#e8e0dc'} />
 
 				{/* dog */}
-				<ViroNode position={[0, -10, -20]} scale={[0.1, 0.1, 0.1]}>
+				{/* <ViroNode position={[0, -10, -20]} scale={[0.1, 0.1, 0.1]}>
 					<Viro3DObject
 						source={dog[dogColor]}
 						/* position={[0, -10, -10]}
             scale={[0.1, 0.1, 0.1]} */
-						type="VRX"
-					/>
-				</ViroNode>
+				// 		type="VRX"
+				// 	/>
+				// </ViroNode> */}
 
 				<ViroText
 					text={'Go for a walk!'}
@@ -50,7 +51,7 @@ export default Walk = createReactClass({
 					position={[0, 1, -4]}
 				/>
 
-				{/* poop emoji next to the portal */}
+				// {/* poop emoji next to the portal */}
 				<ViroNode
 					position={[-1, 0, 2]}
 					// this.state.addPoints({ points: this.state.user.points++ });
@@ -61,6 +62,7 @@ export default Walk = createReactClass({
 					}
 				>
 					<Viro3DObject
+						rotation={[0, 180, 0]}
 						source={require('./res/emoji_poop/emoji_poop.vrx')}
 						resources={[
 							require('./res/emoji_poop/emoji_poop_diffuse.png'),
@@ -72,31 +74,7 @@ export default Walk = createReactClass({
 					/>
 				</ViroNode>
 
-				<ViroPortalScene
-					passable={true}
-					onPortalEnter={() =>
-						this.state.addPoints({ points: this.state.user.points++ })
-					}
-					onPortalExit={() =>
-						this.state.addPoints({ points: this.state.user.points++ })
-					}
-					// dragType="FixedDistance"
-					// onDrag={() => {}}
-				>
-					{/* render the portal on the other side of the user */}
-					<ViroPortal position={[0, 0, 3]} scale={[1, 1, 1]}>
-						<Viro3DObject
-							source={require('./res/portal/portal_picture_frame.vrx')}
-							resources={[
-								require('./res/portal/portal_picture_frame_diffuse.png'),
-								require('./res/portal/portal_picture_frame_normal.png'),
-								require('./res/portal/portal_picture_frame_specular.png'),
-							]}
-							type="VRX"
-						/>
-					</ViroPortal>
-					<Viro360Image source={require('./res/360_park.jpg')} />
-				</ViroPortalScene>
+				<WalkPortal user={this.state.user} addPoints={this.state.addPoints} />
 			</ViroARScene>
 		);
 	},

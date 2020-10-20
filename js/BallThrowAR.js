@@ -48,11 +48,8 @@ export default BallThrowAR = createReactClass({
 	render() {
 		const dogColor = this.state.user.dog.color;
 		return (
-			<ViroARScene
-				ref="arscene"
-				//  _onTrackingUpdated={this._onTrackingUpdated}
-			>
-				<ViroARCamera>
+			<ViroARScene ref="arscene">
+				{/* <ViroARCamera>
 					<ViroImage
 						height={0.04}
 						width={0.04}
@@ -77,9 +74,9 @@ export default BallThrowAR = createReactClass({
 							width={0.05}
 							source={require('./res/bone.png')}
 							position={[-0.08, -0.16, -0.3] /* -1.2, -2.8, -5 */}
-						/>
-					</ViroNode>
-				</ViroARCamera>
+				{/* /> */}
+				{/* </ViroNode> */}
+				{/* </ViroARCamera> */}
 				<ViroText
 					text={this.state.text}
 					scale={[1, 1, 1]}
@@ -167,6 +164,7 @@ export default BallThrowAR = createReactClass({
 					}
 				>
 					<Viro3DObject
+						rotation={[0, 180, 0]}
 						source={require('./res/emoji_poop/emoji_poop.vrx')}
 						resources={[
 							require('./res/emoji_poop/emoji_poop_diffuse.png'),
@@ -177,9 +175,9 @@ export default BallThrowAR = createReactClass({
 						type="VRX"
 					/>
 					{/* <ViroText text="Walk me!" position={[-1, 0, 2]} /> */}
-				</ViroNode>
+				 </ViroNode>
 
-				
+
 			</ViroARScene>
 		);
 	},
