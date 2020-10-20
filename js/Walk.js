@@ -36,9 +36,20 @@ export default Walk = createReactClass({
 				<ViroAmbientLight color={'#e8e0dc'} />
 
 				<ViroText
-					text={'Go for a walk!'}
+					text={'Hope you had a nice walk!'}
 					scale={[1, 1, 1]}
 					position={[0, 1, -4]}
+				/>
+
+				<ViroText
+					text={'Swipe to go home'}
+					scale={[1, 1, 1]}
+					position={[0, 0, -4]}
+					onDrag={() =>
+						this.props.arSceneNavigator.push({
+							scene: require('./BallThrowAR'),
+						})
+					}
 				/>
 
 				<ViroNode
