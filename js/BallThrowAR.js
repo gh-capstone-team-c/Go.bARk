@@ -11,6 +11,7 @@ import {
 	ViroPortalScene,
 	ViroPortal,
 	ViroAnimations,
+	ViroAnimatedImage,
 	ViroText,
 	ViroQuad,
 	ViroARCamera,
@@ -150,7 +151,7 @@ export default BallThrowAR = createReactClass({
 					/>
 				</ViroNode>
 
-				{/* poop emoji next to the portal */}
+				{/* emoji next to the portal*/}
 				<ViroNode
 					position={[-1, 0, 2]}
 					onDrag={() =>
@@ -162,22 +163,25 @@ export default BallThrowAR = createReactClass({
 							},
 						})
 					}
+					scale={[1, 1, 1]}
+					transformBehaviors={['billboardY']}
 				>
-					<Viro3DObject
-						rotation={[0, 180, 0]}
-						source={require('./res/emoji_poop/emoji_poop.vrx')}
-						resources={[
-							require('./res/emoji_poop/emoji_poop_diffuse.png'),
-							require('./res/emoji_poop/emoji_poop_normal.png'),
-							require('./res/emoji_poop/emoji_poop_specular.png'),
-						]}
-						position={[-1, 0, 2]}
-						type="VRX"
+					<ViroAnimatedImage
+						scale={[0.5, 0.5, 0.5]}
+						position={[0, 0, 0]}
+						rotation={[0, 0, 0]}
+						animation={{
+							run: this.state.playAnim,
+							loop: true,
+							delay: 0,
+						}}
+						height={1}
+						width={1}
+						source={{
+							uri: 'https://media.giphy.com/media/WqFXkK7CsTReoyGwWd/giphy.gif',
+						}}
 					/>
-					{/* <ViroText text="Walk me!" position={[-1, 0, 2]} /> */}
-				 </ViroNode>
-
-
+				</ViroNode>
 			</ViroARScene>
 		);
 	},
