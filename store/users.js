@@ -150,19 +150,19 @@ export const logout = () => async (dispatch) => {
 
 //edit user
 export const updateUser = (stateObj) => {
-  return async (dispatch, getState) => {
-    try {
-      await axios.put(`https://gobark-backend.herokuapp.com/auth/me`, stateObj);
-      dispatch({
-        type: UPDATE_USER,
-        stateObj,
-        state: getState,
-      });
-      console.log('redux', state);
-    } catch (err) {
-      console.log(err);
-    }
-  };
+	return async (dispatch, getState) => {
+		try {
+			await axios.put(`https://gobark-backend.herokuapp.com/auth/me`, stateObj);
+			dispatch({
+				type: UPDATE_USER,
+				stateObj,
+				state: getState,
+			});
+		
+		} catch (err) {
+			console.log(err);
+		}
+	};
 };
 
 //update the user's dog

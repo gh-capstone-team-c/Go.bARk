@@ -28,9 +28,11 @@ class Friends extends React.Component {
 	}
 	filterUsers() {
 		let tempIDs = {};
-		this.props.user.follower.map((user) => {
-			if (!tempIDs[user.id]) tempIDs[user.id] = true;
-		});
+
+		
+		// this.props.user.follower.map((user) => {
+		// 	if (!tempIDs[user.id]) tempIDs[user.id] = true;
+		// });
 		this.props.user.following.map((user) => {
 			if (!tempIDs[user.id]) tempIDs[user.id] = true;
 		});
@@ -70,41 +72,50 @@ class Friends extends React.Component {
 								<Text>Currently Viewing: Following</Text>
 
 								<View>
-									{this.props.user.following.map((user) => {
-										let heart = '🤍';
-										if (user.points >= 5) heart = '🧡';
-										if (user.points >= 10) heart = '💛';
-										if (user.points >= 15) heart = '💚';
-										if (user.points >= 30) heart = '💖';
+									{this.props.user.following
+										.sort((a, b) => {
+											return b.points - a.points;
+										})
+										.map((user) => {
+											let heart = '🤍';
+											if (user.points >= 5) heart = '🧡';
+											if (user.points >= 10) heart = '💛';
+											if (user.points >= 15) heart = '💚';
+											if (user.points >= 30) heart = '💖';
 
-										return (
-											<View styles={appStyles.friendContainer} key={user.id}>
-												<Image
-													style={appStyles.tinyImage}
-													source={{ uri: user.imageUrl }}
-												/>
-												<Text style={appStyles.centerText}>{user.email}</Text>
-												{/* <Image
+											return (
+												<View styles={appStyles.friendContainer} key={user.id}>
+													<Image
+														style={appStyles.tinyImage}
+														source={{ uri: user.imageUrl }}
+													/>
+													<Text style={appStyles.centerText}>{user.email}</Text>
+													{/* <Image
 								style={appStyles.miniImage}
 								source={{ uri: user.dog.imageUrl }}
 							/> */}
-												<Text style={[{ fontSize: 30 }, appStyles.centerText]}>
-													{heart}
-												</Text>
+													<Text
+														style={[{ fontSize: 30 }, appStyles.centerText]}
+													>
+														{heart} points: {user.points}
+													</Text>
 
-												<TouchableOpacity
-													onPress={() => {
-														this.props.removeFollowing(user.id, user);
-														let newIds = this.state.friendIds;
-														newIds[user.id] = null;
-														this.setState({ ...this.state, friendIds: newIds });
-													}}
-												>
-													<Text>Remove Follow</Text>
-												</TouchableOpacity>
-											</View>
-										);
-									})}
+													<TouchableOpacity
+														onPress={() => {
+															this.props.removeFollowing(user.id, user);
+															let newIds = this.state.friendIds;
+															newIds[user.id] = null;
+															this.setState({
+																...this.state,
+																friendIds: newIds,
+															});
+														}}
+													>
+														<Text>Remove Follow</Text>
+													</TouchableOpacity>
+												</View>
+											);
+										})}
 								</View>
 							</View>
 						) : (
@@ -112,30 +123,36 @@ class Friends extends React.Component {
 								<Text>Currently Viewing: Followers</Text>
 
 								<View>
-									{this.props.user.follower.map((user) => {
-										let heart = '🤍';
-										if (user.points >= 5) heart = '🧡';
-										if (user.points >= 10) heart = '💛';
-										if (user.points >= 15) heart = '💚';
-										if (user.points >= 30) heart = '💖';
+									{this.props.user.follower
+										.sort((a, b) => {
+											return b.points - a.points;
+										})
+										.map((user) => {
+											let heart = '🤍';
+											if (user.points >= 5) heart = '🧡';
+											if (user.points >= 10) heart = '💛';
+											if (user.points >= 15) heart = '💚';
+											if (user.points >= 30) heart = '💖';
 
-										return (
-											<View styles={appStyles.friendContainer} key={user.id}>
-												<Image
-													style={appStyles.tinyImage}
-													source={{ uri: user.imageUrl }}
-												/>
-												<Text style={appStyles.centerText}>{user.email}</Text>
-												{/* <Image
+											return (
+												<View styles={appStyles.friendContainer} key={user.id}>
+													<Image
+														style={appStyles.tinyImage}
+														source={{ uri: user.imageUrl }}
+													/>
+													<Text style={appStyles.centerText}>{user.email}</Text>
+													{/* <Image
 								style={appStyles.miniImage}
 								source={{ uri: user.dog.imageUrl }}
 							/> */}
-												<Text style={[{ fontSize: 30 }, appStyles.centerText]}>
-													{heart}
-												</Text>
-											</View>
-										);
-									})}
+													<Text
+														style={[{ fontSize: 30 }, appStyles.centerText]}
+													>
+														{heart} points: {user.points}
+													</Text>
+												</View>
+											);
+										})}
 								</View>
 							</View>
 						)}
@@ -150,6 +167,9 @@ class Friends extends React.Component {
 									person.id !== this.props.user.id &&
 									person.id !== 1
 							)
+							.sort((a, b) => {
+								return b.points - a.points;
+							})
 							.map((user) => {
 								let heart = '🤍';
 								if (user.points >= 5) heart = '🧡';
@@ -169,7 +189,7 @@ class Friends extends React.Component {
 								source={{ uri: user.dog.imageUrl }}
 							/> */}
 										<Text style={[{ fontSize: 30 }, appStyles.centerText]}>
-											{heart}
+											{heart} points: {user.points}
 										</Text>
 
 										<TouchableOpacity

@@ -25,23 +25,24 @@ const dog = {
 };
 
 export default BallThrowAR = createReactClass({
-  getInitialState() {
-    return {
-      currentAnimation: 'rotate',
-      text: 'Play with me!',
-      dogScale: [0.1, 0.1, 0.1],
-      scale: [0.7, 0.7, 0.7],
-      dogPosition: [0, -10, -20],
-      ballPosition: [0, -2.6, -10],
-      playCount: 0,
-      rotation: [0, 0, 0],
-      dogAnimation: 'waiting',
-      //trying to pass function to AR component
-      user: this.props.arSceneNavigator.viroAppProps.user,
-      addPoints: this.props.arSceneNavigator.viroAppProps.addPoints,
-      // displayObject: false,
-    };
-  },
+	getInitialState() {
+		return {
+			currentAnimation: 'rotate',
+			text: 'Play with me!',
+			dogScale: [0.1, 0.1, 0.1],
+			scale: [0.7, 0.7, 0.7],
+			dogPosition: [0, -10, -20],
+			ballPosition: [0, -2.6, -10],
+			playCount: 0,
+			rotation: [0, 0, 0],
+			dogAnimation: 'waiting',
+			showPortal: false,
+			//passing redux function to AR component
+			user: this.props.arSceneNavigator.viroAppProps.user,
+			addPoints: this.props.arSceneNavigator.viroAppProps.addPoints,
+			// displayObject: false,
+		};
+	},
 
   render() {
     const dogColor = this.state.user.dog.color;
@@ -151,59 +152,74 @@ export default BallThrowAR = createReactClass({
           />
         </ViroNode>
 
-        {/* poop emoji next to the portal */}
-        <ViroNode
-          position={[-1, 0, 2]}
-          onClick={() =>
-            this.state.addPoints({ points: this.state.user.points++ })
-          }
-        >
-          <Viro3DObject
-            source={require('./res/emoji_poop/emoji_poop.vrx')}
-            resources={[
-              require('./res/emoji_poop/emoji_poop_diffuse.png'),
-              require('./res/emoji_poop/emoji_poop_normal.png'),
-              require('./res/emoji_poop/emoji_poop_specular.png'),
-            ]}
-            position={[-1, 0, 2]}
-            type="VRX"
-          />
-          {/* <ViroText text="Walk me!" position={[-1, 0, 2]} /> */}
-        </ViroNode>
-        <ViroPortalScene
-          passable={true}
+				{/* poop emoji next to the portal */}
+				<ViroNode
+					position={[-1, 0, 2]}
+					onDrag={() => {
+						// this.state.addPoints({ points: this.state.user.points++ });
+						this.setState({
+							showPortal: !this.state.showPortal,
+						});
+					}}
+				>
+					<Viro3DObject
+						source={require('./res/emoji_poop/emoji_poop.vrx')}
+						resources={[
+							require('./res/emoji_poop/emoji_poop_diffuse.png'),
+							require('./res/emoji_poop/emoji_poop_normal.png'),
+							require('./res/emoji_poop/emoji_poop_specular.png'),
+						]}
+						position={[-1, 0, 2]}
+						type="VRX"
+					/>
+					{/* <ViroText text="Walk me!" position={[-1, 0, 2]} /> */}
+				</ViroNode>
 
-          // dragType="FixedDistance"
-          // onDrag={() => {}}
-        >
-          {/* render the portal on the other side of the user */}
-          <ViroPortal position={[0, 0, 3]} scale={[1, 1, 1]}>
-            <Viro3DObject
-              source={require('./res/portal/portal_picture_frame.vrx')}
-              resources={[
-                require('./res/portal/portal_picture_frame_diffuse.png'),
-                require('./res/portal/portal_picture_frame_normal.png'),
-                require('./res/portal/portal_picture_frame_specular.png'),
-              ]}
-              type="VRX"
-            />
-          </ViroPortal>
-          <Viro360Image source={require('./res/360_park.jpg')} />
+				{/* this isnt displaying and idk why */}
+				<ViroText
+					text="swipe the emoji"
+					scale={[1, 1, 1]}
+					position={[-1.5, 0, 3]}
+				/>
 
-          {/* <ViroText
-						text="welcome to the portal"
-						scale={[0.5, 0.5, 0.5]}
-						position={[0, 0.4, -3]}
-					/> */}
-        </ViroPortalScene>
-      </ViroARScene>
-    );
-  },
+				{this.state.showPortal ? (
+					<ViroPortalScene
+						passable={true}
+						onPortalEnter={() =>
+							this.state.addPoints({ points: this.state.user.points++ })
+						}
+						onPortalExit={() =>
+							this.state.addPoints({ points: this.state.user.points++ })
+						}
+						// dragType="FixedDistance"
+						// onDrag={() => {}}
+					>
+						{/* render the portal on the other side of the user */}
+						<ViroPortal position={[0, 0, 3]} scale={[1, 1, 1]}>
+							<Viro3DObject
+								source={require('./res/portal/portal_picture_frame.vrx')}
+								resources={[
+									require('./res/portal/portal_picture_frame_diffuse.png'),
+									require('./res/portal/portal_picture_frame_normal.png'),
+									require('./res/portal/portal_picture_frame_specular.png'),
+								]}
+								type="VRX"
+							/>
+						</ViroPortal>
+						<Viro360Image source={require('./res/360_park.jpg')} />
+						
+					</ViroPortalScene>
+				) : (
+					<ViroText
+						text="click the emoji"
+						scale={[1, 1, 1]}
+						position={[0, 0, 3]}
+					/>
+				)}
+			</ViroARScene>
+		);
+	},
 
-  // _onPress() {
-  //   // alert('you pressed me');
-  //   // this.props.arSceneNavigator.push({ scene: FoodTime });
-  // },
 
   _onBallClick(stateValue, position, source) {
     //incremental counter to limit number of consecutive games of catch with dog
