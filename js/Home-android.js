@@ -13,6 +13,7 @@ import { connect } from 'react-redux';
 import App from '../App';
 import { appStyles } from '../Styles';
 import { myDog } from '../store/users';
+import RNPickerSelect from 'react-native-picker-select';
 import AwesomeAlert from 'react-native-awesome-alerts';
 
 class HomeAndroid extends React.Component {
@@ -38,10 +39,8 @@ class HomeAndroid extends React.Component {
 		});
 	};
 
-	render() {
-		// console.log('dog in component', this.props.user.dog);
-		const { showAlert } = this.state;
 
+	render() {
 		return (
 			<View>
 				{!this.state.pressed ? (
@@ -71,16 +70,17 @@ class HomeAndroid extends React.Component {
 										value={this.state.dogName}
 									/>
 									<Text style={appStyles.homeText}>
-										Choose dog's color: red, blackTan, or cream{' '}
+										Choose dog's color: Red, Black/Tan, or Cream
 									</Text>
-									<TextInput
-										style={appStyles.input}
-										type="text"
-										placeholder="dog color"
-										onChangeText={(dogColor) => {
-											this.setState({ dogColor });
+									<RNPickerSelect
+										onValueChange={(value) => {
+											this.setState({ dogColor: value });
 										}}
-										value={this.state.dogColor}
+										items={[
+											{ label: 'Red', value: 'red' },
+											{ label: 'Black & Tan', value: 'blackTan' },
+											{ label: 'Cream', value: 'cream' },
+										]}
 									/>
 									<TouchableOpacity
 										style={appStyles.rectButton}
@@ -90,13 +90,7 @@ class HomeAndroid extends React.Component {
 												this.state.dogName.trim() === ''
 											) {
 												this.showAlert();
-											} else {
-												this.props.myDog({
-													name: this.state.dogName,
-													color: this.state.dogColor,
-												});
-											}
-											// this.forceUpdate();
+											} else this.showAlert();
 										}}
 									>
 										<Text style={appStyles.buttonText}>Add my dog!</Text>
@@ -125,6 +119,21 @@ class HomeAndroid extends React.Component {
 							>
 								<Text style={appStyles.buttonText}>Yes!</Text>
 							</TouchableOpacity>
+							<AwesomeAlert
+								show={this.state.showAlert}
+								showProgress={false}
+								title="Not Found"
+								message="Please fill out all your dog's details!"
+								closeOnTouchOutside={true}
+								closeOnHardwareBackPress={false}
+								showCancelButton={false}
+								showConfirmButton={true}
+								confirmText="Try Again"
+								confirmButtonColor="#008080"
+								onConfirmPressed={() => {
+									this.setState({ showAlert: false });
+								}}
+							/>
 						</View>
 					) : (
 						<Text style={appStyles.homeGreeting}>
@@ -135,21 +144,6 @@ class HomeAndroid extends React.Component {
 					<App />
 				)}
 
-				<AwesomeAlert
-					show={showAlert}
-					showProgress={false}
-					title="Uh Oh..."
-					message="Please enter a dog name and color!"
-					closeOnTouchOutside={true}
-					closeOnHardwareBackPress={false}
-					showCancelButton={false}
-					showConfirmButton={true}
-					confirmText="Ok"
-					confirmButtonColor="#008080"
-					onConfirmPressed={() => {
-						this.hideAlert();
-					}}
-				/>
 			</View>
 		);
 	}
