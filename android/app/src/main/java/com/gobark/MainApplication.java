@@ -3,6 +3,9 @@ package com.gobark;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.rnfs.RNFSPackage;
+import cl.json.RNSharePackage;
+import fr.greweb.reactnativeviewshot.RNViewShotPackage;
 import com.reactnativecommunity.picker.RNCPickerPackage;
 import fr.greweb.reactnativeviewshot.RNViewShotPackage;
 import com.swmansion.rnscreens.RNScreensPackage;
@@ -30,6 +33,9 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RNFSPackage(),
+            new RNSharePackage(),
+            new RNViewShotPackage(),
             new RNCPickerPackage(),
             new RNViewShotPackage(),
             new RNScreensPackage(),
