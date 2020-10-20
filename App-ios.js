@@ -11,15 +11,15 @@
 
 import React, { Component } from 'react';
 import {
-  AppRegistry,
-  ActivityIndicator,
-  Text,
-  View,
-  Image,
-  TouchableOpacity,
-  Vibration,
-  Dimensions,
-  ScrollView,
+	AppRegistry,
+	ActivityIndicator,
+	Text,
+	View,
+	Image,
+	TouchableOpacity,
+	Vibration,
+	Dimensions,
+	ScrollView,
 } from 'react-native';
 const { width, height } = Dimensions.get('window');
 import { ViroARSceneNavigator } from 'react-viro';
@@ -36,18 +36,18 @@ import Points from './js/Points';
 var InitialARScene = require('./js/BallThrowAR');
 
 export function renderIf(condition, renderedContent) {
-  if (condition) {
-    return renderedContent;
-  } else {
-    return null;
-  }
+	if (condition) {
+		return renderedContent;
+	} else {
+		return null;
+	}
 }
 
 import { appStyles } from './Styles';
 
 export class AppIos extends Component {
-  constructor(props) {
-    super(props);
+	constructor(props) {
+		super(props);
 
     this.state = {
       pressed: false,
@@ -162,28 +162,29 @@ export class AppIos extends Component {
                 )}
               </View>
 
-              {/* <View style={{ position: 'absolute', bottom: 25, right: 10 }}>
+
+							{/* <View style={{ position: 'absolute', bottom: 25, right: 10 }}>
                 <Screenshot />
               </View> */}
-            </View>
-          )}
-        </View>
-      </View>
-    );
-  }
+						</View>
+					)}
+				</View>
+			</View>
+		);
+	}
 }
 
 // connect to redux
 const mapState = (state) => {
-  return {
-    user: state.user,
-  };
+	return {
+		user: state.user,
+	};
 };
 
 const mapDispatch = (dispatch) => {
-  return {
-    addPoints: (obj) => dispatch(addPoints(obj)),
-  };
+	return {
+		addPoints: (obj) => dispatch(addPoints(obj)),
+	};
 };
 
 export default connect(mapState, mapDispatch)(AppIos);

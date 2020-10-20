@@ -14,18 +14,31 @@ class Friends extends React.Component {
 			loading: true,
 			myFriends: true,
 			following: true,
+			friendIds: {},
 		};
+		this.filterUsers = this.filterUsers.bind(this);
 	}
 
 	componentDidMount() {
 		this.props.getUsers();
+		this.filterUsers();
 		this.setState({
 			loading: false,
 		});
 	}
+	filterUsers() {
+		let tempIDs = {};
+		this.props.user.follower.map((user) => {
+			if (!tempIDs[user.id]) tempIDs[user.id] = true;
+		});
+		this.props.user.following.map((user) => {
+			if (!tempIDs[user.id]) tempIDs[user.id] = true;
+		});
+		this.setState({ ...this.state, friendIds: tempIDs });
+	}
 
 	render() {
-		console.log(this.props.user);
+		// console.log(this.props.user);
 		return (
 			<View style={appStyles.individualMenu}>
 				{this.state.loading && <Text>Loading!</Text>}
@@ -54,7 +67,7 @@ class Friends extends React.Component {
 						{/* toggle between following/followers */}
 						{this.state.following ? (
 							<View>
-								<Text>Following</Text>
+								<Text>Currently Viewing: Following</Text>
 
 								<View>
 									{this.props.user.following.map((user) => {
@@ -82,6 +95,9 @@ class Friends extends React.Component {
 												<TouchableOpacity
 													onPress={() => {
 														this.props.removeFollowing(user.id, user);
+														let newIds = this.state.friendIds;
+														newIds[user.id] = null;
+														this.setState({ ...this.state, friendIds: newIds });
 													}}
 												>
 													<Text>Remove Follow</Text>
@@ -93,7 +109,7 @@ class Friends extends React.Component {
 							</View>
 						) : (
 							<View>
-								<Text>Followers</Text>
+								<Text>Currently Viewing: Followers</Text>
 
 								<View>
 									{this.props.user.follower.map((user) => {
@@ -127,38 +143,48 @@ class Friends extends React.Component {
 				) : (
 					// if my friends is false, show all the users--need to make it so you only show the users who i don't follow
 					<View>
-						{this.props.allUsers.map((user) => {
-							let heart = '🤍';
-							if (user.points >= 5) heart = '🧡';
-							if (user.points >= 10) heart = '💛';
-							if (user.points >= 15) heart = '💚';
-							if (user.points >= 30) heart = '💖';
+						{this.props.allUsers
+							.filter(
+								(person) =>
+									!this.state.friendIds[person.id] &&
+									person.id !== this.props.user.id &&
+									person.id !== 1
+							)
+							.map((user) => {
+								let heart = '🤍';
+								if (user.points >= 5) heart = '🧡';
+								if (user.points >= 10) heart = '💛';
+								if (user.points >= 15) heart = '💚';
+								if (user.points >= 30) heart = '💖';
 
-							return (
-								<View styles={appStyles.friendContainer} key={user.id}>
-									<Image
-										style={appStyles.tinyImage}
-										source={{ uri: user.imageUrl }}
-									/>
-									<Text style={appStyles.centerText}>{user.email}</Text>
-									{/* <Image
+								return (
+									<View styles={appStyles.friendContainer} key={user.id}>
+										<Image
+											style={appStyles.tinyImage}
+											source={{ uri: user.imageUrl }}
+										/>
+										<Text style={appStyles.centerText}>{user.email}</Text>
+										{/* <Image
 								style={appStyles.miniImage}
 								source={{ uri: user.dog.imageUrl }}
 							/> */}
-									<Text style={[{ fontSize: 30 }, appStyles.centerText]}>
-										{heart}
-									</Text>
+										<Text style={[{ fontSize: 30 }, appStyles.centerText]}>
+											{heart}
+										</Text>
 
-									<TouchableOpacity
-										onPress={() => {
-											this.props.addFollowing(user.id, user);
-										}}
-									>
-										<Text>Follow!</Text>
-									</TouchableOpacity>
-								</View>
-							);
-						})}
+										<TouchableOpacity
+											onPress={() => {
+												this.props.addFollowing(user.id, user);
+												let newIds = this.state.friendIds;
+												newIds[user.id] = true;
+												this.setState({ ...this.state, friendIds: newIds });
+											}}
+										>
+											<Text>Follow!</Text>
+										</TouchableOpacity>
+									</View>
+								);
+							})}
 					</View>
 				)}
 			</View>
