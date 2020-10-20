@@ -10,12 +10,14 @@ import { appStyles } from '../Styles';
 import AwesomeAlert from 'react-native-awesome-alerts';
 
 class Settings extends React.Component {
+
 	constructor(props) {
 		super(props);
 		this.state = {
 			editSettings: false,
 			email: '',
 			name: '',
+      color: '',
 			showAlert: false,
 		};
 	}
@@ -86,18 +88,26 @@ class Settings extends React.Component {
 								placeholder="dog name"
 								value={this.state.name}
 							/>
+               <TextInput
+                style={appStyles.input}
+                type="text"
+                onChangeText={(color) => this.setState({ color })}
+                placeholder="color: red, blackTan, cream"
+                value={this.state.color}
+              />
 							<TouchableOpacity>
 								<Text
 									style={appStyles.centerText}
 									onPress={() => {
 										let name = this.state.name;
 										let email = this.state.email;
+                    let color = this.state.color;
 
-										if (email.trim() === '' || name.trim() === '') {
+										if (email.trim() === '' || name.trim() === '' || color.trim() === '') {
 											this.showAlert();
 										} else {
 											this.props.update({ email, name });
-											this.props.updateDog({ name }, this.props.user.dog.id);
+											this.props.updateDog({ name, color }, this.props.user.dog.id);
 											this.setState({
 												editSettings: false,
 											});
@@ -132,16 +142,16 @@ class Settings extends React.Component {
 
 // connect to redux
 const mapState = (state) => {
-	return {
-		user: state.user,
-	};
+  return {
+    user: state.user,
+  };
 };
 
 const mapDispatch = (dispatch) => {
-	return {
-		update: (obj) => dispatch(updateUser(obj)),
-		updateDog: (nameObj, id) => dispatch(updateDog(nameObj, id)),
-	};
+  return {
+    update: (obj) => dispatch(updateUser(obj)),
+    updateDog: (nameObj, id) => dispatch(updateDog(nameObj, id)),
+  };
 };
 
 export default connect(mapState, mapDispatch)(Settings);

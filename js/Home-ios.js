@@ -17,6 +17,7 @@ import AppIos from '../App-ios';
 import { myDog } from '../store/users';
 import { appStyles } from '../Styles';
 import AwesomeAlert from 'react-native-awesome-alerts';
+import RNPickerSelect from 'react-native-picker-select';
 
 class HomeIos extends React.Component {
 	constructor(props) {
@@ -71,16 +72,17 @@ class HomeIos extends React.Component {
 										value={this.state.dogName}
 									/>
 									<Text style={appStyles.homeText}>
-										Choose dog's color: red, blackTan, or cream{' '}
+										Choose dog's color: Red, Black/Tan, or Cream
 									</Text>
-									<TextInput
-										style={appStyles.input}
-										type="text"
-										placeholder="dog color"
-										onChangeText={(dogColor) => {
-											this.setState({ dogColor });
+									<RNPickerSelect
+										onValueChange={(value) => {
+											this.setState({ dogColor: value });
 										}}
-										value={this.state.dogColor}
+										items={[
+											{ label: 'Red', value: 'red' },
+											{ label: 'Black & Tan', value: 'blackTan' },
+											{ label: 'Cream', value: 'cream' },
+										]}
 									/>
 									<TouchableOpacity
 										style={appStyles.rectButton}
@@ -96,7 +98,6 @@ class HomeIos extends React.Component {
 													color: this.state.dogColor,
 												});
 											}
-											// this.forceUpdate();
 										}}
 									>
 										<Text style={appStyles.buttonText}>Add my dog!</Text>
