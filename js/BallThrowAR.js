@@ -52,13 +52,13 @@ export default BallThrowAR = createReactClass({
         //  _onTrackingUpdated={this._onTrackingUpdated}
       >
         <ViroARCamera>
-          <ViroImage
+          {/* <ViroImage
             height={0.04}
             width={0.04}
             source={require('./res/camera.png')}
             position={[0.08, -0.16, -0.3]}
             //onDrag={this._onPress}
-          />
+          /> */}
           <ViroNode
             dragType="FixedToWorld"
             onDrag={() =>
@@ -207,7 +207,7 @@ export default BallThrowAR = createReactClass({
 							/>
 						</ViroPortal>
 						<Viro360Image source={require('./res/360_park.jpg')} />
-						
+
 					</ViroPortalScene>
 				) : (
 					<ViroText
