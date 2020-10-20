@@ -196,9 +196,9 @@ class App extends Component {
                   </View>
                 )}
               </View>
-              <View style={{ position: 'absolute', bottom: 25, right: 10 }}>
+              {/* <View style={{ position: 'absolute', bottom: 25, right: 10 }}>
                 <Screenshot />
-              </View>
+              </View> */}
             </View>
           )}
         </View>

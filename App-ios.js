@@ -31,7 +31,6 @@ import Photos from './js/Photos';
 import Settings from './js/Settings';
 import Friends from './js/Friends';
 
-
 import Points from './js/Points';
 
 var InitialARScene = require('./js/BallThrowAR');
@@ -166,7 +165,6 @@ export class AppIos extends Component {
               {/* <View style={{ position: 'absolute', bottom: 25, right: 10 }}>
                 <Screenshot />
               </View> */}
-
             </View>
           )}
         </View>
