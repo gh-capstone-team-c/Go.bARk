@@ -3,8 +3,6 @@ include ':react-native-fs'
 project(':react-native-fs').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-fs/android')
 include ':react-native-share'
 project(':react-native-share').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-share/android')
-include ':react-native-view-shot'
-project(':react-native-view-shot').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-view-shot/android')
 include ':@react-native-community_picker'
 project(':@react-native-community_picker').projectDir = new File(rootProject.projectDir, '../node_modules/@react-native-community/picker/android')
 include ':react-native-screens'
@@ -13,8 +11,6 @@ include ':react-native-safe-area-context'
 project(':react-native-safe-area-context').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-safe-area-context/android')
 include ':react-native-reanimated'
 project(':react-native-reanimated').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-reanimated/android')
-include ':react-native-gesture-handler'
-project(':react-native-gesture-handler').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-gesture-handler/android')
 include ':@react-native-community_masked-view'
 project(':@react-native-community_masked-view').projectDir = new File(rootProject.projectDir, '../node_modules/@react-native-community/masked-view/android')
 

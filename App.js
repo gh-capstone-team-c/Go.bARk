@@ -50,18 +50,22 @@ class App extends Component {
 	constructor(props) {
 		super(props);
 		// // all code here for ray tracing
-		// this._renderTrackingText = this._renderTrackingText.bind(this);
-		// this._onTrackingUpdated = this._onTrackingUpdated.bind(this);
-		// this._onLoadStart = this._onLoadStart.bind(this);
-		// this._onLoadEnd = this._onLoadEnd.bind(this);
-		// //
+		this._renderTrackingText = this._renderTrackingText.bind(this);
+		this._onTrackingUpdated = this._onTrackingUpdated.bind(this);
+		this._onLoadStart = this._onLoadStart.bind(this);
+		this._onLoadEnd = this._onLoadEnd.bind(this);
 		this.state = {
 			pressed: false,
 			menuItem: null,
 			viroAppProps: {
 				user: this.props.user,
 				addPoints: this.props.addPoints,
+				_onLoadEnd: this._onLoadEnd,
+				_onLoadStart: this._onLoadStart,
+				_onTrackingUpdated: this._onTrackingUpdated,
 			},
+			trackingInitialized: false,
+			isLoading: false,
 			videoUrl: null,
 			haveSavedMedia: false,
 			playPreview: false,
@@ -69,14 +73,6 @@ class App extends Component {
 			screenshot_count: 0,
 			writeAccessPermission: false,
 			readAccessPermission: false,
-			//adding in code to get ray tracing
-			// viroAppProps: {
-			//  _onLoadEnd: this._onLoadEnd,
-			//  _onLoadStart: this._onLoadStart,
-			//  _onTrackingUpdated: this._onTrackingUpdated,
-			// },
-			// trackingInitialized: false,
-			// isLoading: false,
 		};
 		this._takeScreenshot = this._takeScreenshot.bind(this);
 		this._saveToCameraRoll = this._saveToCameraRoll.bind(this);
@@ -252,32 +248,32 @@ class App extends Component {
 							</View>
 							{/* scene navigator */}
 							<View style={appStyles.sceneNav}>
-								{/* {this._renderTrackingText()}
-									{renderIf(
-										this.state.isLoading,
-										<View
-											style={{
-												position: 'absolute',
-												left: 0,
-												right: 0,
-												top: 0,
-												bottom: 0,
-												alignItems: 'center',
-												justifyContent: 'center',
-											}}
-										>
-											<ActivityIndicator
-												size="large"
-												animating={this.state.isLoading}
-												color="#ffffff"
-											/>
-										</View>
-									)} */}
 								<ViroARSceneNavigator
 									initialScene={{ scene: InitialARScene }}
 									viroAppProps={this.state.viroAppProps}
-									ref={this._setARNavigatorRef}
+                  ref={this._setARNavigatorRef}
 								/>
+								{this._renderTrackingText()}
+								{renderIf(
+									this.state.isLoading,
+									<View
+										style={{
+											position: 'absolute',
+											left: 0,
+											right: 0,
+											top: 0,
+											bottom: 0,
+											alignItems: 'center',
+											justifyContent: 'center',
+										}}
+									>
+										<ActivityIndicator
+											size="large"
+											animating={this.state.isLoading}
+											color="#ffffff"
+										/>
+									</View>
+								)}
 							</View>
 							{/* conditional renders based on whether that menu item was clicked */}
 							<View>
@@ -333,10 +329,6 @@ class App extends Component {
 									<Text style={appStyles.menuButton}>📷</Text>
 								</TouchableOpacity>
 							</View>
-
-							{/* <View style={{ position: 'absolute', bottom: 25, right: 10 }}>
-                <Screenshot />
-              </View> */}
 						</View>
 					)}
 				</View>
