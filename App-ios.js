@@ -20,13 +20,15 @@ import {
 	Vibration,
 	Dimensions,
 	ScrollView,
+	CameraRoll,
 	Button,
 } from 'react-native';
 const { width, height } = Dimensions.get('window');
 import { ViroARSceneNavigator } from 'react-viro';
 import { connect } from 'react-redux';
 import { addPoints } from './store/users';
-import ViewShot from 'react-native-view-shot';
+// import ViewShot from 'react-native-view-shot';
+// import Share from 'react-native-share';
 import Screenshot from './js/Screenshot';
 import Photos from './js/Photos';
 import Settings from './js/Settings';
@@ -44,6 +46,8 @@ export function renderIf(condition, renderedContent) {
 	}
 }
 
+const kPreviewTypePhoto = 1;
+
 import { appStyles } from './Styles';
 
 export class AppIos extends Component {
@@ -58,152 +62,183 @@ export class AppIos extends Component {
 				user: this.props.user,
 				addPoints: this.props.addPoints,
 			},
+			videoUrl: null,
+			haveSavedMedia: false,
+			playPreview: false,
+			previewType: kPreviewTypePhoto,
+			screenshot_count: 0,
 		};
-		this.captureAndShareScreenshot = this.captureAndShareScreenshot.bind(this);
+		this._takeScreenshot = this._takeScreenshot.bind(this);
+		this._saveToCameraRoll = this._saveToCameraRoll.bind(this);
+		this._setARNavigatorRef = this._setARNavigatorRef.bind(this);
 	}
 
-	captureAndShareScreenshot = () => {
-		console.log('hi');
-		this.refs.viewShot.capture().then((uri) => {
-			RNFS.readFile(uri, 'base64').then((res) => {
-				let urlString = 'data:image/jpeg;base64,' + res;
-				let options = {
-					title: 'Share Title',
-					message: 'Share Message',
-					url: urlString,
-					type: 'image/jpeg',
-				};
-				console.log(urlString);
-				Share.open(options)
-					.then((res) => {
-						console.log(res);
-					})
-					.catch((err) => {
-						err && console.log(err);
-					});
+	// Helper function called while initializing <ViroARSceneNavigator>
+	_setARNavigatorRef(ARNavigator) {
+		this._arNavigator = ARNavigator;
+	}
+
+	async _takeScreenshot() {
+		this._arNavigator
+			._takeScreenshot('screenshot' + this.state.screenshot_count, true)
+			.then((retDict) => {
+				console.log('hi');
+				let currentCount = this.state.screenshot_count + 1;
+				this.setState({
+					videoUrl: 'file://' + retDict.url,
+					haveSavedMedia: false,
+					playPreview: false,
+					previewType: kPreviewTypePhoto,
+					screenshot_count: currentCount,
+				});
+				console.log('videourl', this.state.videoUrl);
+				// this.props.dispatchDisplayUIScreen(UIConstants.SHOW_SHARE_SCREEN);
 			});
-		});
-	};
+	}
+
+	_saveToCameraRoll() {
+		if (this.state.videoUrl != undefined && !this.state.haveSavedMedia) {
+			this.setState({
+				haveSavedMedia: true,
+			});
+		}
+		CameraRoll.saveToCameraRoll(this.state.videoUrl);
+	}
 
 	render() {
 		return (
-			<ViewShot ref="viewShot" options={{ format: 'jpg', quality: 0.9 }}>
-				<View style={{ position: 'absolute', bottom: 25, right: 10 }}>
-					<Button
-						style={appStyles.buttons}
-						title="screenshot"
-						onPress={() => this.captureAndShareScreenshot}
-					/>
-				</View>
-
-				<View style={appStyles.container}>
-					<View>
-						{/* checks to see if start button was pressed */}
-						{!this.state.pressed ? (
-							<View>
-								<Text style={appStyles.titleText}>go</Text>
-								<TouchableOpacity
-									style={appStyles.buttons}
-									onPress={() => {
-										Vibration.vibrate();
-										this.setState({ pressed: true });
-									}}
-									underlayColor={'transparent'}
-								>
-									<Image
-										style={appStyles.logo}
-										source={require('./js/res/shibaFace.png')}
-									/>
-								</TouchableOpacity>
-								<Text style={appStyles.titleText}>bARk</Text>
-							</View>
-						) : (
-							// renders the game menu and the ARScene player
-							<View
-								style={{
-									width: width,
-									height: height,
+			<View style={appStyles.container}>
+				<View>
+					{/* checks to see if start button was pressed */}
+					{!this.state.pressed ? (
+						<View>
+							<Text style={appStyles.titleText}>go</Text>
+							<TouchableOpacity
+								style={appStyles.buttons}
+								onPress={() => {
+									Vibration.vibrate();
+									this.setState({ pressed: true });
 								}}
+								underlayColor={'transparent'}
 							>
-								{/* menubar toggles the different menu components */}
-								<View style={appStyles.appleMenu}>
-									<View style={appStyles.menuContainer}>
-										<TouchableOpacity
-											onPress={() => {
-												if (this.state.menuItem === 'settings')
-													this.setState({ menuItem: null });
-												else this.setState({ menuItem: 'settings' });
-											}}
-										>
-											<Text style={appStyles.menuHeadings}>My Profile</Text>
-										</TouchableOpacity>
-										<TouchableOpacity
-											onPress={() => {
-												if (this.state.menuItem === 'friends')
-													this.setState({ menuItem: null });
-												else this.setState({ menuItem: 'friends' });
-											}}
-										>
-											<Text style={appStyles.menuHeadings}>Friends</Text>
-										</TouchableOpacity>
-										<TouchableOpacity
-											onPress={() => {
-												if (this.state.menuItem === 'photos')
-													this.setState({ menuItem: null });
-												else this.setState({ menuItem: 'photos' });
-											}}
-										>
-											<Text style={appStyles.menuHeadings}>Photos</Text>
-										</TouchableOpacity>
-										<View style={{ top: -20 }}>
-											<Points />
-										</View>
+								<Image
+									style={appStyles.logo}
+									source={require('./js/res/shibaFace.png')}
+								/>
+							</TouchableOpacity>
+							<Text style={appStyles.titleText}>bARk</Text>
+						</View>
+					) : (
+						// renders the game menu and the ARScene player
+						<View
+							style={{
+								width: width,
+								height: height,
+							}}
+						>
+							{/* menubar toggles the different menu components */}
+							<View style={appStyles.appleMenu}>
+								<View style={appStyles.menuContainer}>
+									<TouchableOpacity
+										onPress={() => {
+											if (this.state.menuItem === 'settings')
+												this.setState({ menuItem: null });
+											else this.setState({ menuItem: 'settings' });
+										}}
+									>
+										<Text style={appStyles.menuHeadings}>My Profile</Text>
+									</TouchableOpacity>
+									<TouchableOpacity
+										onPress={() => {
+											if (this.state.menuItem === 'friends')
+												this.setState({ menuItem: null });
+											else this.setState({ menuItem: 'friends' });
+										}}
+									>
+										<Text style={appStyles.menuHeadings}>Friends</Text>
+									</TouchableOpacity>
+									<TouchableOpacity
+										onPress={() => {
+											if (this.state.menuItem === 'photos')
+												this.setState({ menuItem: null });
+											else this.setState({ menuItem: 'photos' });
+										}}
+									>
+										<Text style={appStyles.menuHeadings}>Photos</Text>
+									</TouchableOpacity>
+									<View style={{ top: -20 }}>
+										<Points />
 									</View>
 								</View>
-								{/* scene navigator */}
-								<View style={appStyles.appSceneNav}>
-									<ViroARSceneNavigator
-										initialScene={{
-											scene: InitialARScene,
-										}}
-										viroAppProps={this.state.viroAppProps}
-									/>
-								</View>
-								<View>
-									{renderIf(
-										this.state.menuItem === 'settings',
-										<View style={appStyles.appMenuDropDown}>
-											<ScrollView>
-												<Settings />
-											</ScrollView>
-										</View>
-									)}
-									{renderIf(
-										this.state.menuItem === 'friends',
-										<View style={appStyles.appMenuDropDown}>
-											<ScrollView>
-												<Friends />
-											</ScrollView>
-										</View>
-									)}
-									{renderIf(
-										this.state.menuItem === 'photos',
-										<View style={appStyles.appMenuDropDown}>
-											<ScrollView>
-												<Photos />
-											</ScrollView>
-										</View>
-									)}
-								</View>
+							</View>
+							{/* scene navigator */}
+							<View style={appStyles.appSceneNav}>
+								<ViroARSceneNavigator
+									initialScene={{
+										scene: InitialARScene,
+									}}
+									viroAppProps={this.state.viroAppProps}
+									ref={this._setARNavigatorRef}
+								/>
+							</View>
+							<View>
+								{renderIf(
+									this.state.menuItem === 'settings',
+									<View style={appStyles.appMenuDropDown}>
+										<ScrollView>
+											<Settings />
+										</ScrollView>
+									</View>
+								)}
+								{renderIf(
+									this.state.menuItem === 'friends',
+									<View style={appStyles.appMenuDropDown}>
+										<ScrollView>
+											<Friends />
+										</ScrollView>
+									</View>
+								)}
+								{renderIf(
+									this.state.menuItem === 'photos',
+									<View style={appStyles.appMenuDropDown}>
+										<ScrollView>
+											<Photos />
+										</ScrollView>
+									</View>
+								)}
+							</View>
 
-								{/* <View style={{ position: 'absolute', bottom: 25, right: 10 }}>
+							{/* screenshot */}
+							<View
+								key="screenshot_container"
+								style={{
+									flex: 1,
+									position: 'absolute',
+									flexDirection: 'row',
+									justifyContent: 'center',
+									alignItems: 'center',
+									width: 58,
+									height: 58,
+									top: 0,
+									bottom: 0,
+									transform: [{ translate: [80, 0, 0] }],
+								}}
+							>
+								<Button
+									key="camera_button"
+									title="screenshot"
+									onPress={() => this._takeScreenshot()}
+									style={appStyles.rectButton}
+								/>
+							</View>
+
+							{/* <View style={{ position: 'absolute', bottom: 25, right: 10 }}>
                 <Screenshot />
               </View> */}
-							</View>
-						)}
-					</View>
+						</View>
+					)}
 				</View>
-			</ViewShot>
+			</View>
 		);
 	}
 }
