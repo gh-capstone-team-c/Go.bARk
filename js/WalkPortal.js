@@ -51,7 +51,7 @@ export default WalkPortal = createReactClass({
 				// onDrag={() => {}}
 			>
 				{/* render the portal on the other side of the user */}
-				<ViroPortal position={[0, 0, 3]} scale={[1, 1, 1]}>
+				<ViroPortal position={[0, 0, 2]} scale={[1, 1, 1]}>
 					<Viro3DObject
 						source={require('./res/portal/portal_picture_frame.vrx')}
 						resources={[
@@ -68,8 +68,8 @@ export default WalkPortal = createReactClass({
 
 				{/* dog */}
 				<ViroNode
-					position={[0, -10, 50]}
-					scale={[0.1, 0.1, 0.1]}
+					position={[0, -5, 10]}
+					scale={[0.03, 0.03, 0.03]}
 					rotation={[0, 180, 0]}
 				>
 					<Viro3DObject

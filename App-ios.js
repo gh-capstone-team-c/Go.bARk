@@ -49,7 +49,11 @@ import { appStyles } from './Styles';
 export class AppIos extends Component {
 	constructor(props) {
 		super(props);
-
+// // all code here for ray tracing
+this._renderTrackingText = this._renderTrackingText.bind(this);
+this._onTrackingUpdated = this._onTrackingUpdated.bind(this);
+this._onLoadStart = this._onLoadStart.bind(this);
+this._onLoadEnd = this._onLoadEnd.bind(this);
 		this.state = {
 			pressed: false,
 			menuItem: null,
@@ -57,8 +61,14 @@ export class AppIos extends Component {
 			viroAppProps: {
 				user: this.props.user,
 				addPoints: this.props.addPoints,
+				_onLoadEnd: this._onLoadEnd,
+				_onLoadStart: this._onLoadStart,
+				_onTrackingUpdated: this._onTrackingUpdated,
 			},
+			trackingInitialized: false,
+			isLoading: false,
 		};
+		
 		this.captureAndShareScreenshot = this.captureAndShareScreenshot.bind(this);
 	}
 
@@ -162,6 +172,27 @@ export class AppIos extends Component {
 								</View>
 								{/* scene navigator */}
 								<View style={appStyles.appSceneNav}>
+								{this._renderTrackingText()}
+								{renderIf(
+									this.state.isLoading,
+									<View
+										style={{
+											position: 'absolute',
+											left: 0,
+											right: 0,
+											top: 0,
+											bottom: 0,
+											alignItems: 'center',
+											justifyContent: 'center',
+										}}
+									>
+										<ActivityIndicator
+											size="large"
+											animating={this.state.isLoading}
+											color="#ffffff"
+										/>
+									</View>
+								)}
 									<ViroARSceneNavigator
 										initialScene={{
 											scene: InitialARScene,
@@ -207,7 +238,65 @@ export class AppIos extends Component {
 		);
 	}
 }
+// functions from sample re: ray tracing, loading, etc
+	// Invoked when a model has started to load, we show a loading indictator.
+	_onLoadStart() {
+		this.setState({
+			isLoading: true,
+		});
+	}
 
+	// Invoked when a model has loaded, we hide the loading indictator.
+	_onLoadEnd() {
+		this.setState({
+			isLoading: false,
+		});
+	}
+
+	_renderTrackingText() {
+		if (this.state.trackingInitialized) {
+			return (
+				<View
+					style={{
+						position: 'absolute',
+						backgroundColor: '#ffffff',
+						left: 30,
+						right: 30,
+						top: 30,
+						alignItems: 'center',
+					}}
+				>
+					<Text style={{ fontSize: 12, color: '#ffffff' }}>
+						Tracking initialized.
+					</Text>
+				</View>
+			);
+		} else {
+			return (
+				<View
+					style={{
+						position: 'absolute',
+						backgroundColor: '#ffffff22',
+						left: 30,
+						right: 30,
+						top: 30,
+						alignItems: 'center',
+					}}
+				>
+					<Text style={{ fontSize: 12, color: '#ffffff' }}>
+						Waiting for tracking to initialize.
+					</Text>
+				</View>
+			);
+		}
+	}
+
+	_onTrackingUpdated() {
+		this.setState({
+			trackingInitialized: true,
+		});
+	}
+}
 // connect to redux
 const mapState = (state) => {
 	return {
