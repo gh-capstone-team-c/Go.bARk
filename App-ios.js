@@ -218,22 +218,21 @@ export class AppIos extends Component {
 									alignItems: 'center',
 									width: 58,
 									height: 58,
-									top: 0,
-									bottom: 0,
+									// top: 0,
+									bottom: 25,
+
 									transform: [{ translate: [80, 0, 0] }],
 								}}
 							>
-								<Button
+								<TouchableOpacity
 									key="camera_button"
 									title="screenshot"
 									onPress={() => this._takeScreenshot()}
-									style={appStyles.rectButton}
-								/>
+									style={{ position: 'absolute', bottom: 25, right: 10 }}
+								>
+									<Text style={appStyles.menuButton}>📷</Text>
+								</TouchableOpacity>
 							</View>
-
-							{/* <View style={{ position: 'absolute', bottom: 25, right: 10 }}>
-                <Screenshot />
-              </View> */}
 						</View>
 					)}
 				</View>

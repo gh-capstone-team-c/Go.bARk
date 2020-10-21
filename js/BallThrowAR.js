@@ -45,22 +45,22 @@ export default BallThrowAR = createReactClass({
 			// displayObject: false,
 		};
 	},
-  render() {
-    const dogColor = this.state.user.dog.color;
-    return (
-      <ViroARScene
-        ref="arscene"
-        //  _onTrackingUpdated={this._onTrackingUpdated}
-      >
-        <ViroARCamera>
-          {/* <ViroImage
+	render() {
+		const dogColor = this.state.user.dog.color;
+		return (
+			<ViroARScene
+				ref="arscene"
+				//  _onTrackingUpdated={this._onTrackingUpdated}
+			>
+				{/* <ViroARCamera> */}
+				{/* <ViroImage
             height={0.04}
             width={0.04}
             source={require('./res/camera.png')}
             position={[0.08, -0.16, -0.3]}
             //onDrag={this._onPress}
           /> */}
-          <ViroNode
+				{/* <ViroNode
             dragType="FixedToWorld"
             onDrag={() =>
               this.props.arSceneNavigator.push({
@@ -77,51 +77,49 @@ export default BallThrowAR = createReactClass({
               width={0.05}
               source={require('./res/bone.png')}
               position={[-0.08, -0.16, -0.3] /* -1.2, -2.8, -5 */}
-            />
-          </ViroNode>
-        </ViroARCamera>
-        <ViroText
-          text={this.state.text}
-          scale={[1, 1, 1]}
-          position={[0, 0, -4]}
-        />
-        <ViroAmbientLight color={'#e8e0dc'} />
-
-        {/* dog object */}
-        <ViroNode
-          position={this.state.dogPosition}
-          scale={this.state.dogScale}
-          dragType="FixedToWorld"
-          onDrag={() => {}}
-          // key={this.props.arSceneNavigator.viroAppProps.displayObjectName}
-          ref={'dog'}
-          rotation={this.state.rotation}
-        >
-          <Viro3DObject
-            source={dog[dogColor]}
-            position={[0, -10, -20]}
-            animation={{
-              name: this.state.dogAnimation,
-              run: true,
-              //loop: true,
-              interruptible: true,
-            }}
-            // onLoadEnd={this._onLoadEnd}
-            // onLoadStart={this._onLoadStart}
-            ignoreEventHandling={true}
-            type="VRX"
-          />
-          <ViroQuad
-            rotation={[-90, 0, 0]}
-            position={[0, -0.001, 0]}
-            width={2.5}
-            height={2.5}
-            arShadowReceiver={true}
-            ignoreEventHandling={true}
-          />
-        </ViroNode>
-
-        {/* ball object */}
+				{/* /> */}
+				{/* </ViroNode>
+        </ViroARCamera> */}
+				<ViroText
+					text={this.state.text}
+					scale={[1, 1, 1]}
+					position={[0, 0, -4]}
+				/>
+				<ViroAmbientLight color={'#e8e0dc'} />
+				{/* dog object */}
+				<ViroNode
+					position={this.state.dogPosition}
+					scale={this.state.dogScale}
+					dragType="FixedToWorld"
+					onDrag={() => {}}
+					// key={this.props.arSceneNavigator.viroAppProps.displayObjectName}
+					ref={'dog'}
+					rotation={this.state.rotation}
+				>
+					<Viro3DObject
+						source={dog[dogColor]}
+						position={[0, -10, -20]}
+						animation={{
+							name: this.state.dogAnimation,
+							run: true,
+							//loop: true,
+							interruptible: true,
+						}}
+						// onLoadEnd={this._onLoadEnd}
+						// onLoadStart={this._onLoadStart}
+						ignoreEventHandling={true}
+						type="VRX"
+					/>
+					<ViroQuad
+						rotation={[-90, 0, 0]}
+						position={[0, -0.001, 0]}
+						width={2.5}
+						height={2.5}
+						arShadowReceiver={true}
+						ignoreEventHandling={true}
+					/>
+				</ViroNode>
+				{/* ball object */}
 				<ViroNode
 					position={this.state.ballPosition}
 					dragType="FixedToWorld"
@@ -151,7 +149,6 @@ export default BallThrowAR = createReactClass({
 						onDrag={this._onBallDrag}
 					/>
 				</ViroNode>
-
 				{/* emoji next to the portal*/}
 				<ViroNode
 					position={[-1, 0, 2]}
