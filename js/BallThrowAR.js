@@ -52,14 +52,7 @@ export default BallThrowAR = createReactClass({
         //  _onTrackingUpdated={this._onTrackingUpdated}
       >
         <ViroARCamera>
-          {/* <ViroImage
-            height={0.04}
-            width={0.04}
-            source={require('./res/camera.png')}
-            position={[0.08, -0.16, -0.3]}
-            //onDrag={this._onPress}
-          /> */}
-          <ViroNode
+				<ViroNode
             dragType="FixedToWorld"
             onDrag={() =>
               this.props.arSceneNavigator.push({
@@ -196,7 +189,6 @@ export default BallThrowAR = createReactClass({
       const play = this.state.playCount + 1;
       this.setState({ ...this.state, playCount: play });
       // let pts = this.state.user.points;
-
       this.state.addPoints({ points: this.state.user.points++ });
     }
     // capture when dog and ball are super close to user(already fetched) and returns gameplay loop to near start.

@@ -2,28 +2,29 @@
 
 import React from 'react';
 import {
-  ViroARScene,
-  ViroNode,
-  Viro3DObject,
-  ViroImage,
-  ViroARCamera,
-  ViroText,
-  ViroAmbientLight,
-  ViroAnimatedImage,
-  ViroSpotLight,
+	ViroARScene,
+	ViroNode,
+	Viro3DObject,
+	ViroImage,
+	ViroARCamera,
+	ViroText,
+	ViroAmbientLight,
+	ViroAnimatedImage,
+	ViroSpotLight,
 } from 'react-viro';
 var createReactClass = require('create-react-class');
 
 const dogPose = {
-  red: require('./res/dogPose/redDogEat.vrx'),
-  blackTan: require('./res/dogPose/blackTanDogEat.vrx'),
-  cream: require('./res/dogPose/creamDogEat.vrx'),
+	red: require('./res/dogPose/redDogEat.vrx'),
+	blackTan: require('./res/dogPose/blackTanDogEat.vrx'),
+	cream: require('./res/dogPose/creamDogEat.vrx'),
 };
 
 const dogStand = {
-  red: require('./res/dogColors/redDog.vrx'),
-  blackTan: require('./res/dogColors/blackTanDog.vrx'),
-  cream: require('./res/dogColors/creamDog.vrx'),
+	red: require('./res/dogColors/redDog.vrx'),
+	blackTan: require('./res/dogColors/blackTanDog.vrx'),
+	cream: require('./res/dogColors/creamDog.vrx'),
+
 };
 
 export default FoodTime = createReactClass({
@@ -35,10 +36,6 @@ export default FoodTime = createReactClass({
     };
   },
 
-  /* bowlPressed() {
-    this.state.addPoints({ points: this.state.user.points++ });
-    // this.setState({ changePose: !this.state.changePose });
-  }, */
 
   render() {
     const dogColor = this.state.user.dog.color;
@@ -59,6 +56,7 @@ export default FoodTime = createReactClass({
               source={require('./res/dogBowlIcon.gif')}
               // source={require('./res/bone.png')}
               position={[-0.07, -0.16, -0.3]}
+
             />
           </ViroNode>
         </ViroARCamera>
@@ -125,9 +123,8 @@ export default FoodTime = createReactClass({
               position={[-0.07, -0.16, -0.3]}
             />
           </ViroNode>
-        </ViroARCamera>
-        <ViroAmbientLight color={'#e8e0dc'} />
-
+        </ViroARCamera> */}
+				<ViroAmbientLight color={'#e8e0dc'} />
         {/* food bowl & clicking on food bowl to get user points */}
         <ViroNode
           position={[0, -6, -13]}
@@ -152,7 +149,7 @@ export default FoodTime = createReactClass({
             shadowFarZ={7}
             shadowOpacity={0.7}
           /> */}
-          {/* <Viro3DObject
+					{/* <Viro3DObject
             source={dog[dogColor]}
             type="VRX"
           /> */}
