@@ -69,7 +69,7 @@ export class AppIos extends Component {
 			},
 			trackingInitialized: false,
 			isLoading: false,
-      videoUrl: null,
+			videoUrl: null,
 			haveSavedMedia: false,
 			playPreview: false,
 			previewType: kPreviewTypePhoto,
@@ -143,13 +143,16 @@ export class AppIos extends Component {
 							}}
 						>
 							{/* menubar toggles the different menu components */}
+
 							<View style={appStyles.appleMenu}>
 								<View style={appStyles.menuContainer}>
 									<TouchableOpacity
 										onPress={() => {
 											if (this.state.menuItem === 'settings')
 												this.setState({ menuItem: null });
-											else this.setState({ menuItem: 'settings' });
+											else {
+												this.setState({ menuItem: 'settings' });
+											}
 										}}
 									>
 										<Text style={appStyles.menuHeadings}>My Profile</Text>
@@ -158,7 +161,9 @@ export class AppIos extends Component {
 										onPress={() => {
 											if (this.state.menuItem === 'friends')
 												this.setState({ menuItem: null });
-											else this.setState({ menuItem: 'friends' });
+											else {
+												this.setState({ menuItem: 'friends' });
+											}
 										}}
 									>
 										<Text style={appStyles.menuHeadings}>Friends</Text>
@@ -180,13 +185,33 @@ export class AppIos extends Component {
 							{/* scene navigator */}
 							<View style={appStyles.appSceneNav}>
 								<ViroARSceneNavigator
-									initialScene={{
-										scene: InitialARScene,
-									}}
+									initialScene={{ scene: InitialARScene }}
 									viroAppProps={this.state.viroAppProps}
 									ref={this._setARNavigatorRef}
 								/>
+								{this._renderTrackingText()}
+								{renderIf(
+									this.state.isLoading,
+									<View
+										style={{
+											position: 'absolute',
+											left: 0,
+											right: 0,
+											top: 0,
+											bottom: 0,
+											alignItems: 'center',
+											justifyContent: 'center',
+										}}
+									>
+										<ActivityIndicator
+											size="large"
+											animating={this.state.isLoading}
+											color="#ffffff"
+										/>
+									</View>
+								)}
 							</View>
+							{/* conditional renders based on whether that menu item was clicked */}
 							<View>
 								{renderIf(
 									this.state.menuItem === 'settings',
@@ -230,114 +255,7 @@ export class AppIos extends Component {
 
 									transform: [{ translate: [80, 0, 0] }],
 								}}
-								underlayColor={'transparent'}
 							>
-								<Image
-									style={appStyles.logo}
-									source={require('./js/res/shibaFace.png')}
-								/>
-							</TouchableOpacity>
-							<Text style={appStyles.titleText}>bARk</Text>
-						</View>
-					) : (
-						// renders the game menu and the ARScene player
-						<View
-							style={{
-								width: width,
-								height: height,
-							}}
-						>
-							{/* menubar toggles the different menu components */}
-							<View style={appStyles.appleMenu}>
-								<View style={appStyles.menuContainer}>
-									<TouchableOpacity
-										onPress={() => {
-											if (this.state.menuItem === 'settings')
-												this.setState({ menuItem: null });
-											else this.setState({ menuItem: 'settings' });
-										}}
-									>
-										<Text style={appStyles.menuHeadings}>My Profile</Text>
-									</TouchableOpacity>
-									<TouchableOpacity
-										onPress={() => {
-											if (this.state.menuItem === 'friends')
-												this.setState({ menuItem: null });
-											else this.setState({ menuItem: 'friends' });
-										}}
-									>
-										<Text style={appStyles.menuHeadings}>Friends</Text>
-									</TouchableOpacity>
-									<TouchableOpacity
-										onPress={() => {
-											if (this.state.menuItem === 'photos')
-												this.setState({ menuItem: null });
-											else this.setState({ menuItem: 'photos' });
-										}}
-									>
-										<Text style={appStyles.menuHeadings}>Photos</Text>
-									</TouchableOpacity>
-									<View style={{ top: -20 }}>
-										<Points />
-									</View>
-								</View>
-							</View>
-							{/* scene navigator */}
-							<View style={appStyles.appSceneNav}>
-								<ViroARSceneNavigator
-									initialScene={{
-										scene: InitialARScene,
-									}}
-									viroAppProps={this.state.viroAppProps}
-								/>
-								{this._renderTrackingText()}
-								{renderIf(
-									this.state.isLoading,
-									<View
-										style={{
-											position: 'absolute',
-											left: 0,
-											right: 0,
-											top: 0,
-											bottom: 0,
-											alignItems: 'center',
-											justifyContent: 'center',
-										}}
-									>
-										<ActivityIndicator
-											size="large"
-											animating={this.state.isLoading}
-											color="#ffffff"
-										/>
-									</View>
-								)}
-							</View>
-							<View>
-								{renderIf(
-									this.state.menuItem === 'settings',
-									<View style={appStyles.appMenuDropDown}>
-										<ScrollView>
-											<Settings />
-										</ScrollView>
-									</View>
-								)}
-								{renderIf(
-									this.state.menuItem === 'friends',
-									<View style={appStyles.appMenuDropDown}>
-										<ScrollView>
-											<Friends />
-										</ScrollView>
-									</View>
-								)}
-								{renderIf(
-									this.state.menuItem === 'photos',
-									<View style={appStyles.appMenuDropDown}>
-										<ScrollView>
-											<Photos />
-										</ScrollView>
-									</View>
-								)}
-							</View>
 								<TouchableOpacity
 									key="camera_button"
 									title="screenshot"
@@ -347,13 +265,13 @@ export class AppIos extends Component {
 									<Text style={appStyles.menuButton}>📷</Text>
 								</TouchableOpacity>
 							</View>
-
 						</View>
 					)}
 				</View>
 			</View>
 		);
 	}
+
 	// functions from sample re: ray tracing, loading, etc
 	// Invoked when a model has started to load, we show a loading indictator.
 	_onLoadStart() {

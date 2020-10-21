@@ -22,9 +22,9 @@ var createReactClass = require('create-react-class');
 var FoodTime = require('./FoodTime');
 var Walk = require('./Walk');
 const dog = {
-  red: require('./res/dogColors/redDog.vrx'),
-  blackTan: require('./res/dogColors/blackTanDog.vrx'),
-  cream: require('./res/dogColors/creamDog.vrx'),
+	red: require('./res/dogColors/redDog.vrx'),
+	blackTan: require('./res/dogColors/blackTanDog.vrx'),
+	cream: require('./res/dogColors/creamDog.vrx'),
 };
 
 export default BallThrowAR = createReactClass({
@@ -49,35 +49,35 @@ export default BallThrowAR = createReactClass({
 		const dogColor = this.state.user.dog.color;
 		return (
 			<ViroARScene ref="arscene" _onTrackingUpdated={this._onTrackingUpdated}>
-				 <ViroARCamera>
-           <ViroImage
-            height={0.04}
-            width={0.04}
-            source={require('./res/camera.png')}
-            position={[0.08, -0.16, -0.3]}
-            //onDrag={this._onPress}
-		  /> 
-		   <ViroNode
-            dragType="FixedToWorld"
-            onDrag={() =>
-              this.props.arSceneNavigator.push({
-                scene: FoodTime,
-                passProps: {
-                  user: this.state.user,
-                  addPoints: this.state.addPoints,
-                },
-              })
-            }
-          >
-            <ViroImage
-              height={0.05}
-              width={0.05}
-              source={require('./res/dogBowlIcon.gif')}
-              // source={require('./res/bone.png')}
-              position={[-0.07, -0.16, -0.3] /* -1.2, -2.8, -5 */}
-            />
-          </ViroNode>
-        </ViroARCamera> 
+				<ViroARCamera>
+					<ViroImage
+						height={0.04}
+						width={0.04}
+						source={require('./res/camera.png')}
+						position={[0.08, -0.16, -0.3]}
+						//onDrag={this._onPress}
+					/>
+					<ViroNode
+						dragType="FixedToWorld"
+						onDrag={() =>
+							this.props.arSceneNavigator.push({
+								scene: FoodTime,
+								passProps: {
+									user: this.state.user,
+									addPoints: this.state.addPoints,
+								},
+							})
+						}
+					>
+						<ViroImage
+							height={0.05}
+							width={0.05}
+							source={require('./res/dogBowlIcon.gif')}
+							// source={require('./res/bone.png')}
+							position={[-0.07, -0.16, -0.3] /* -1.2, -2.8, -5 */}
+						/>
+					</ViroNode>
+				</ViroARCamera>
 				<ViroText
 					text={this.state.text}
 					scale={[1, 1, 1]}
@@ -227,105 +227,69 @@ export default BallThrowAR = createReactClass({
 		);
 	},
 
-
-        {/* emoji next to the portal*/}
-        <ViroNode
-          position={[-1, 0, 2]}
-          onDrag={() =>
-            this.props.arSceneNavigator.push({
-              scene: Walk,
-              passProps: {
-                user: this.state.user,
-                addPoints: this.state.addPoints,
-              },
-            })
-          }
-          scale={[1, 1, 1]}
-          transformBehaviors={['billboardY']}
-        >
-          <ViroAnimatedImage
-            scale={[0.5, 0.5, 0.5]}
-            position={[0, 0, 0]}
-            rotation={[0, 0, 0]}
-            animation={{
-              run: this.state.playAnim,
-              loop: true,
-              delay: 0,
-            }}
-            height={1}
-            width={1}
-            source={{
-              uri: 'https://media.giphy.com/media/WqFXkK7CsTReoyGwWd/giphy.gif',
-            }}
-          />
-        </ViroNode>
-      </ViroARScene>
-    );
-  },
-
-  _onBallClick(stateValue, position, source) {
-    //incremental counter to limit number of consecutive games of catch with dog
-    if (
-      stateValue === 1 &&
-      this.state.currentAnimation !== ('arc' || 'rollAway')
-    ) {
-      const play = this.state.playCount + 1;
-      this.setState({ ...this.state, playCount: play });
-      // let pts = this.state.user.points;
-      this.state.addPoints({ points: this.state.user.points++ });
-    }
-    // capture when dog and ball are super close to user(already fetched) and returns gameplay loop to near start.
-    if (position[2] >= -5 && this.state.playCount >= 3) {
-      this.setState({
-        ...this.state,
-        dogAnimation: 'dropBall',
-        currentAnimation: 'rollAway',
-      });
-      // function that displays dog after dropping ball
-      setTimeout(() => {
-        if (this.state.dogAnimation === 'dropBall') {
-          this.setState({
-            ...this.state,
-            dogPosition: [0, -9, -15],
-            playCount: 0,
-            dogAnimation: 'waiting',
-            currentAnimation: 'rotate',
-          });
-        }
-      }, 5000);
-    } else if (stateValue === 1) {
-      this.setState({
-        dogAnimation: 'waiting',
-      });
-      //handler for play loop
-    } else if (stateValue === 2 || stateValue === 3) {
-      this.setState({
-        currentAnimation: 'arc',
-        dogAnimation: 'fetch',
-      });
-      //captures dog walking towards ball
-      setTimeout(() => {
-        if (this.state.currentAnimation === 'arc') {
-          const dogZ = this.state.dogPosition[2] - 5;
-          this.setState({ ...this.state, dogPosition: [0, -9, dogZ] });
-        }
-      }, 2000);
-      // This timeout fires after the ball lands near the dog. It sets the dog and ball on a return course. The if statement stops it from refiring after the dog drops the ball.
-      setTimeout(() => {
-        if (this.state.currentAnimation === 'arc') {
-          this.setState({
-            ...this.state,
-            currentAnimation: 'returnBall',
-            dogAnimation: 'return',
-            ballPosition: [0, -2.4, -3],
-            dogPosition: [0, -9, -9],
-          });
-        }
-      }, 6500);
-    }
-  },
-  //empty function enables drag.
-  _onBallDrag() {},
+	_onBallClick(stateValue, position, source) {
+		//incremental counter to limit number of consecutive games of catch with dog
+		if (
+			stateValue === 1 &&
+			this.state.currentAnimation !== ('arc' || 'rollAway')
+		) {
+			const play = this.state.playCount + 1;
+			this.setState({ ...this.state, playCount: play });
+			// let pts = this.state.user.points;
+			this.state.addPoints({ points: this.state.user.points++ });
+		}
+		// capture when dog and ball are super close to user(already fetched) and returns gameplay loop to near start.
+		if (position[2] >= -5 && this.state.playCount >= 3) {
+			this.setState({
+				...this.state,
+				dogAnimation: 'dropBall',
+				currentAnimation: 'rollAway',
+			});
+			// function that displays dog after dropping ball
+			setTimeout(() => {
+				if (this.state.dogAnimation === 'dropBall') {
+					this.setState({
+						...this.state,
+						dogPosition: [0, -9, -15],
+						playCount: 0,
+						dogAnimation: 'waiting',
+						currentAnimation: 'rotate',
+					});
+				}
+			}, 5000);
+		} else if (stateValue === 1) {
+			this.setState({
+				dogAnimation: 'waiting',
+			});
+			//handler for play loop
+		} else if (stateValue === 2 || stateValue === 3) {
+			this.setState({
+				currentAnimation: 'arc',
+				dogAnimation: 'fetch',
+			});
+			//captures dog walking towards ball
+			setTimeout(() => {
+				if (this.state.currentAnimation === 'arc') {
+					const dogZ = this.state.dogPosition[2] - 5;
+					this.setState({ ...this.state, dogPosition: [0, -9, dogZ] });
+				}
+			}, 2000);
+			// This timeout fires after the ball lands near the dog. It sets the dog and ball on a return course. The if statement stops it from refiring after the dog drops the ball.
+			setTimeout(() => {
+				if (this.state.currentAnimation === 'arc') {
+					this.setState({
+						...this.state,
+						currentAnimation: 'returnBall',
+						dogAnimation: 'return',
+						ballPosition: [0, -2.4, -3],
+						dogPosition: [0, -9, -9],
+					});
+				}
+			}, 6500);
+		}
+	},
+	//empty function enables drag.
+	_onBallDrag() {},
 
 	//Ray - tracing
 	_onLoadStart() {
@@ -388,13 +352,13 @@ export default BallThrowAR = createReactClass({
 			}
 		}
 
-    if (hitResultPosition) {
-      newPosition = hitResultPosition;
-    }
+		if (hitResultPosition) {
+			newPosition = hitResultPosition;
+		}
 
-    // Set the initial placement of the object using new position from the hit test.
-    this._setInitialPlacement(newPosition);
-  },
+		// Set the initial placement of the object using new position from the hit test.
+		this._setInitialPlacement(newPosition);
+	},
 
 	_setInitialPlacement(position) {
 		let key = `${this.arNodeRef}Position`;
@@ -404,35 +368,35 @@ export default BallThrowAR = createReactClass({
 		this._updateInitialRotation();
 	},
 
-  // Update the rotation of the object to face the user after it's positioned.
-  _updateInitialRotation() {
-    this.arNodeRef.getTransformAsync().then((retDict) => {
-      let rotation = retDict.rotation;
-      let absX = Math.abs(rotation[0]);
-      let absZ = Math.abs(rotation[2]);
+	// Update the rotation of the object to face the user after it's positioned.
+	_updateInitialRotation() {
+		this.arNodeRef.getTransformAsync().then((retDict) => {
+			let rotation = retDict.rotation;
+			let absX = Math.abs(rotation[0]);
+			let absZ = Math.abs(rotation[2]);
 
-      let yRotation = rotation[1];
+			let yRotation = rotation[1];
 
-      // If the X and Z aren't 0, then adjust the y rotation.
-      if (absX > 1 && absZ > 1) {
-        yRotation = 180 - yRotation;
-      }
+			// If the X and Z aren't 0, then adjust the y rotation.
+			if (absX > 1 && absZ > 1) {
+				yRotation = 180 - yRotation;
+			}
 
-      this.setState({
-        rotation: [0, yRotation, 0],
-      });
-    });
-  },
+			this.setState({
+				rotation: [0, yRotation, 0],
+			});
+		});
+	},
 
-  // Calculate distance between two vectors
-  _distance(vectorOne, vectorTwo) {
-    var distance = Math.sqrt(
-      (vectorTwo[0] - vectorOne[0]) * (vectorTwo[0] - vectorOne[0]) +
-        (vectorTwo[1] - vectorOne[1]) * (vectorTwo[1] - vectorOne[1]) +
-        (vectorTwo[2] - vectorOne[2]) * (vectorTwo[2] - vectorOne[2])
-    );
-    return distance;
-  },
+	// Calculate distance between two vectors
+	_distance(vectorOne, vectorTwo) {
+		var distance = Math.sqrt(
+			(vectorTwo[0] - vectorOne[0]) * (vectorTwo[0] - vectorOne[0]) +
+				(vectorTwo[1] - vectorOne[1]) * (vectorTwo[1] - vectorOne[1]) +
+				(vectorTwo[2] - vectorOne[2]) * (vectorTwo[2] - vectorOne[2])
+		);
+		return distance;
+	},
 });
 
 ViroAnimations.registerAnimations({
