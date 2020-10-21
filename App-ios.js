@@ -26,7 +26,6 @@ const { width, height } = Dimensions.get('window');
 import { ViroARSceneNavigator } from 'react-viro';
 import { connect } from 'react-redux';
 import { addPoints } from './store/users';
-import ViewShot from 'react-native-view-shot';
 import Screenshot from './js/Screenshot';
 import Photos from './js/Photos';
 import Settings from './js/Settings';
@@ -49,11 +48,11 @@ import { appStyles } from './Styles';
 export class AppIos extends Component {
 	constructor(props) {
 		super(props);
-// // all code here for ray tracing
-this._renderTrackingText = this._renderTrackingText.bind(this);
-this._onTrackingUpdated = this._onTrackingUpdated.bind(this);
-this._onLoadStart = this._onLoadStart.bind(this);
-this._onLoadEnd = this._onLoadEnd.bind(this);
+		// // all code here for ray tracing
+		this._renderTrackingText = this._renderTrackingText.bind(this);
+		this._onTrackingUpdated = this._onTrackingUpdated.bind(this);
+		this._onLoadStart = this._onLoadStart.bind(this);
+		this._onLoadEnd = this._onLoadEnd.bind(this);
 		this.state = {
 			pressed: false,
 			menuItem: null,
@@ -68,110 +67,82 @@ this._onLoadEnd = this._onLoadEnd.bind(this);
 			trackingInitialized: false,
 			isLoading: false,
 		};
-		
-		this.captureAndShareScreenshot = this.captureAndShareScreenshot.bind(this);
 	}
-
-	captureAndShareScreenshot = () => {
-		console.log('hi');
-		this.refs.viewShot.capture().then((uri) => {
-			RNFS.readFile(uri, 'base64').then((res) => {
-				let urlString = 'data:image/jpeg;base64,' + res;
-				let options = {
-					title: 'Share Title',
-					message: 'Share Message',
-					url: urlString,
-					type: 'image/jpeg',
-				};
-				console.log(urlString);
-				Share.open(options)
-					.then((res) => {
-						console.log(res);
-					})
-					.catch((err) => {
-						err && console.log(err);
-					});
-			});
-		});
-	};
 
 	render() {
 		return (
-			<ViewShot ref="viewShot" options={{ format: 'jpg', quality: 0.9 }}>
-				<View style={{ position: 'absolute', bottom: 25, right: 10 }}>
-					<Button
-						style={appStyles.buttons}
-						title="screenshot"
-						onPress={() => this.captureAndShareScreenshot}
-					/>
-				</View>
-
-				<View style={appStyles.container}>
-					<View>
-						{/* checks to see if start button was pressed */}
-						{!this.state.pressed ? (
-							<View>
-								<Text style={appStyles.titleText}>go</Text>
-								<TouchableOpacity
-									style={appStyles.buttons}
-									onPress={() => {
-										Vibration.vibrate();
-										this.setState({ pressed: true });
-									}}
-									underlayColor={'transparent'}
-								>
-									<Image
-										style={appStyles.logo}
-										source={require('./js/res/shibaFace.png')}
-									/>
-								</TouchableOpacity>
-								<Text style={appStyles.titleText}>bARk</Text>
-							</View>
-						) : (
-							// renders the game menu and the ARScene player
-							<View
-								style={{
-									width: width,
-									height: height,
+			<View style={appStyles.container}>
+				<View>
+					{/* checks to see if start button was pressed */}
+					{!this.state.pressed ? (
+						<View>
+							<Text style={appStyles.titleText}>go</Text>
+							<TouchableOpacity
+								style={appStyles.buttons}
+								onPress={() => {
+									Vibration.vibrate();
+									this.setState({ pressed: true });
 								}}
+								underlayColor={'transparent'}
 							>
-								{/* menubar toggles the different menu components */}
-								<View style={appStyles.appleMenu}>
-									<View style={appStyles.menuContainer}>
-										<TouchableOpacity
-											onPress={() => {
-												if (this.state.menuItem === 'settings')
-													this.setState({ menuItem: null });
-												else this.setState({ menuItem: 'settings' });
-											}}
-										>
-											<Text style={appStyles.menuHeadings}>My Profile</Text>
-										</TouchableOpacity>
-										<TouchableOpacity
-											onPress={() => {
-												if (this.state.menuItem === 'friends')
-													this.setState({ menuItem: null });
-												else this.setState({ menuItem: 'friends' });
-											}}
-										>
-											<Text style={appStyles.menuHeadings}>Friends</Text>
-										</TouchableOpacity>
-										<TouchableOpacity
-											onPress={() => {
-												if (this.state.menuItem === 'photos')
-													this.setState({ menuItem: null });
-												else this.setState({ menuItem: 'photos' });
-											}}
-										>
-											<Text style={appStyles.menuHeadings}>Photos</Text>
-										</TouchableOpacity>
-										<View style={{ top: -20 }}>
-											<Points />
-										</View>
+								<Image
+									style={appStyles.logo}
+									source={require('./js/res/shibaFace.png')}
+								/>
+							</TouchableOpacity>
+							<Text style={appStyles.titleText}>bARk</Text>
+						</View>
+					) : (
+						// renders the game menu and the ARScene player
+						<View
+							style={{
+								width: width,
+								height: height,
+							}}
+						>
+							{/* menubar toggles the different menu components */}
+							<View style={appStyles.appleMenu}>
+								<View style={appStyles.menuContainer}>
+									<TouchableOpacity
+										onPress={() => {
+											if (this.state.menuItem === 'settings')
+												this.setState({ menuItem: null });
+											else this.setState({ menuItem: 'settings' });
+										}}
+									>
+										<Text style={appStyles.menuHeadings}>My Profile</Text>
+									</TouchableOpacity>
+									<TouchableOpacity
+										onPress={() => {
+											if (this.state.menuItem === 'friends')
+												this.setState({ menuItem: null });
+											else this.setState({ menuItem: 'friends' });
+										}}
+									>
+										<Text style={appStyles.menuHeadings}>Friends</Text>
+									</TouchableOpacity>
+									<TouchableOpacity
+										onPress={() => {
+											if (this.state.menuItem === 'photos')
+												this.setState({ menuItem: null });
+											else this.setState({ menuItem: 'photos' });
+										}}
+									>
+										<Text style={appStyles.menuHeadings}>Photos</Text>
+									</TouchableOpacity>
+									<View style={{ top: -20 }}>
+										<Points />
 									</View>
 								</View>
-								{/* scene navigator */}
-								<View style={appStyles.appSceneNav}>
+							</View>
+							{/* scene navigator */}
+							<View style={appStyles.appSceneNav}>
+								<ViroARSceneNavigator
+									initialScene={{
+										scene: InitialARScene,
+									}}
+									viroAppProps={this.state.viroAppProps}
+								/>
 								{this._renderTrackingText()}
 								{renderIf(
 									this.state.isLoading,
@@ -193,52 +164,44 @@ this._onLoadEnd = this._onLoadEnd.bind(this);
 										/>
 									</View>
 								)}
-									<ViroARSceneNavigator
-										initialScene={{
-											scene: InitialARScene,
-										}}
-										viroAppProps={this.state.viroAppProps}
-									/>
-								</View>
-								<View>
-									{renderIf(
-										this.state.menuItem === 'settings',
-										<View style={appStyles.appMenuDropDown}>
-											<ScrollView>
-												<Settings />
-											</ScrollView>
-										</View>
-									)}
-									{renderIf(
-										this.state.menuItem === 'friends',
-										<View style={appStyles.appMenuDropDown}>
-											<ScrollView>
-												<Friends />
-											</ScrollView>
-										</View>
-									)}
-									{renderIf(
-										this.state.menuItem === 'photos',
-										<View style={appStyles.appMenuDropDown}>
-											<ScrollView>
-												<Photos />
-											</ScrollView>
-										</View>
-									)}
-								</View>
+							</View>
+							<View>
+								{renderIf(
+									this.state.menuItem === 'settings',
+									<View style={appStyles.appMenuDropDown}>
+										<ScrollView>
+											<Settings />
+										</ScrollView>
+									</View>
+								)}
+								{renderIf(
+									this.state.menuItem === 'friends',
+									<View style={appStyles.appMenuDropDown}>
+										<ScrollView>
+											<Friends />
+										</ScrollView>
+									</View>
+								)}
+								{renderIf(
+									this.state.menuItem === 'photos',
+									<View style={appStyles.appMenuDropDown}>
+										<ScrollView>
+											<Photos />
+										</ScrollView>
+									</View>
+								)}
+							</View>
 
-								{/* <View style={{ position: 'absolute', bottom: 25, right: 10 }}>
+							{/* <View style={{ position: 'absolute', bottom: 25, right: 10 }}>
                 <Screenshot />
               </View> */}
-							</View>
-						)}
-					</View>
+						</View>
+					)}
 				</View>
-			</ViewShot>
+			</View>
 		);
 	}
-}
-// functions from sample re: ray tracing, loading, etc
+	// functions from sample re: ray tracing, loading, etc
 	// Invoked when a model has started to load, we show a loading indictator.
 	_onLoadStart() {
 		this.setState({

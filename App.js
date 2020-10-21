@@ -141,6 +141,10 @@ class App extends Component {
 							</View>
 							{/* scene navigator */}
 							<View style={appStyles.sceneNav}>
+								<ViroARSceneNavigator
+									initialScene={{ scene: InitialARScene }}
+									viroAppProps={this.state.viroAppProps}
+								/>
 								{this._renderTrackingText()}
 								{renderIf(
 									this.state.isLoading,
@@ -162,10 +166,6 @@ class App extends Component {
 										/>
 									</View>
 								)}
-								<ViroARSceneNavigator
-									initialScene={{ scene: InitialARScene }}
-									viroAppProps={this.state.viroAppProps}
-								/>
 							</View>
 							{/* conditional renders based on whether that menu item was clicked */}
 							<View>
