@@ -39,6 +39,7 @@ export default BallThrowAR = createReactClass({
 			rotation: [0, 0, 0],
 			dogAnimation: 'waiting',
 			showPortal: false,
+			playHearts: false,
 			//passing redux function to AR component
 			user: this.props.arSceneNavigator.viroAppProps.user,
 			addPoints: this.props.arSceneNavigator.viroAppProps.addPoints,
@@ -180,6 +181,37 @@ export default BallThrowAR = createReactClass({
 						}}
 					/>
 				</ViroNode>
+
+				{/* hearts for points (in progress by betsy) */}
+				{/* <ViroNode
+					//[0, -10, -20]
+					position={this.state.dogPosition}
+					scale={[1, 1, 1]}
+					transformBehaviors={['billboardY']}
+				>
+					<ViroAnimatedImage
+						scale={[0.5, 0.5, 0.5]}
+						position={[0, 0, 0]}
+						rotation={[0, 0, 0]}
+						animation={{
+							run: this.state.playHearts,
+							loop: false,
+							delay: 0,
+						}}
+						onFinish={() => {
+							this.setState({
+								playHearts: !this.state.playHearts,
+							});
+						}}
+						height={1}
+						width={1}
+						source={{
+							uri: 'https://media.giphy.com/media/26hitBi6oaib4MNdS/giphy.gif',
+						}}
+					/>
+				</ViroNode> */}
+
+
 			</ViroARScene>
 		);
 	},
@@ -191,7 +223,11 @@ export default BallThrowAR = createReactClass({
 			this.state.currentAnimation !== ('arc' || 'rollAway')
 		) {
 			const play = this.state.playCount + 1;
-			this.setState({ ...this.state, playCount: play });
+			this.setState({
+				...this.state,
+				playCount: play,
+				playHearts: !this.state.playHearts,
+			});
 			// let pts = this.state.user.points;
 
 			this.state.addPoints({ points: this.state.user.points++ });
