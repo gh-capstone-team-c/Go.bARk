@@ -123,7 +123,7 @@ export default FoodTime = createReactClass({
               position={[-0.07, -0.16, -0.3]}
             />
           </ViroNode>
-        </ViroARCamera> */}
+        </ViroARCamera> 
 				<ViroAmbientLight color={'#e8e0dc'} />
         {/* food bowl & clicking on food bowl to get user points */}
         <ViroNode

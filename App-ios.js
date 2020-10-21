@@ -69,7 +69,7 @@ export class AppIos extends Component {
 			},
 			trackingInitialized: false,
 			isLoading: false,
-      videoUrl: null,
+			videoUrl: null,
 			haveSavedMedia: false,
 			playPreview: false,
 			previewType: kPreviewTypePhoto,
@@ -113,7 +113,7 @@ export class AppIos extends Component {
 
 	render() {
 		return (
-			<View style={appStyles.containerApp}>
+			<View style={appStyles.container}>
 				<View>
 					{/* checks to see if start button was pressed */}
 					{!this.state.pressed ? (
@@ -144,7 +144,7 @@ export class AppIos extends Component {
 						>
 							{/* menubar toggles the different menu components */}
 
-							<View style={appStyles.menuBar}>
+							<View style={appStyles.appleMenu}>
 								<View style={appStyles.menuContainer}>
 									<TouchableOpacity
 										onPress={() => {
@@ -183,11 +183,11 @@ export class AppIos extends Component {
 								</View>
 							</View>
 							{/* scene navigator */}
-							<View style={appStyles.sceneNav}>
+							<View style={appStyles.appSceneNav}>
 								<ViroARSceneNavigator
 									initialScene={{ scene: InitialARScene }}
 									viroAppProps={this.state.viroAppProps}
-                  ref={this._setARNavigatorRef}
+									ref={this._setARNavigatorRef}
 								/>
 								{this._renderTrackingText()}
 								{renderIf(
@@ -215,7 +215,7 @@ export class AppIos extends Component {
 							<View>
 								{renderIf(
 									this.state.menuItem === 'settings',
-									<View style={appStyles.menuDropDown}>
+									<View style={appStyles.appMenuDropDown}>
 										<ScrollView>
 											<Settings />
 										</ScrollView>
@@ -223,7 +223,7 @@ export class AppIos extends Component {
 								)}
 								{renderIf(
 									this.state.menuItem === 'friends',
-									<View style={appStyles.menuDropDown}>
+									<View style={appStyles.appMenuDropDown}>
 										<ScrollView>
 											<Friends />
 										</ScrollView>
@@ -231,7 +231,7 @@ export class AppIos extends Component {
 								)}
 								{renderIf(
 									this.state.menuItem === 'photos',
-									<View style={appStyles.menuDropDown}>
+									<View style={appStyles.appMenuDropDown}>
 										<ScrollView>
 											<Photos />
 										</ScrollView>
