@@ -20,6 +20,7 @@ import {
 	Vibration,
 	Dimensions,
 	ScrollView,
+	PermissionsAndroid,
 } from 'react-native';
 const { width, height } = Dimensions.get('window');
 import { ViroARSceneNavigator } from 'react-viro';
@@ -41,6 +42,8 @@ export function renderIf(condition, renderedContent) {
 	}
 }
 
+const kPreviewTypePhoto = 1;
+
 var InitialARScene = require('./js/BallThrowAR');
 
 class App extends Component {
@@ -51,7 +54,6 @@ class App extends Component {
 		this._onTrackingUpdated = this._onTrackingUpdated.bind(this);
 		this._onLoadStart = this._onLoadStart.bind(this);
 		this._onLoadEnd = this._onLoadEnd.bind(this);
-		// //
 		this.state = {
 			pressed: false,
 			menuItem: null,
@@ -62,10 +64,115 @@ class App extends Component {
 				_onLoadStart: this._onLoadStart,
 				_onTrackingUpdated: this._onTrackingUpdated,
 			},
-
 			trackingInitialized: false,
 			isLoading: false,
+			videoUrl: null,
+			haveSavedMedia: false,
+			playPreview: false,
+			previewType: kPreviewTypePhoto,
+			screenshot_count: 0,
+			writeAccessPermission: false,
+			readAccessPermission: false,
 		};
+		this._takeScreenshot = this._takeScreenshot.bind(this);
+		this._saveToCameraRoll = this._saveToCameraRoll.bind(this);
+		this._setARNavigatorRef = this._setARNavigatorRef.bind(this);
+		this.requestWriteAccessPermission = this.requestWriteAccessPermission.bind(
+			this
+		);
+		this.requestReadAccessPermission = this.requestReadAccessPermission.bind(
+			this
+		);
+	}
+
+	async requestWriteAccessPermission() {
+		try {
+			console.log('write access');
+			const granted = await PermissionsAndroid.request(
+				PermissionsAndroid.permission.WRITE_EXTERNAL_STORAGE,
+				{
+					title: 'Figment AR Audio Permission',
+					message:
+						'Figment AR App needs to access your photos / videos ' +
+						'so you can record cool videos and photos of' +
+						'your augmented scenes.',
+				}
+			);
+			if (granted == PermissionsAndroid.RESULTS.GRANTED) {
+				console.log('granted');
+				this.setState({
+					writeAccessPermission: true,
+				});
+			} else {
+				console.log('not granted');
+				this.setState({
+					writeAccessPermission: false,
+				});
+			}
+		} catch (err) {
+			console.warn('[PermissionsAndroid]' + err);
+		}
+	}
+
+	async requestReadAccessPermission() {
+		try {
+			const granted = await PermissionsAndroid.request(
+				PermissionsAndroid.permission.READ_EXTERNAL_STORAGE,
+				{
+					title: 'Figment AR Audio Permission',
+					message:
+						'Figment AR App needs to access your audio ' +
+						'so you can view your own images in portals.',
+				}
+			);
+			if (granted == PermissionsAndroid.RESULTS.GRANTED) {
+				this.setState({
+					readAccessPermission: true,
+				});
+			} else {
+				this.setState({
+					readAccessPermission: false,
+				});
+			}
+		} catch (err) {
+			console.warn('[PermissionsAndroid]' + err);
+		}
+	}
+
+	_setARNavigatorRef(ARNavigator) {
+		this._arNavigator = ARNavigator;
+	}
+
+	async _takeScreenshot() {
+		console.log('screenshot1');
+		if (!this.state.writeAccessPermission) {
+			console.log('screenshot2');
+			this.requestWriteAccessPermission();
+		}
+		this._arNavigator
+			._takeScreenshot('screenshot' + this.state.screenshot_count, true)
+			.then((retDict) => {
+				console.log('hi');
+				let currentCount = this.state.screenshot_count + 1;
+				this.setState({
+					videoUrl: 'file://' + retDict.url,
+					haveSavedMedia: false,
+					playPreview: false,
+					previewType: kPreviewTypePhoto,
+					screenshot_count: currentCount,
+				});
+				console.log('videourl', this.state.videoUrl);
+				// this.props.dispatchDisplayUIScreen(UIConstants.SHOW_SHARE_SCREEN);
+			});
+	}
+
+	_saveToCameraRoll() {
+		if (this.state.videoUrl != undefined && !this.state.haveSavedMedia) {
+			this.setState({
+				haveSavedMedia: true,
+			});
+		}
+		CameraRoll.saveToCameraRoll(this.state.videoUrl);
 	}
 
 	render() {
@@ -144,6 +251,7 @@ class App extends Component {
 								<ViroARSceneNavigator
 									initialScene={{ scene: InitialARScene }}
 									viroAppProps={this.state.viroAppProps}
+                  ref={this._setARNavigatorRef}
 								/>
 								{this._renderTrackingText()}
 								{renderIf(
@@ -194,9 +302,33 @@ class App extends Component {
 									</View>
 								)}
 							</View>
-							{/* <View style={{ position: 'absolute', bottom: 25, right: 10 }}>
-                <Screenshot />
-              </View> */}
+
+							{/* screenshot */}
+							<View
+								key="screenshot_container"
+								style={{
+									flex: 1,
+									position: 'absolute',
+									flexDirection: 'row',
+									justifyContent: 'center',
+									alignItems: 'center',
+									width: 58,
+									height: 58,
+									// top: 0,
+									bottom: 25,
+
+									transform: [{ translate: [80, 0, 0] }],
+								}}
+							>
+								<TouchableOpacity
+									key="camera_button"
+									title="screenshot"
+									onPress={() => this._takeScreenshot()}
+									style={{ position: 'absolute', bottom: 25, right: 10 }}
+								>
+									<Text style={appStyles.menuButton}>📷</Text>
+								</TouchableOpacity>
+							</View>
 						</View>
 					)}
 				</View>
