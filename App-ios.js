@@ -27,6 +27,7 @@ const { width, height } = Dimensions.get('window');
 import { ViroARSceneNavigator } from 'react-viro';
 import { connect } from 'react-redux';
 import { addPoints } from './store/users';
+import { addPhoto } from './store/photos';
 import Screenshot from './js/Screenshot';
 import Photos from './js/Photos';
 import Settings from './js/Settings';
@@ -97,7 +98,8 @@ export class AppIos extends Component {
 					previewType: kPreviewTypePhoto,
 					screenshot_count: currentCount,
 				});
-				console.log('videourl', this.state.videoUrl);
+        console.log('videourl', this.state.videoUrl);
+        this.props.addPhoto(this.state.videoUrl)
 				// this.props.dispatchDisplayUIScreen(UIConstants.SHOW_SHARE_SCREEN);
 			});
 	}
@@ -340,7 +342,8 @@ const mapState = (state) => {
 
 const mapDispatch = (dispatch) => {
 	return {
-		addPoints: (obj) => dispatch(addPoints(obj)),
+    addPoints: (obj) => dispatch(addPoints(obj)),
+    addPhoto: (str) => dispatch(addPhoto(str))
 	};
 };
 
