@@ -20,6 +20,7 @@ import {
 	Vibration,
 	Dimensions,
 	ScrollView,
+	PermissionsAndroid,
 } from 'react-native';
 const { width, height } = Dimensions.get('window');
 import { ViroARSceneNavigator } from 'react-viro';
@@ -90,8 +91,9 @@ class App extends Component {
 
 	async requestWriteAccessPermission() {
 		try {
+			console.log('write access');
 			const granted = await PermissionsAndroid.request(
-				PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+				PermissionsAndroid.permission.WRITE_EXTERNAL_STORAGE,
 				{
 					title: 'Figment AR Audio Permission',
 					message:
@@ -101,10 +103,12 @@ class App extends Component {
 				}
 			);
 			if (granted == PermissionsAndroid.RESULTS.GRANTED) {
+				console.log('granted');
 				this.setState({
 					writeAccessPermission: true,
 				});
 			} else {
+				console.log('not granted');
 				this.setState({
 					writeAccessPermission: false,
 				});
@@ -117,7 +121,7 @@ class App extends Component {
 	async requestReadAccessPermission() {
 		try {
 			const granted = await PermissionsAndroid.request(
-				PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+				PermissionsAndroid.permission.READ_EXTERNAL_STORAGE,
 				{
 					title: 'Figment AR Audio Permission',
 					message:
@@ -144,7 +148,9 @@ class App extends Component {
 	}
 
 	async _takeScreenshot() {
+		console.log('screenshot1');
 		if (!this.state.writeAccessPermission) {
+			console.log('screenshot2');
 			this.requestWriteAccessPermission();
 		}
 		this._arNavigator
