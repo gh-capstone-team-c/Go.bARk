@@ -73,7 +73,6 @@ export class AppIos extends Component {
 		this._setARNavigatorRef = this._setARNavigatorRef.bind(this);
 	}
 
-	// Helper function called while initializing <ViroARSceneNavigator>
 	_setARNavigatorRef(ARNavigator) {
 		this._arNavigator = ARNavigator;
 	}
