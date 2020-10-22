@@ -8,6 +8,7 @@ import {
   ViroText,
   ViroAmbientLight,
   ViroAnimatedImage,
+  ViroSound,
   ViroSpotLight,
 } from 'react-viro';
 var createReactClass = require('create-react-class');
