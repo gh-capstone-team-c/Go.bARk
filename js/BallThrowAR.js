@@ -43,6 +43,9 @@ export default BallThrowAR = createReactClass({
       //passing redux function to AR component
       user: this.props.arSceneNavigator.viroAppProps.user,
       addPoints: this.props.arSceneNavigator.viroAppProps.addPoints,
+      walkPosition: [-0.7, -1, 2],
+      foodPosition: [2, -1, -0.7],
+      towPosition: [-2, -1, -0.7],
     };
   },
   render() {
@@ -50,10 +53,12 @@ export default BallThrowAR = createReactClass({
     return (
       <ViroARScene ref="arscene" _onTrackingUpdated={this._onTrackingUpdated}>
         <ViroNode
+          position={this.state.towPosition}
+          transformBehaviors={['billboardY']}
           dragType="FixedToWorld"
           onDrag={() =>
             this.props.arSceneNavigator.push({
-              scene: TugOfWar,
+              scene: require('./TugOfWar'),
               passProps: {
                 user: this.state.user,
                 addPoints: this.state.addPoints,
@@ -61,21 +66,25 @@ export default BallThrowAR = createReactClass({
             })
           }
         >
-          <ViroImage
-            height={0.04}
-            width={0.04}
+          <ViroAnimatedImage
+            scale={[0.8, 0.8, 0.8]}
+            height={1}
+            width={1}
             source={require('./res/gifs/towGif.gif')}
-            position={[0.08, -0.16, -0.3]}
+            position={[0, 0, 0]}
+            animation={{
+              loop: true,
+              delay: 0,
+            }}
           />
         </ViroNode>
-
         <ViroNode
-          position={[2, -1, -0.7]}
+          position={this.state.foodPosition}
           transformBehaviors={['billboardY']}
           dragType="FixedToWorld"
           onDrag={() =>
             this.props.arSceneNavigator.push({
-              scene: FoodTime,
+              scene: require('./BallThrowAR'),
               passProps: {
                 user: this.state.user,
                 addPoints: this.state.addPoints,
@@ -88,15 +97,39 @@ export default BallThrowAR = createReactClass({
             height={1}
             width={1}
             source={require('./res/gifs/dogBowlIcon.gif')}
-            position={[0, 0, 0] /* -1.2, -2.8, -5 */}
+            position={[0, 0, 0]}
             animation={{
-              run: this.state.playAnim,
               loop: true,
               delay: 0,
             }}
           />
         </ViroNode>
-
+        <ViroNode
+          position={this.state.walkPosition}
+          transformBehaviors={['billboardY']}
+          dragType="FixedToWorld"
+          onDrag={() =>
+            this.props.arSceneNavigator.push({
+              scene: require('./Walk'),
+              passProps: {
+                user: this.state.user,
+                addPoints: this.state.addPoints,
+              },
+            })
+          }
+        >
+          <ViroAnimatedImage
+            scale={[0.8, 0.8, 0.8]}
+            height={1}
+            width={1}
+            source={require('./res/gifs/walkGif.gif')}
+            position={[0, 0, 0]}
+            animation={{
+              loop: true,
+              delay: 0,
+            }}
+          />
+        </ViroNode>
         <ViroText
           text={this.state.text}
           scale={[1, 1, 1]}
@@ -205,36 +238,6 @@ export default BallThrowAR = createReactClass({
             height={2.5}
             arShadowReceiver={true}
             ignoreEventHandling={true}
-          />
-        </ViroNode>
-
-        {/* emoji next to the portal*/}
-        <ViroNode
-          position={[-1, 0, 2]}
-          onDrag={() =>
-            this.props.arSceneNavigator.push({
-              scene: Walk,
-              passProps: {
-                user: this.state.user,
-                addPoints: this.state.addPoints,
-              },
-            })
-          }
-          scale={[1, 1, 1]}
-          transformBehaviors={['billboardY']}
-        >
-          <ViroAnimatedImage
-            scale={[0.5, 0.5, 0.5]}
-            position={[0, 0, 0]}
-            rotation={[0, 0, 0]}
-            animation={{
-              run: this.state.playAnim,
-              loop: true,
-              delay: 0,
-            }}
-            height={1}
-            width={1}
-            source={require('./res/gifs/walkGif.gif')}
           />
         </ViroNode>
       </ViroARScene>
