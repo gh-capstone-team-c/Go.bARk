@@ -73,7 +73,7 @@ export default FoodTime = createReactClass({
           />
         </ViroNode>
         <ViroNode
-          position={[-2, 1, -0.7]}
+          position={[-2, -1, -0.7]}
           transformBehaviors={['billboardY']}
           dragType="FixedToWorld"
           onDrag={() =>
@@ -140,23 +140,20 @@ export default FoodTime = createReactClass({
           />
         </ViroNode>
 
-
-				<ViroText
-					text={'Tap the bowl to feed your dog!'}
-					scale={[1, 1, 1]}
-					position={[0, 1, -4]}
-				/>
-			</ViroARScene>
-		);
-	},
-
+        <ViroText
+          text={'Tap the bowl to feed your dog!'}
+          scale={[1, 1, 1]}
+          position={[0, 1, -4]}
+        />
+      </ViroARScene>
+    );
+  },
 
   _onBowlClicked() {
     const currentPose = this.state.changePose;
     this.setState({ changePose: !currentPose });
     this.state.addPoints({ points: this.state.user.points++ });
   },
-
 });
 
 module.exports = FoodTime;
