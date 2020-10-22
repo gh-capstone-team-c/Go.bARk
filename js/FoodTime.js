@@ -131,6 +131,7 @@ export default FoodTime = createReactClass({
             source={dog[dogColor]}
             type="VRX"
           /> */}
+
           <Viro3DObject
             position={[0, -10, -20]}
             source={dog}
@@ -139,20 +140,23 @@ export default FoodTime = createReactClass({
           />
         </ViroNode>
 
-        <ViroText
-          text={'Tap the bowl to feed your dog!'}
-          scale={[1, 1, 1]}
-          position={[0, 1, -4]}
-        />
-      </ViroARScene>
-    );
-  },
+
+				<ViroText
+					text={'Tap the bowl to feed your dog!'}
+					scale={[1, 1, 1]}
+					position={[0, 1, -4]}
+				/>
+			</ViroARScene>
+		);
+	},
+
 
   _onBowlClicked() {
     const currentPose = this.state.changePose;
     this.setState({ changePose: !currentPose });
     this.state.addPoints({ points: this.state.user.points++ });
   },
+
 });
 
 module.exports = FoodTime;

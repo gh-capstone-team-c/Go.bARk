@@ -26,28 +26,49 @@ const dog = {
 };
 
 export default BallThrowAR = createReactClass({
-  getInitialState() {
-    return {
-      currentAnimation: 'rotate',
-      text: 'Play with me!',
-      dogScale: [0.1, 0.1, 0.1],
-      scale: [0.7, 0.7, 0.7],
-      dogPosition: [0, -10, -20],
-      ballPosition: [0, -10, -10],
-      playCount: 0,
-      rotation: [0, 0, 0],
-      dogAnimation: 'waiting',
-      showPortal: false,
-      //passing redux function to AR component
-      user: this.props.arSceneNavigator.viroAppProps.user,
-      addPoints: this.props.arSceneNavigator.viroAppProps.addPoints,
-    };
-  },
-  render() {
-    const dogColor = this.state.user.dog.color;
-    return (
-      <ViroARScene ref="arscene" _onTrackingUpdated={this._onTrackingUpdated}>
-        <ViroNode
+
+	getInitialState() {
+		return {
+			currentAnimation: 'rotate',
+			text: 'Play with me!',
+			dogScale: [0.1, 0.1, 0.1],
+			scale: [0.7, 0.7, 0.7],
+			dogPosition: [0, -10, -20],
+			ballPosition: [0, -10, -10],
+			playCount: 0,
+			rotation: [0, 0, 0],
+			dogAnimation: 'waiting',
+			showPortal: false,
+			//passing redux function to AR component
+			user: this.props.arSceneNavigator.viroAppProps.user,
+			addPoints: this.props.arSceneNavigator.viroAppProps.addPoints,
+		};
+	},
+	render() {
+		const dogColor = this.state.user.dog.color;
+		return (
+			<ViroARScene ref="arscene" _onTrackingUpdated={this._onTrackingUpdated}>
+				<ViroNode
+					dragType="FixedToWorld"
+					onDrag={() =>
+						this.props.arSceneNavigator.push({
+							scene: TugOfWar,
+							passProps: {
+								user: this.state.user,
+								addPoints: this.state.addPoints,
+							},
+						})
+					}
+				>
+					<ViroImage
+						height={0.04}
+						width={0.04}
+						source={require('./res/tennisball.png')}
+						position={[0.08, -0.16, -0.3]}
+					/>
+				</ViroNode>
+
+				<ViroNode
           position={[2, -1, -0.7]}
           transformBehaviors={['billboardY']}
           dragType="FixedToWorld"
@@ -75,118 +96,118 @@ export default BallThrowAR = createReactClass({
           />
         </ViroNode>
 
-        <ViroText
-          text={this.state.text}
-          scale={[1, 1, 1]}
-          position={[0, 0, -4]}
-        />
-        <ViroAmbientLight color={'#e8e0dc'} />
-        <ViroARPlane minHeight={0} minWidth={0.5} alignment={'Horizontal'}>
-          {/* dog object */}
-          <ViroNode
-            position={this.state.dogPosition}
-            scale={this.state.dogScale}
-            onDrag={() => {}}
-            key={'dog'}
-            ref={this._setARNodeRef}
-            rotation={this.state.rotation}
-          >
-            <ViroSpotLight
-              innerAngle={5}
-              outerAngle={20}
-              direction={[0, -1, 0]}
-              position={[
-                this.state.dogPosition[0],
-                this.state.dogPosition[1] + 4,
-                this.state.dogPosition[2],
-              ]}
-              color="#ffffff"
-              intensity={10000}
-              castsShadow={true}
-              shadowNearZ={0.1}
-              shadowFarZ={6}
-              shadowOpacity={0.9}
-              ref={this._setSpotLightRef}
-            />
-            <Viro3DObject
-              source={dog[dogColor]}
-              position={[0, 0, 0]}
-              animation={{
-                name: this.state.dogAnimation,
-                run: true,
-                //loop: true,
-                interruptible: true,
-              }}
-              onLoadEnd={this._onLoadEnd}
-              onLoadStart={this._onLoadStart}
-              ignoreEventHandling={true}
-              type="VRX"
-              transformBehaviors={['billboardY']}
-            />
-            <ViroQuad
-              rotation={[-90, 0, 0]}
-              position={[0, -0.001, 0]}
-              width={2.5}
-              height={2.5}
-              arShadowReceiver={true}
-              ignoreEventHandling={true}
-            />
-          </ViroNode>
-          {/* ball object */}
-          <ViroNode
-            position={this.state.ballPosition}
-            onDrag={() => {}}
-            key={'ball'}
-            ref={'ball'}
-            scale={this.state.scale}
-            ref={this._setARNodeRef}
-            rotation={this.state.rotation}
-          >
-            <ViroSpotLight
-              innerAngle={5}
-              outerAngle={20}
-              direction={[0, -1, 0]}
-              position={[
-                this.state.ballPosition[0],
-                this.state.ballPosition[1] + 10,
-                this.state.ballPosition[2],
-              ]}
-              color="#ffffff"
-              castsShadow={true}
-              shadowNearZ={0.1}
-              shadowFarZ={6}
-              shadowOpacity={0.9}
-              ref={this._setSpotLightRef}
-            />
-            <Viro3DObject
-              source={require('./res/object_sphere.vrx')}
-              resources={[
-                require('./res/sphere_diffuse.png'),
+				<ViroText
+					text={this.state.text}
+					scale={[1, 1, 1]}
+					position={[0, 0, -4]}
+				/>
+				<ViroAmbientLight color={'#e8e0dc'} />
+				{/* <ViroARPlane minHeight={0.5} minWidth={0.5} alignment={'Horizontal'}> */}
+				{/* dog object */}
+				<ViroNode
+					position={this.state.dogPosition}
+					scale={this.state.dogScale}
+					onDrag={() => {}}
+					key={'dog'}
+					ref={this._setARNodeRef}
+					rotation={this.state.rotation}
+				>
+					<ViroSpotLight
+						innerAngle={5}
+						outerAngle={20}
+						direction={[0, -1, 0]}
+						position={[
+							this.state.dogPosition[0],
+							this.state.dogPosition[1] + 4,
+							this.state.dogPosition[2],
+						]}
+						color="#ffffff"
+						intensity={10000}
+						castsShadow={true}
+						shadowNearZ={0.1}
+						shadowFarZ={6}
+						shadowOpacity={0.9}
+						ref={this._setSpotLightRef}
+					/>
+					<Viro3DObject
+						source={dog[dogColor]}
+						position={[0, 0, 0]}
+						animation={{
+							name: this.state.dogAnimation,
+							run: true,
+							//loop: true,
+							interruptible: true,
+						}}
+						onLoadEnd={() => this._onLoadEnd('dog')}
+						onLoadStart={this._onLoadStart}
+						ignoreEventHandling={true}
+						type="VRX"
+						transformBehaviors={['billboardY']}
+					/>
+					<ViroQuad
+						rotation={[-90, 0, 0]}
+						position={[0, -0.001, 0]}
+						width={2.5}
+						height={2.5}
+						arShadowReceiver={true}
+						ignoreEventHandling={true}
+					/>
+				</ViroNode>
+				{/* ball object */}
+				<ViroNode
+					position={this.state.ballPosition}
+					onDrag={() => {}}
+					key={'ball'}
+					scale={this.state.scale}
+					ref={this._setARNodeRef}
+					rotation={this.state.rotation}
+				>
+					<ViroSpotLight
+						innerAngle={5}
+						outerAngle={20}
+						direction={[0, -1, 0]}
+						position={[
+							this.state.ballPosition[0],
+							this.state.ballPosition[1] + 10,
+							this.state.ballPosition[2],
+						]}
+						color="#ffffff"
+						castsShadow={true}
+						shadowNearZ={0.1}
+						shadowFarZ={6}
+						shadowOpacity={0.9}
+						ref={this._setSpotLightRef}
+					/>
+					<Viro3DObject
+						source={require('./res/object_sphere.vrx')}
+						resources={[
+							require('./res/sphere_diffuse.png'),
 
-                require('./res/sphere_specular.png'),
-              ]}
-              position={[0, 0, 0]}
-              type="VRX"
-              onClickState={this._onBallClick}
-              animation={{
-                name: this.state.currentAnimation,
-                run: true,
-                interruptible: true,
-              }}
-              onLoadEnd={this._onLoadEnd}
-              onLoadStart={this._onLoadStart}
-              onDrag={this._onBallDrag}
-            />
-            <ViroQuad
-              rotation={[-90, 0, 0]}
-              position={[0, -0.001, 0]}
-              width={2.5}
-              height={2.5}
-              arShadowReceiver={true}
-              ignoreEventHandling={true}
-            />
-          </ViroNode>
+							require('./res/sphere_specular.png'),
+						]}
+						position={[0, 0, 0]}
+						type="VRX"
+						onClickState={this._onBallClick}
+						animation={{
+							name: this.state.currentAnimation,
+							run: true,
+							interruptible: true,
+						}}
+						onLoadEnd={() => this._onLoadEnd('ball')}
+						onLoadStart={this._onLoadStart}
+						onDrag={this._onBallDrag}
+					/>
+					<ViroQuad
+						rotation={[-90, 0, 0]}
+						position={[0, -0.001, 0]}
+						width={2.5}
+						height={2.5}
+						arShadowReceiver={true}
+						ignoreEventHandling={true}
+					/>
+				</ViroNode>
 
+	
           {/* emoji next to the portal*/}
           <ViroNode
             position={[-1, 0, 2]}
@@ -224,146 +245,88 @@ export default BallThrowAR = createReactClass({
     );
   },
 
-  _onBallClick(stateValue, position, source) {
-    //incremental counter to limit number of consecutive games of catch with dog
-    if (
-      stateValue === 1 &&
-      this.state.currentAnimation !== ('arc' || 'rollAway')
-    ) {
-      const play = this.state.playCount + 1;
-      this.setState({ ...this.state, playCount: play });
-      // let pts = this.state.user.points;
-      this.state.addPoints({ points: this.state.user.points++ });
-    }
-    // capture when dog and ball are super close to user(already fetched) and returns gameplay loop to near start.
-    if (position[2] >= -5 && this.state.playCount >= 3) {
-      this.setState({
-        ...this.state,
-        dogAnimation: 'dropBall',
-        currentAnimation: 'rollAway',
-      });
-      // function that displays dog after dropping ball
-      setTimeout(() => {
-        if (this.state.dogAnimation === 'dropBall') {
-          this.setState({
-            ...this.state,
-            dogPosition: [0, -9, -15],
-            playCount: 0,
-            dogAnimation: 'waiting',
-            currentAnimation: 'rotate',
-          });
-        }
-      }, 5000);
-    } else if (stateValue === 1) {
-      this.setState({
-        dogAnimation: 'waiting',
-      });
-      //handler for play loop
-    } else if (stateValue === 2 || stateValue === 3) {
-      this.setState({
-        currentAnimation: 'arc',
-        dogAnimation: 'fetch',
-      });
-      //captures dog walking towards ball
-      setTimeout(() => {
-        if (this.state.currentAnimation === 'arc') {
-          const dogZ = this.state.dogPosition[2] - 5;
-          this.setState({ ...this.state, dogPosition: [0, -9, dogZ] });
-        }
-      }, 2000);
-      // This timeout fires after the ball lands near the dog. It sets the dog and ball on a return course. The if statement stops it from refiring after the dog drops the ball.
-      setTimeout(() => {
-        if (this.state.currentAnimation === 'arc') {
-          this.setState({
-            ...this.state,
-            currentAnimation: 'returnBall',
-            dogAnimation: 'return',
-            ballPosition: [0, -2.4, -3],
-            dogPosition: [0, -9, -9],
-          });
-        }
-      }, 6500);
-    }
-  },
-  //empty function enables drag.
-  _onBallDrag() {},
 
-  //Ray - tracing
-  _onLoadStart() {
-    this.props.arSceneNavigator.viroAppProps._onLoadStart();
-  },
-  // Perform a hit test on load end to display object.
-  _onLoadEnd() {
-    this.refs['arscene'].getCameraOrientationAsync().then((orientation) => {
-      this.refs['arscene']
-        .performARHitTestWithRay(orientation.forward)
-        .then((results) => {
-          this._onArHitTestResults(
-            orientation.position,
-            orientation.forward,
-            results
-          );
-        });
-    });
-    this.props.arSceneNavigator.viroAppProps._onLoadEnd();
-  },
-  _setARNodeRef(component) {
-    this.arNodeRef = component;
-  },
-  _setSpotLightRef(component) {
-    this.spotLight = component;
-  },
-  _onTrackingUpdated() {
-    this.props.sceneNavigator.viroAppProps._onTrackingUpdated();
-  },
-  _onArHitTestResults(position, forward, results) {
-    // Default position is just 1.5 meters in front of the user.
-    let newPosition = [forward[0] * 1.5, forward[1] * 1.5, forward[2] * 1.5];
-    let hitResultPosition = undefined;
-    // Filter the hit test results based on the position.
-    if (results.length > 0) {
-      for (var i = 0; i < results.length; i++) {
-        let result = results[i];
-        if (result.type == 'ExistingPlaneUsingExtent') {
-          var distance = Math.sqrt(
-            (result.transform.position[0] - position[0]) *
-              (result.transform.position[0] - position[0]) +
-              (result.transform.position[1] - position[1]) *
-                (result.transform.position[1] - position[1]) +
-              (result.transform.position[2] - position[2]) *
-                (result.transform.position[2] - position[2])
-          );
-          if (distance > 0.2 && distance < 10) {
-            // If we found a plane greater than .2 and less than 10 meters away then choose it!
-            hitResultPosition = result.transform.position;
-            break;
-          }
-        } else if (result.type == 'FeaturePoint' && !hitResultPosition) {
-          // If we haven't found a plane and this feature point is within range, then we'll use it
-          // as the initial display point.
-          var distance = this._distance(position, result.transform.position);
-          if (distance > 0.2 && distance < 10) {
-            hitResultPosition = result.transform.position;
-          }
-        }
-      }
-    }
-
-    if (hitResultPosition) {
+	//Raycasting - hittracing
+	_onLoadStart() {
+		this.props.arSceneNavigator.viroAppProps._onLoadStart();
+	},
+	// Perform a hit test on load end to display object.
+	_onLoadEnd(str) {
+		this.refs['arscene'].getCameraOrientationAsync().then((orientation) => {
+			this.refs['arscene']
+				.performARHitTestWithRay(orientation.forward)
+				.then((results) => {
+					this._onArHitTestResults(
+						orientation.position,
+						orientation.forward,
+						results,
+						str
+					);
+					console.log(str);
+				});
+		});
+		this.props.arSceneNavigator.viroAppProps._onLoadEnd();
+	},
+	_setARNodeRef(component) {
+		this.arNodeRef = component;
+	},
+	_setSpotLightRef(component) {
+		this.spotLight = component;
+	},
+	_onTrackingUpdated() {
+		this.props.sceneNavigator.viroAppProps._onTrackingUpdated();
+	},
+	_onArHitTestResults(position, forward, results, str) {
+		// Default position is just 1.5 meters in front of the user.
+		let newPosition = [forward[0] * 1.5, forward[1] * 1.5, forward[2] * 1.5];
+		let hitResultPosition = undefined;
+		// Filter the hit test results based on the position.
+		if (results.length > 0) {
+			for (var i = 0; i < results.length; i++) {
+				let result = results[i];
+				if (result.type == 'ExistingPlaneUsingExtent') {
+					var distance = Math.sqrt(
+						(result.transform.position[0] - position[0]) *
+							(result.transform.position[0] - position[0]) +
+							(result.transform.position[1] - position[1]) *
+								(result.transform.position[1] - position[1]) +
+							(result.transform.position[2] - position[2]) *
+								(result.transform.position[2] - position[2])
+					);
+					if (distance > 0.2 && distance < 10) {
+						// If we found a plane greater than .2 and less than 10 meters away then choose it!
+						hitResultPosition = result.transform.position;
+						break;
+					}
+				} else if (result.type == 'FeaturePoint' && !hitResultPosition) {
+					// If we haven't found a plane and this feature point is within range, then we'll use it
+					// as the initial display point.
+					var distance = this._distance(position, result.transform.position);
+					if (distance > 0.2 && distance < 10) {
+						hitResultPosition = result.transform.position;
+					}
+				}
+         if (hitResultPosition) {
       newPosition = hitResultPosition;
     }
+		// Set the initial placement of the object using new position from the hit test.
+		this._setInitialPlacement(newPosition, str);
+	},
 
-    // Set the initial placement of the object using new position from the hit test.
-    this._setInitialPlacement(newPosition);
-  },
+	_setInitialPlacement(position, str) {
+		let key = `${str}Position`;
+		let newVals = [
+			this.state[key][0] + position[0],
+			this.state[key][1] + position[1],
+			this.state[key][2] + position[2],
+		];
+		this.setState({
+			[key]: newVals,
+		});
+	
+		this._updateInitialRotation();
+	},
 
-  _setInitialPlacement(position) {
-    let key = `${this.arNodeRef}Position`;
-    this.setState({
-      [key]: position,
-    });
-    this._updateInitialRotation();
-  },
 
   // Update the rotation of the object to face the user after it's positioned.
   _updateInitialRotation() {

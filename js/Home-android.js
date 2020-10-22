@@ -39,7 +39,6 @@ class HomeAndroid extends React.Component {
 		});
 	};
 
-
 	render() {
 		return (
 			<View>
@@ -90,7 +89,11 @@ class HomeAndroid extends React.Component {
 												this.state.dogName.trim() === ''
 											) {
 												this.showAlert();
-											} else this.showAlert();
+											} else
+												this.props.myDog({
+													name: this.state.dogName,
+													color: this.state.dogColor,
+												});
 										}}
 									>
 										<Text style={appStyles.buttonText}>Add my dog!</Text>
@@ -143,7 +146,6 @@ class HomeAndroid extends React.Component {
 				) : (
 					<App />
 				)}
-
 			</View>
 		);
 	}

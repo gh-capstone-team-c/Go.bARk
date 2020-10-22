@@ -52,7 +52,6 @@ export class AppIos extends Component {
 		super(props);
 		// // all code here for ray tracing
 		this._renderTrackingText = this._renderTrackingText.bind(this);
-		this._onTrackingUpdated = this._onTrackingUpdated.bind(this);
 		this._onLoadStart = this._onLoadStart.bind(this);
 		this._onLoadEnd = this._onLoadEnd.bind(this);
 		this.state = {
@@ -64,12 +63,19 @@ export class AppIos extends Component {
 				addPoints: this.props.addPoints,
 				_onLoadEnd: this._onLoadEnd,
 				_onLoadStart: this._onLoadStart,
-				_onTrackingUpdated: this._onTrackingUpdated,
 			},
-			trackingInitialized: false,
 			isLoading: false,
 			videoUrl: null,
+
+			
+			logo: {
+				blackTan: require(`./js/res/darklogo.png`),
+				red: require(`./js/res/shibaFace.png`),
+				cream: require(`./js/res/creamlogo.png`),
+			},
+
 			cameraNoise: true,
+
 		};
 		this._takeScreenshot = this._takeScreenshot.bind(this);
 		this._setARNavigatorRef = this._setARNavigatorRef.bind(this);
@@ -83,12 +89,12 @@ export class AppIos extends Component {
 		this._arNavigator
 			._takeScreenshot('screenshot' + this.state.screenshot_count, true)
 			.then((retDict) => {
-				console.log('hi');
+				
 				this.setState({
 					videoUrl: 'file://' + retDict.url,
 					cameraClick: !this.state.cameraNoise,
 				});
-				console.log('videourl', this.state.videoUrl);
+				
 				this.props.addPhoto(this.state.videoUrl);
 			});
 	}
@@ -111,7 +117,7 @@ export class AppIos extends Component {
 							>
 								<Image
 									style={appStyles.logo}
-									source={require('./js/res/shibaFace.png')}
+									source={this.state.logo[this.props.user.dog.color]}
 								/>
 							</TouchableOpacity>
 							<Text style={appStyles.titleText}>bARk</Text>
@@ -270,24 +276,7 @@ export class AppIos extends Component {
 	}
 
 	_renderTrackingText() {
-		if (this.state.trackingInitialized) {
-			return (
-				<View
-					style={{
-						position: 'absolute',
-						backgroundColor: '#ffffff',
-						left: 30,
-						right: 30,
-						top: 30,
-						alignItems: 'center',
-					}}
-				>
-					<Text style={{ fontSize: 12, color: '#ffffff' }}>
-						Tracking initialized.
-					</Text>
-				</View>
-			);
-		} else {
+		if (this.state.isLoading) {
 			return (
 				<View
 					style={{

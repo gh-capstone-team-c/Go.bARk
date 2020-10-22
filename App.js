@@ -51,7 +51,6 @@ class App extends Component {
 		super(props);
 		// // all code here for ray tracing
 		this._renderTrackingText = this._renderTrackingText.bind(this);
-		this._onTrackingUpdated = this._onTrackingUpdated.bind(this);
 		this._onLoadStart = this._onLoadStart.bind(this);
 		this._onLoadEnd = this._onLoadEnd.bind(this);
 		this.state = {
@@ -62,9 +61,7 @@ class App extends Component {
 				addPoints: this.props.addPoints,
 				_onLoadEnd: this._onLoadEnd,
 				_onLoadStart: this._onLoadStart,
-				_onTrackingUpdated: this._onTrackingUpdated,
 			},
-			trackingInitialized: false,
 			isLoading: false,
 			videoUrl: null,
 			haveSavedMedia: false,
@@ -73,6 +70,11 @@ class App extends Component {
 			screenshot_count: 0,
 			writeAccessPermission: false,
 			readAccessPermission: false,
+			logo: {
+				blackTan: require(`./js/res/darklogo.png`),
+				red: require(`./js/res/shibaFace.png`),
+				cream: require(`./js/res/creamlogo.png`),
+			},
 		};
 		this._takeScreenshot = this._takeScreenshot.bind(this);
 		this._saveToCameraRoll = this._saveToCameraRoll.bind(this);
@@ -176,6 +178,7 @@ class App extends Component {
 	}
 
 	render() {
+		console.log(this.props.user.dog.color);
 		return (
 			<View style={appStyles.containerApp}>
 				<View>
@@ -193,7 +196,7 @@ class App extends Component {
 							>
 								<Image
 									style={appStyles.logo}
-									source={require('./js/res/shibaFace.png')}
+									source={this.state.logo[this.props.user.dog.color]}
 								/>
 							</TouchableOpacity>
 							<Text style={appStyles.titleText}>bARk</Text>
@@ -251,7 +254,7 @@ class App extends Component {
 								<ViroARSceneNavigator
 									initialScene={{ scene: InitialARScene }}
 									viroAppProps={this.state.viroAppProps}
-                  ref={this._setARNavigatorRef}
+									ref={this._setARNavigatorRef}
 								/>
 								{this._renderTrackingText()}
 								{renderIf(
@@ -349,27 +352,11 @@ class App extends Component {
 		this.setState({
 			isLoading: false,
 		});
+		console.log('this.state', this.state.isLoading);
 	}
 
 	_renderTrackingText() {
-		if (this.state.trackingInitialized) {
-			return (
-				<View
-					style={{
-						position: 'absolute',
-						backgroundColor: '#ffffff',
-						left: 30,
-						right: 30,
-						top: 30,
-						alignItems: 'center',
-					}}
-				>
-					<Text style={{ fontSize: 12, color: '#ffffff' }}>
-						Tracking initialized.
-					</Text>
-				</View>
-			);
-		} else {
+		if (this.state.isLoading) {
 			return (
 				<View
 					style={{
@@ -387,12 +374,6 @@ class App extends Component {
 				</View>
 			);
 		}
-	}
-
-	_onTrackingUpdated() {
-		this.setState({
-			trackingInitialized: true,
-		});
 	}
 }
 
