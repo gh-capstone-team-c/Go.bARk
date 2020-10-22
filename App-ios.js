@@ -28,7 +28,7 @@ import { ViroARSceneNavigator } from 'react-viro';
 import { connect } from 'react-redux';
 import { addPoints } from './store/users';
 import { addPhoto } from './store/photos';
-import { fetchEveryPhoto } from './store/allPhotos';
+
 import Screenshot from './js/Screenshot';
 import Photos from './js/Photos';
 import Settings from './js/Settings';
@@ -79,11 +79,6 @@ export class AppIos extends Component {
 		this._takeScreenshot = this._takeScreenshot.bind(this);
 		this._setARNavigatorRef = this._setARNavigatorRef.bind(this);
 	}
-
-	// componentDidMount() {
-	//   this.props.fetchEveryPhoto();
-	//   console.log(this.props.allPhotos)
-	// }
 
 	_setARNavigatorRef(ARNavigator) {
 		this._arNavigator = ARNavigator;
@@ -309,7 +304,6 @@ export class AppIos extends Component {
 const mapState = (state) => {
 	return {
 		user: state.user,
-		allPhotos: state.allPhotos,
 	};
 };
 
@@ -317,7 +311,6 @@ const mapDispatch = (dispatch) => {
 	return {
 		addPoints: (obj) => dispatch(addPoints(obj)),
 		addPhoto: (str, id) => dispatch(addPhoto(str, id)),
-		fetchEveryPhoto: () => dispatch(fetchEveryPhoto()),
 	};
 };
 

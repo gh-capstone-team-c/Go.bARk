@@ -26,7 +26,6 @@ const rootReducer = combineReducers({
 	user: userReducer,
 	allUsers: allUsersReducer,
 	photos: photoReducer,
-	allPhotos: allPhotosReducer,
 });
 
 export default createStore(
