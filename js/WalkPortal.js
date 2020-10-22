@@ -13,6 +13,7 @@ import {
 	ViroText,
 	ViroAmbientLight,
 	ViroParticleEmitter,
+	ViroAnimations,
 } from 'react-viro';
 var createReactClass = require('create-react-class');
 
@@ -52,17 +53,18 @@ export default WalkPortal = createReactClass({
 				// onDrag={() => {}}
 			>
 				{/* render the portal on the other side of the user */}
-				<ViroPortal position={[0, -5, 2]} scale={[1, 1, 1]}>
+				<ViroPortal position={[0, -2, 2]} scale={[1, 1, 1]}>
 					<Viro3DObject
-						source={require('./res/door/InteriorDoor.vrx')}
-						rotation={[-90, 0, 0]}
-						scale={[0.1, 0.1, 0.1]}
+						source={require('./res/door/openDoor.obj')}
+						rotation={[0, 0, 0]}
+						scale={[4, 4, 4]}
 						resources={[
+							require('./res/door/openDoor.mtl'),
 							require('./res/door/InteriorDoor_Diffuce.jpg'),
 							require('./res/door/InteriorDoor_NRM.jpg'),
 							require('./res/door/InteriorDoor_SPEC.jpg'),
 						]}
-						type="VRX"
+						type="OBJ"
 					/>
 				</ViroPortal>
 				<Viro360Image source={require('./res/360_park.jpg')} />
@@ -108,11 +110,11 @@ export default WalkPortal = createReactClass({
 					}}
 					particleAppearance={{
 						opacity: {
-							initialRange: [0, 0],
+							initialRange: [0.8, 1.0],
 							factor: 'Time',
 							interpolation: [
-								{ endValue: 0.5, interval: [0, 500] },
-								{ endValue: 1.0, interval: [4000, 5000] },
+								{ endValue: 0.7, interval: [0, 500] },
+								{ endValue: 0.0, interval: [4000, 5000] },
 							],
 						},
 
@@ -154,5 +156,24 @@ export default WalkPortal = createReactClass({
 		);
 	},
 });
-
+ViroAnimations.registerAnimations({
+	rotate: {
+		properties: {
+			rotateY: '+=90',
+		},
+		duration: 0, //0 seconds
+	},
+	lookLeft: {
+		properties: {
+			rotateY: '+=10',
+		},
+		duration: 500,
+	},
+	lookRight: {
+		properties: {
+			rotateY: '-=10',
+		},
+		duration: 500,
+	},
+});
 module.exports = WalkPortal;

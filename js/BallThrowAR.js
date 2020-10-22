@@ -49,13 +49,26 @@ export default BallThrowAR = createReactClass({
 		const dogColor = this.state.user.dog.color;
 		return (
 			<ViroARScene ref="arscene" _onTrackingUpdated={this._onTrackingUpdated}>
-				<ViroImage
-					height={0.04}
-					width={0.04}
-					source={require('./res/camera.png')}
-					position={[0.08, -0.16, -0.3]}
-					//onDrag={this._onPress}
-				/>
+				<ViroNode
+					dragType="FixedToWorld"
+					onDrag={() =>
+						this.props.arSceneNavigator.push({
+							scene: TugOfWar,
+							passProps: {
+								user: this.state.user,
+								addPoints: this.state.addPoints,
+							},
+						})
+					}
+				>
+					<ViroImage
+						height={0.04}
+						width={0.04}
+						source={require('./res/tennisball.png')}
+						position={[0.08, -0.16, -0.3]}
+					/>
+				</ViroNode>
+
 				<ViroNode
 					dragType="FixedToWorld"
 					onDrag={() =>
@@ -83,7 +96,7 @@ export default BallThrowAR = createReactClass({
 					position={[0, 0, -4]}
 				/>
 				<ViroAmbientLight color={'#e8e0dc'} />
-				<ViroARPlane minHeight={0} minWidth={0.5} alignment={'Horizontal'}>
+				<ViroARPlane minHeight={0.5} minWidth={0.5} alignment={'Horizontal'}>
 					{/* dog object */}
 					<ViroNode
 						position={this.state.dogPosition}
@@ -119,7 +132,7 @@ export default BallThrowAR = createReactClass({
 								//loop: true,
 								interruptible: true,
 							}}
-							onLoadEnd={this._onLoadEnd}
+							onLoadEnd={() => this._onLoadEnd('dog')}
 							onLoadStart={this._onLoadStart}
 							ignoreEventHandling={true}
 							type="VRX"
@@ -139,7 +152,6 @@ export default BallThrowAR = createReactClass({
 						position={this.state.ballPosition}
 						onDrag={() => {}}
 						key={'ball'}
-						ref={'ball'}
 						scale={this.state.scale}
 						ref={this._setARNodeRef}
 						rotation={this.state.rotation}
@@ -175,7 +187,7 @@ export default BallThrowAR = createReactClass({
 								run: true,
 								interruptible: true,
 							}}
-							onLoadEnd={this._onLoadEnd}
+							onLoadEnd={() => this._onLoadEnd('ball')}
 							onLoadStart={this._onLoadStart}
 							onDrag={this._onBallDrag}
 						/>
@@ -290,12 +302,12 @@ export default BallThrowAR = createReactClass({
 	//empty function enables drag.
 	_onBallDrag() {},
 
-	//Ray - tracing
+	//Raycasting - hittracing
 	_onLoadStart() {
 		this.props.arSceneNavigator.viroAppProps._onLoadStart();
 	},
 	// Perform a hit test on load end to display object.
-	_onLoadEnd() {
+	_onLoadEnd(str) {
 		this.refs['arscene'].getCameraOrientationAsync().then((orientation) => {
 			this.refs['arscene']
 				.performARHitTestWithRay(orientation.forward)
@@ -303,8 +315,10 @@ export default BallThrowAR = createReactClass({
 					this._onArHitTestResults(
 						orientation.position,
 						orientation.forward,
-						results
+						results,
+						str
 					);
+					console.log(str);
 				});
 		});
 		this.props.arSceneNavigator.viroAppProps._onLoadEnd();
@@ -318,7 +332,7 @@ export default BallThrowAR = createReactClass({
 	_onTrackingUpdated() {
 		this.props.sceneNavigator.viroAppProps._onTrackingUpdated();
 	},
-	_onArHitTestResults(position, forward, results) {
+	_onArHitTestResults(position, forward, results, str) {
 		// Default position is just 1.5 meters in front of the user.
 		let newPosition = [forward[0] * 1.5, forward[1] * 1.5, forward[2] * 1.5];
 		let hitResultPosition = undefined;
@@ -356,14 +370,20 @@ export default BallThrowAR = createReactClass({
 		}
 
 		// Set the initial placement of the object using new position from the hit test.
-		this._setInitialPlacement(newPosition);
+		this._setInitialPlacement(newPosition, str);
 	},
 
-	_setInitialPlacement(position) {
-		let key = `${this.arNodeRef}Position`;
+	_setInitialPlacement(position, str) {
+		let key = `${str}Position`;
+		let newVals = [
+			this.state[key][0] + position[0],
+			this.state[key][1] + position[1],
+			this.state[key][2] + position[2],
+		];
 		this.setState({
-			[key]: position,
+			[key]: newVals,
 		});
+		console.log(newVals, 'string');
 		this._updateInitialRotation();
 	},
 

@@ -355,6 +355,7 @@ class App extends Component {
 		this.setState({
 			isLoading: false,
 		});
+		console.log('this.state', this.state.isLoading);
 	}
 
 	_renderTrackingText() {
