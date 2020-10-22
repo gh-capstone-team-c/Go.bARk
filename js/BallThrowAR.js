@@ -49,35 +49,34 @@ export default BallThrowAR = createReactClass({
 		const dogColor = this.state.user.dog.color;
 		return (
 			<ViroARScene ref="arscene" _onTrackingUpdated={this._onTrackingUpdated}>
-				<ViroARCamera>
+				<ViroImage
+					height={0.04}
+					width={0.04}
+					source={require('./res/camera.png')}
+					position={[0.08, -0.16, -0.3]}
+					//onDrag={this._onPress}
+				/>
+				<ViroNode
+					dragType="FixedToWorld"
+					onDrag={() =>
+						this.props.arSceneNavigator.push({
+							scene: FoodTime,
+							passProps: {
+								user: this.state.user,
+								addPoints: this.state.addPoints,
+							},
+						})
+					}
+				>
 					<ViroImage
-						height={0.04}
-						width={0.04}
-						source={require('./res/camera.png')}
-						position={[0.08, -0.16, -0.3]}
-						//onDrag={this._onPress}
+						height={0.05}
+						width={0.05}
+						source={require('./res/dogBowlIcon.gif')}
+						// source={require('./res/bone.png')}
+						position={[-0.07, -0.16, -0.3] /* -1.2, -2.8, -5 */}
 					/>
-					<ViroNode
-						dragType="FixedToWorld"
-						onDrag={() =>
-							this.props.arSceneNavigator.push({
-								scene: FoodTime,
-								passProps: {
-									user: this.state.user,
-									addPoints: this.state.addPoints,
-								},
-							})
-						}
-					>
-						<ViroImage
-							height={0.05}
-							width={0.05}
-							source={require('./res/dogBowlIcon.gif')}
-							// source={require('./res/bone.png')}
-							position={[-0.07, -0.16, -0.3] /* -1.2, -2.8, -5 */}
-						/>
-					</ViroNode>
-				</ViroARCamera>
+				</ViroNode>
+
 				<ViroText
 					text={this.state.text}
 					scale={[1, 1, 1]}

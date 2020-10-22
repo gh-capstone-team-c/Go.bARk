@@ -74,6 +74,11 @@ export class AppIos extends Component {
 			playPreview: false,
 			previewType: kPreviewTypePhoto,
 			screenshot_count: 0,
+			logo: {
+				blackTan: require(`./js/res/darklogo.png`),
+				red: require(`./js/res/shibaFace.png`),
+				cream: require(`./js/res/creamlogo.png`),
+			},
 		};
 		this._takeScreenshot = this._takeScreenshot.bind(this);
 		this._saveToCameraRoll = this._saveToCameraRoll.bind(this);
@@ -129,7 +134,7 @@ export class AppIos extends Component {
 							>
 								<Image
 									style={appStyles.logo}
-									source={require('./js/res/shibaFace.png')}
+									source={this.state.logo[this.props.user.dog.color]}
 								/>
 							</TouchableOpacity>
 							<Text style={appStyles.titleText}>bARk</Text>

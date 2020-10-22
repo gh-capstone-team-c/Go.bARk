@@ -73,6 +73,11 @@ class App extends Component {
 			screenshot_count: 0,
 			writeAccessPermission: false,
 			readAccessPermission: false,
+			logo: {
+				blackTan: require(`./js/res/darklogo.png`),
+				red: require(`./js/res/shibaFace.png`),
+				cream: require(`./js/res/creamlogo.png`),
+			},
 		};
 		this._takeScreenshot = this._takeScreenshot.bind(this);
 		this._saveToCameraRoll = this._saveToCameraRoll.bind(this);
@@ -176,6 +181,7 @@ class App extends Component {
 	}
 
 	render() {
+		console.log(this.props.user.dog.color);
 		return (
 			<View style={appStyles.containerApp}>
 				<View>
@@ -193,7 +199,7 @@ class App extends Component {
 							>
 								<Image
 									style={appStyles.logo}
-									source={require('./js/res/shibaFace.png')}
+									source={this.state.logo[this.props.user.dog.color]}
 								/>
 							</TouchableOpacity>
 							<Text style={appStyles.titleText}>bARk</Text>
@@ -251,7 +257,7 @@ class App extends Component {
 								<ViroARSceneNavigator
 									initialScene={{ scene: InitialARScene }}
 									viroAppProps={this.state.viroAppProps}
-                  ref={this._setARNavigatorRef}
+									ref={this._setARNavigatorRef}
 								/>
 								{this._renderTrackingText()}
 								{renderIf(
