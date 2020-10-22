@@ -53,7 +53,6 @@ export class AppIos extends Component {
 		super(props);
 		// // all code here for ray tracing
 		this._renderTrackingText = this._renderTrackingText.bind(this);
-		this._onTrackingUpdated = this._onTrackingUpdated.bind(this);
 		this._onLoadStart = this._onLoadStart.bind(this);
 		this._onLoadEnd = this._onLoadEnd.bind(this);
 		this.state = {
@@ -65,9 +64,7 @@ export class AppIos extends Component {
 				addPoints: this.props.addPoints,
 				_onLoadEnd: this._onLoadEnd,
 				_onLoadStart: this._onLoadStart,
-				_onTrackingUpdated: this._onTrackingUpdated,
 			},
-			trackingInitialized: false,
 			isLoading: false,
 			videoUrl: null,
 			haveSavedMedia: false,
@@ -293,24 +290,7 @@ export class AppIos extends Component {
 	}
 
 	_renderTrackingText() {
-		if (this.state.trackingInitialized) {
-			return (
-				<View
-					style={{
-						position: 'absolute',
-						backgroundColor: '#ffffff',
-						left: 30,
-						right: 30,
-						top: 30,
-						alignItems: 'center',
-					}}
-				>
-					<Text style={{ fontSize: 12, color: '#ffffff' }}>
-						Tracking initialized.
-					</Text>
-				</View>
-			);
-		} else {
+		if (this.state.isLoading) {
 			return (
 				<View
 					style={{
