@@ -2,32 +2,31 @@
 
 import React from 'react';
 import {
-	ViroARScene,
-	Viro3DObject,
-	ViroAmbientLight,
-	ViroSpotLight,
-	ViroNode,
-	Viro360Image,
-	ViroPortalScene,
-	ViroPortal,
-	ViroAnimations,
-	ViroAnimatedImage,
-	ViroText,
-	ViroQuad,
-	ViroARCamera,
-	ViroImage,
-	ViroARPlane,
+  ViroARScene,
+  Viro3DObject,
+  ViroAmbientLight,
+  ViroSpotLight,
+  ViroNode,
+  Viro360Image,
+  ViroPortalScene,
+  ViroPortal,
+  ViroAnimations,
+  ViroAnimatedImage,
+  ViroText,
+  ViroQuad,
+  ViroARPlane,
 } from 'react-viro';
 var createReactClass = require('create-react-class');
 var FoodTime = require('./FoodTime');
 var Walk = require('./Walk');
 const dog = {
-	red: require('./res/dogColors/redDog.vrx'),
-	blackTan: require('./res/dogColors/blackTanDog.vrx'),
-	cream: require('./res/dogColors/creamDog.vrx'),
+  red: require('./res/dogColors/redDog.vrx'),
+  blackTan: require('./res/dogColors/blackTanDog.vrx'),
+  cream: require('./res/dogColors/creamDog.vrx'),
 };
 
 export default BallThrowAR = createReactClass({
+
 	getInitialState() {
 		return {
 			currentAnimation: 'rotate',
@@ -70,25 +69,32 @@ export default BallThrowAR = createReactClass({
 				</ViroNode>
 
 				<ViroNode
-					dragType="FixedToWorld"
-					onDrag={() =>
-						this.props.arSceneNavigator.push({
-							scene: FoodTime,
-							passProps: {
-								user: this.state.user,
-								addPoints: this.state.addPoints,
-							},
-						})
-					}
-				>
-					<ViroImage
-						height={0.05}
-						width={0.05}
-						source={require('./res/dogBowlIcon.gif')}
-						// source={require('./res/bone.png')}
-						position={[-0.07, -0.16, -0.3] /* -1.2, -2.8, -5 */}
-					/>
-				</ViroNode>
+          position={[2, -1, -0.7]}
+          transformBehaviors={['billboardY']}
+          dragType="FixedToWorld"
+          onDrag={() =>
+            this.props.arSceneNavigator.push({
+              scene: FoodTime,
+              passProps: {
+                user: this.state.user,
+                addPoints: this.state.addPoints,
+              },
+            })
+          }
+        >
+          <ViroAnimatedImage
+            scale={[0.7, 0.7, 0.7]}
+            height={1}
+            width={1}
+            source={require('./res/dogBowlIcon.gif')}
+            position={[0, 0, 0] /* -1.2, -2.8, -5 */}
+            animation={{
+              run: this.state.playAnim,
+              loop: true,
+              delay: 0,
+            }}
+          />
+        </ViroNode>
 
 				<ViroText
 					text={this.state.text}
@@ -201,105 +207,44 @@ export default BallThrowAR = createReactClass({
 					/>
 				</ViroNode>
 
-				{/* emoji next to the portal*/}
-				<ViroNode
-					position={[-1, 0, 2]}
-					onDrag={() =>
-						this.props.arSceneNavigator.push({
-							scene: Walk,
-							passProps: {
-								user: this.state.user,
-								addPoints: this.state.addPoints,
-							},
-						})
-					}
-					scale={[1, 1, 1]}
-					transformBehaviors={['billboardY']}
-				>
-					<ViroAnimatedImage
-						scale={[0.5, 0.5, 0.5]}
-						position={[0, 0, 0]}
-						rotation={[0, 0, 0]}
-						animation={{
-							run: this.state.playAnim,
-							loop: true,
-							delay: 0,
-						}}
-						height={1}
-						width={1}
-						source={{
-							uri: 'https://media.giphy.com/media/WqFXkK7CsTReoyGwWd/giphy.gif',
-						}}
-					/>
-				</ViroNode>
-				{/* </ViroARPlane> */}
-			</ViroARScene>
-		);
-	},
+	
+          {/* emoji next to the portal*/}
+          <ViroNode
+            position={[-1, 0, 2]}
+            onDrag={() =>
+              this.props.arSceneNavigator.push({
+                scene: Walk,
+                passProps: {
+                  user: this.state.user,
+                  addPoints: this.state.addPoints,
+                },
+              })
+            }
+            scale={[1, 1, 1]}
+            transformBehaviors={['billboardY']}
+          >
+            <ViroAnimatedImage
+              scale={[0.5, 0.5, 0.5]}
+              position={[0, 0, 0]}
+              rotation={[0, 0, 0]}
+              animation={{
+                run: this.state.playAnim,
+                loop: true,
+                delay: 0,
+              }}
+              height={1}
+              width={1}
+              source={{
+                uri:
+                  'https://media.giphy.com/media/WqFXkK7CsTReoyGwWd/giphy.gif',
+              }}
+            />
+          </ViroNode>
+        </ViroARPlane>
+      </ViroARScene>
+    );
+  },
 
-	_onBallClick(stateValue, position, source) {
-		//incremental counter to limit number of consecutive games of catch with dog
-		if (
-			stateValue === 1 &&
-			this.state.currentAnimation !== ('arc' || 'rollAway')
-		) {
-			const play = this.state.playCount + 1;
-			this.setState({ ...this.state, playCount: play });
-			// let pts = this.state.user.points;
-			this.state.addPoints({ points: this.state.user.points++ });
-		}
-		// capture when dog and ball are super close to user(already fetched) and returns gameplay loop to near start.
-		if (position[2] >= -5 && this.state.playCount >= 3) {
-			this.setState({
-				...this.state,
-				dogAnimation: 'dropBall',
-				currentAnimation: 'rollAway',
-			});
-			// function that displays dog after dropping ball
-			setTimeout(() => {
-				if (this.state.dogAnimation === 'dropBall') {
-					this.setState({
-						...this.state,
-						dogPosition: [0, -9, -15],
-						playCount: 0,
-						dogAnimation: 'waiting',
-						currentAnimation: 'rotate',
-					});
-				}
-			}, 5000);
-		} else if (stateValue === 1) {
-			this.setState({
-				dogAnimation: 'waiting',
-			});
-			//handler for play loop
-		} else if (stateValue === 2 || stateValue === 3) {
-			this.setState({
-				currentAnimation: 'arc',
-				dogAnimation: 'fetch',
-			});
-			//captures dog walking towards ball
-			setTimeout(() => {
-				if (this.state.currentAnimation === 'arc') {
-					const dogZ = this.state.dogPosition[2] - 5;
-					this.setState({ ...this.state, dogPosition: [0, -9, dogZ] });
-				}
-			}, 2000);
-			// This timeout fires after the ball lands near the dog. It sets the dog and ball on a return course. The if statement stops it from refiring after the dog drops the ball.
-			setTimeout(() => {
-				if (this.state.currentAnimation === 'arc') {
-					this.setState({
-						...this.state,
-						currentAnimation: 'returnBall',
-						dogAnimation: 'return',
-						ballPosition: [0, -2.4, -3],
-						dogPosition: [0, -9, -9],
-					});
-				}
-			}, 6500);
-		}
-	},
-	//empty function enables drag.
-	_onBallDrag() {},
 
 	//Raycasting - hittracing
 	_onLoadStart() {
@@ -361,13 +306,9 @@ export default BallThrowAR = createReactClass({
 						hitResultPosition = result.transform.position;
 					}
 				}
-			}
-		}
-
-		if (hitResultPosition) {
-			newPosition = hitResultPosition;
-		}
-
+         if (hitResultPosition) {
+      newPosition = hitResultPosition;
+    }
 		// Set the initial placement of the object using new position from the hit test.
 		this._setInitialPlacement(newPosition, str);
 	},
@@ -382,197 +323,198 @@ export default BallThrowAR = createReactClass({
 		this.setState({
 			[key]: newVals,
 		});
-		console.log(newVals, 'string');
+	
 		this._updateInitialRotation();
 	},
 
-	// Update the rotation of the object to face the user after it's positioned.
-	_updateInitialRotation() {
-		this.arNodeRef.getTransformAsync().then((retDict) => {
-			let rotation = retDict.rotation;
-			let absX = Math.abs(rotation[0]);
-			let absZ = Math.abs(rotation[2]);
 
-			let yRotation = rotation[1];
+  // Update the rotation of the object to face the user after it's positioned.
+  _updateInitialRotation() {
+    this.arNodeRef.getTransformAsync().then((retDict) => {
+      let rotation = retDict.rotation;
+      let absX = Math.abs(rotation[0]);
+      let absZ = Math.abs(rotation[2]);
 
-			// If the X and Z aren't 0, then adjust the y rotation.
-			if (absX > 1 && absZ > 1) {
-				yRotation = 180 - yRotation;
-			}
+      let yRotation = rotation[1];
 
-			this.setState({
-				rotation: [0, yRotation, 0],
-			});
-		});
-	},
+      // If the X and Z aren't 0, then adjust the y rotation.
+      if (absX > 1 && absZ > 1) {
+        yRotation = 180 - yRotation;
+      }
 
-	// Calculate distance between two vectors
-	_distance(vectorOne, vectorTwo) {
-		var distance = Math.sqrt(
-			(vectorTwo[0] - vectorOne[0]) * (vectorTwo[0] - vectorOne[0]) +
-				(vectorTwo[1] - vectorOne[1]) * (vectorTwo[1] - vectorOne[1]) +
-				(vectorTwo[2] - vectorOne[2]) * (vectorTwo[2] - vectorOne[2])
-		);
-		return distance;
-	},
+      this.setState({
+        rotation: [0, yRotation, 0],
+      });
+    });
+  },
+
+  // Calculate distance between two vectors
+  _distance(vectorOne, vectorTwo) {
+    var distance = Math.sqrt(
+      (vectorTwo[0] - vectorOne[0]) * (vectorTwo[0] - vectorOne[0]) +
+        (vectorTwo[1] - vectorOne[1]) * (vectorTwo[1] - vectorOne[1]) +
+        (vectorTwo[2] - vectorOne[2]) * (vectorTwo[2] - vectorOne[2])
+    );
+    return distance;
+  },
 });
 
 ViroAnimations.registerAnimations({
-	rotate: {
-		properties: {
-			rotateY: '+=90',
-		},
-		duration: 0, //0 seconds
-	},
-	lookLeft: {
-		properties: {
-			rotateY: '+=10',
-		},
-		duration: 500,
-	},
-	lookRight: {
-		properties: {
-			rotateY: '-=10',
-		},
-		duration: 500,
-	},
-	launch: {
-		properties: {
-			positionZ: '-=10.0',
-			positionY: '+=12.0',
-		},
-		easing: 'EaseOut',
-		duration: 2500,
-	},
-	fall: {
-		properties: {
-			positionZ: '-=10.0',
-			positionY: 0,
-		},
-		duration: 2300,
-		easing: 'bounce',
-	},
-	dropBall: [
-		[
-			{
-				properties: {
-					rotateY: '-=180',
-				},
-				duration: 500, //0 seconds
-			},
-			{
-				properties: {
-					positionZ: '-=20',
-				},
-				duration: 2000,
-			},
-			{
-				properties: {
-					rotateY: '-=180',
-				},
-				duration: 180,
-			},
-			{
-				properties: {
-					rotateY: 0,
-				},
-				duration: 20,
-			},
-		],
-	],
-	rollAway: [
-		[
-			{
-				properties: {
-					positionX: '-=5',
-					positionZ: '-=5',
-				},
-				duration: 250, //0 seconds
-			},
-			{
-				properties: {
-					positionX: '+=5',
-					positionZ: '-=5',
-				},
-				duration: 250, //0 seconds
-			},
-			{
-				properties: {
-					positionZ: -20,
-				},
-				duration: 1000,
-			},
-			{
-				properties: {
-					positionY: -9,
-				},
-				duration: 1000,
-				easing: 'Bounce',
-			},
-			{
-				properties: {
-					positionX: '-=5',
-				},
-				duration: 1000,
-			},
-		],
-	],
-	fetch: [
-		[
-			{
-				properties: {
-					rotateY: '+=180',
-				},
-				duration: 500,
-				easing: 'Bounce',
-			},
-			{
-				properties: {
-					positionZ: '-=10',
-				},
-				duration: 1400,
-				easing: 'Bounce',
-			},
-			{
-				properties: {
-					rotateY: '+=540',
-				},
-				duration: 1500,
-				easing: 'Bounce',
-			},
-		],
-	],
-	arc: [['launch', 'fall']],
-	waiting: [
-		[
-			'lookLeft',
-			'lookRight',
-			'lookLeft',
-			'lookRight',
-			'lookLeft',
-			'lookRight',
-			'lookLeft',
-			'lookRight',
-		],
-	],
-	return: {
-		properties: {
-			positionX: 0,
-			positionY: -9,
-			positionZ: -9,
-			rotateY: 0,
-		},
-		duration: 2000,
-		easing: 'EaseOut',
-	},
-	returnBall: {
-		properties: {
-			positionX: 0,
-			positionY: -2.4,
-			positionZ: -3,
-		},
-		duration: 1800,
-		easing: 'EaseOut',
-	},
+  rotate: {
+    properties: {
+      rotateY: '+=90',
+    },
+    duration: 0, //0 seconds
+  },
+  lookLeft: {
+    properties: {
+      rotateY: '+=10',
+    },
+    duration: 500,
+  },
+  lookRight: {
+    properties: {
+      rotateY: '-=10',
+    },
+    duration: 500,
+  },
+  launch: {
+    properties: {
+      positionZ: '-=10.0',
+      positionY: '+=12.0',
+    },
+    easing: 'EaseOut',
+    duration: 2500,
+  },
+  fall: {
+    properties: {
+      positionZ: '-=10.0',
+      positionY: 0,
+    },
+    duration: 2300,
+    easing: 'bounce',
+  },
+  dropBall: [
+    [
+      {
+        properties: {
+          rotateY: '-=180',
+        },
+        duration: 500, //0 seconds
+      },
+      {
+        properties: {
+          positionZ: '-=20',
+        },
+        duration: 2000,
+      },
+      {
+        properties: {
+          rotateY: '-=180',
+        },
+        duration: 180,
+      },
+      {
+        properties: {
+          rotateY: 0,
+        },
+        duration: 20,
+      },
+    ],
+  ],
+  rollAway: [
+    [
+      {
+        properties: {
+          positionX: '-=5',
+          positionZ: '-=5',
+        },
+        duration: 250, //0 seconds
+      },
+      {
+        properties: {
+          positionX: '+=5',
+          positionZ: '-=5',
+        },
+        duration: 250, //0 seconds
+      },
+      {
+        properties: {
+          positionZ: -20,
+        },
+        duration: 1000,
+      },
+      {
+        properties: {
+          positionY: -9,
+        },
+        duration: 1000,
+        easing: 'Bounce',
+      },
+      {
+        properties: {
+          positionX: '-=5',
+        },
+        duration: 1000,
+      },
+    ],
+  ],
+  fetch: [
+    [
+      {
+        properties: {
+          rotateY: '+=180',
+        },
+        duration: 500,
+        easing: 'Bounce',
+      },
+      {
+        properties: {
+          positionZ: '-=10',
+        },
+        duration: 1400,
+        easing: 'Bounce',
+      },
+      {
+        properties: {
+          rotateY: '+=540',
+        },
+        duration: 1500,
+        easing: 'Bounce',
+      },
+    ],
+  ],
+  arc: [['launch', 'fall']],
+  waiting: [
+    [
+      'lookLeft',
+      'lookRight',
+      'lookLeft',
+      'lookRight',
+      'lookLeft',
+      'lookRight',
+      'lookLeft',
+      'lookRight',
+    ],
+  ],
+  return: {
+    properties: {
+      positionX: 0,
+      positionY: -9,
+      positionZ: -9,
+      rotateY: 0,
+    },
+    duration: 2000,
+    easing: 'EaseOut',
+  },
+  returnBall: {
+    properties: {
+      positionX: 0,
+      positionY: -2.4,
+      positionZ: -3,
+    },
+    duration: 1800,
+    easing: 'EaseOut',
+  },
 });
 module.exports = BallThrowAR;
