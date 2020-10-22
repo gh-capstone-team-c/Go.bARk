@@ -28,12 +28,13 @@ import { ViroARSceneNavigator } from 'react-viro';
 import { connect } from 'react-redux';
 import { addPoints } from './store/users';
 import { addPhoto } from './store/photos';
+import { fetchEveryPhoto } from './store/allPhotos';
 import Screenshot from './js/Screenshot';
 import Photos from './js/Photos';
 import Settings from './js/Settings';
 import Friends from './js/Friends';
-
 import Points from './js/Points';
+import { v4 as uuidv4 } from 'uuid';
 
 var InitialARScene = require('./js/BallThrowAR');
 
@@ -67,7 +68,6 @@ export class AppIos extends Component {
 			isLoading: false,
 			videoUrl: null,
 
-			
 			logo: {
 				blackTan: require(`./js/res/darklogo.png`),
 				red: require(`./js/res/shibaFace.png`),
@@ -75,11 +75,15 @@ export class AppIos extends Component {
 			},
 
 			cameraNoise: true,
-
 		};
 		this._takeScreenshot = this._takeScreenshot.bind(this);
 		this._setARNavigatorRef = this._setARNavigatorRef.bind(this);
 	}
+
+	// componentDidMount() {
+	//   this.props.fetchEveryPhoto();
+	//   console.log(this.props.allPhotos)
+	// }
 
 	_setARNavigatorRef(ARNavigator) {
 		this._arNavigator = ARNavigator;
@@ -87,14 +91,13 @@ export class AppIos extends Component {
 
 	async _takeScreenshot() {
 		this._arNavigator
-			._takeScreenshot('screenshot' + this.state.screenshot_count, true)
+			._takeScreenshot('screenshot' + uuidv4(), true)
 			.then((retDict) => {
-				
 				this.setState({
 					videoUrl: 'file://' + retDict.url,
 					cameraClick: !this.state.cameraNoise,
 				});
-				
+
 				this.props.addPhoto(this.state.videoUrl);
 			});
 	}
@@ -306,6 +309,7 @@ export class AppIos extends Component {
 const mapState = (state) => {
 	return {
 		user: state.user,
+		allPhotos: state.allPhotos,
 	};
 };
 
@@ -313,6 +317,7 @@ const mapDispatch = (dispatch) => {
 	return {
 		addPoints: (obj) => dispatch(addPoints(obj)),
 		addPhoto: (str, id) => dispatch(addPhoto(str, id)),
+		fetchEveryPhoto: () => dispatch(fetchEveryPhoto()),
 	};
 };
 

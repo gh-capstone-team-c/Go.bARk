@@ -9,6 +9,7 @@ import thunkMiddleware from 'redux-thunk';
 import userReducer from './users';
 import allUsersReducer from './allUsers';
 import photoReducer from './photos';
+import allPhotosReducer from './allPhotos';
 
 let middleware = [
 	// `withExtraArgument` gives us access to axios in our async action creators!
@@ -25,6 +26,7 @@ const rootReducer = combineReducers({
 	user: userReducer,
 	allUsers: allUsersReducer,
 	photos: photoReducer,
+	allPhotos: allPhotosReducer,
 });
 
 export default createStore(
