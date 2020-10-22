@@ -271,6 +271,70 @@ export default BallThrowAR = createReactClass({
 		);
 	},
 
+	_onBallClick(stateValue, position, source) {
+		//incremental counter to limit number of consecutive games of catch with dog
+		if (
+			stateValue === 1 &&
+			this.state.currentAnimation !== ('arc' || 'rollAway')
+		) {
+			const play = this.state.playCount + 1;
+			this.setState({ ...this.state, playCount: play });
+			// let pts = this.state.user.points;
+			this.state.addPoints({ points: this.state.user.points++ });
+		}
+		// capture when dog and ball are super close to user(already fetched) and returns gameplay loop to near start.
+		if (position[2] >= -5 && this.state.playCount >= 3) {
+			this.setState({
+				...this.state,
+				dogAnimation: 'dropBall',
+				currentAnimation: 'rollAway',
+			});
+			// function that displays dog after dropping ball
+			setTimeout(() => {
+				if (this.state.dogAnimation === 'dropBall') {
+					this.setState({
+						...this.state,
+						dogPosition: [0, -9, -15],
+						playCount: 0,
+						dogAnimation: 'waiting',
+						currentAnimation: 'rotate',
+					});
+				}
+			}, 5000);
+		} else if (stateValue === 1) {
+			this.setState({
+				dogAnimation: 'waiting',
+			});
+			//handler for play loop
+		} else if (stateValue === 2 || stateValue === 3) {
+			this.setState({
+				currentAnimation: 'arc',
+				dogAnimation: 'fetch',
+			});
+			//captures dog walking towards ball
+			setTimeout(() => {
+				if (this.state.currentAnimation === 'arc') {
+					const dogZ = this.state.dogPosition[2] - 5;
+					this.setState({ ...this.state, dogPosition: [0, -9, dogZ] });
+				}
+			}, 2000);
+			// This timeout fires after the ball lands near the dog. It sets the dog and ball on a return course. The if statement stops it from refiring after the dog drops the ball.
+			setTimeout(() => {
+				if (this.state.currentAnimation === 'arc') {
+					this.setState({
+						...this.state,
+						currentAnimation: 'returnBall',
+						dogAnimation: 'return',
+						ballPosition: [0, -2.4, -3],
+						dogPosition: [0, -9, -9],
+					});
+				}
+			}, 6500);
+		}
+	},
+	//empty function enables drag.
+	_onBallDrag() {},
+
 	//Raycasting - hittracing
 	_onLoadStart() {
 		this.props.arSceneNavigator.viroAppProps._onLoadStart();
