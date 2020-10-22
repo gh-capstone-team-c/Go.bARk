@@ -79,12 +79,28 @@ export default BallThrowAR = createReactClass({
           />
         </ViroNode>
         <ViroNode
+          transformBehaviors={['billboardY']}
+          position={[0.7, -0.5, -0.7]}
+        >
+          <ViroAnimatedImage
+            scale={[0.7, 0.7, 0.7]}
+            height={1}
+            width={1}
+            source={require('./res/gifs/foodTimeRArrow.gif')}
+            position={[0, 0, 0]}
+            animation={{
+              loop: true,
+              delay: 0,
+            }}
+          />
+        </ViroNode>
+        <ViroNode
           position={this.state.foodPosition}
           transformBehaviors={['billboardY']}
           dragType="FixedToWorld"
           onDrag={() =>
             this.props.arSceneNavigator.push({
-              scene: require('./BallThrowAR'),
+              scene: require('./FoodTime'),
               passProps: {
                 user: this.state.user,
                 addPoints: this.state.addPoints,

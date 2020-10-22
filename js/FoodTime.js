@@ -170,6 +170,7 @@ export default FoodTime = createReactClass({
           scale={[1, 1, 1]}
           position={[0, 1, -4]}
         />
+
       </ViroARScene>
     );
   },
