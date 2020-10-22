@@ -120,6 +120,9 @@ class Settings extends React.Component {
                       this.setState({
                         editSettings: false,
                       });
+                      alert(
+                        "Your dog's color will be reflected once you refresh the app"
+                      );
                     }
                   }}
                 >
@@ -133,7 +136,7 @@ class Settings extends React.Component {
           show={showAlert}
           showProgress={false}
           title="Uh Oh..."
-          message="Please enter an email and dog name!"
+          message="Please enter an email, dog name, and select a color!"
           closeOnTouchOutside={true}
           closeOnHardwareBackPress={false}
           showCancelButton={false}

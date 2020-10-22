@@ -34,6 +34,9 @@ export default FoodTime = createReactClass({
       dogScale: [0.1, 0.1, 0.1],
       bowlScale: [0.25, 0.25, 0.25],
       bowlPosition: [0, -10, -15],
+      walkPosition: [-0.7, -1, 2],
+      foodPosition: [2, -1, -0.7],
+      towPosition: [-2, -1, -0.7],
     };
   },
 
@@ -44,9 +47,9 @@ export default FoodTime = createReactClass({
       ? (dog = dogPose[dogColor])
       : (dog = dogStand[dogColor]);
     return (
-      /* this.state.changePose ? */ <ViroARScene>
+      <ViroARScene>
         <ViroNode
-          position={[2, -1, -0.7]}
+          position={this.state.foodPosition}
           transformBehaviors={['billboardY']}
           dragType="FixedToWorld"
           onDrag={() =>
@@ -63,17 +66,16 @@ export default FoodTime = createReactClass({
             scale={[0.7, 0.7, 0.7]}
             height={1}
             width={1}
-            source={require('./res/homeGif.gif')}
+            source={require('./res/gifs/ballThrowGif.gif')}
             position={[0, 0, 0]}
             animation={{
-              run: this.state.playAnim,
               loop: true,
               delay: 0,
             }}
           />
         </ViroNode>
         <ViroNode
-          position={[-2, -1, -0.7]}
+          position={this.state.walkPosition}
           transformBehaviors={['billboardY']}
           dragType="FixedToWorld"
           onDrag={() =>
@@ -87,15 +89,38 @@ export default FoodTime = createReactClass({
           }
         >
           <ViroAnimatedImage
-            scale={[0.7, 0.7, 0.7]}
+            scale={[0.8, 0.8, 0.8]}
             height={1}
             width={1}
-            source={{
-              uri: 'https://media.giphy.com/media/WqFXkK7CsTReoyGwWd/giphy.gif',
-            }}
+            source={require('./res/gifs/walkGif.gif')}
             position={[0, 0, 0]}
             animation={{
-              run: this.state.playAnim,
+              loop: true,
+              delay: 0,
+            }}
+          />
+        </ViroNode>
+        <ViroNode
+          position={this.state.towPosition}
+          transformBehaviors={['billboardY']}
+          dragType="FixedToWorld"
+          onDrag={() =>
+            this.props.arSceneNavigator.push({
+              scene: require('./TugOfWar'),
+              passProps: {
+                user: this.state.user,
+                addPoints: this.state.addPoints,
+              },
+            })
+          }
+        >
+          <ViroAnimatedImage
+            scale={[0.8, 0.8, 0.8]}
+            height={1}
+            width={1}
+            source={require('./res/gifs/towGif.gif')}
+            position={[0, 0, 0]}
+            animation={{
               loop: true,
               delay: 0,
             }}

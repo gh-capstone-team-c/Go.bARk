@@ -64,7 +64,7 @@ export default BallThrowAR = createReactClass({
           <ViroImage
             height={0.04}
             width={0.04}
-            source={require('./res/tennisball.png')}
+            source={require('./res/gifs/towGif.gif')}
             position={[0.08, -0.16, -0.3]}
           />
         </ViroNode>
@@ -87,7 +87,7 @@ export default BallThrowAR = createReactClass({
             scale={[0.7, 0.7, 0.7]}
             height={1}
             width={1}
-            source={require('./res/dogBowlIcon.gif')}
+            source={require('./res/gifs/dogBowlIcon.gif')}
             position={[0, 0, 0] /* -1.2, -2.8, -5 */}
             animation={{
               run: this.state.playAnim,
@@ -234,9 +234,7 @@ export default BallThrowAR = createReactClass({
             }}
             height={1}
             width={1}
-            source={{
-              uri: 'https://media.giphy.com/media/WqFXkK7CsTReoyGwWd/giphy.gif',
-            }}
+            source={require('./res/gifs/walkGif.gif')}
           />
         </ViroNode>
       </ViroARScene>
