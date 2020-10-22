@@ -4,7 +4,7 @@ import React from 'react';
 import { View, Image, Text, TouchableOpacity } from 'react-native';
 import { appStyles } from '../Styles';
 import { connect } from 'react-redux';
-import { fetchPhotos } from '../store/photos';
+import { fetchPhotos, deletePhoto } from '../store/photos';
 
 export class Photos extends React.Component {
 	constructor(props) {
@@ -16,21 +16,25 @@ export class Photos extends React.Component {
 	}
 
 	render() {
-		
-
 		return (
 			<View style={appStyles.individualMenu}>
 				<Text style={appStyles.centerText}>Photo Gallery</Text>
 
 				<View>
 					{this.props.photos.map((photo) => {
-						console.log(photo.id);
 						return (
 							<View key={photo.id}>
 								<Image
 									source={{ uri: photo.path }}
 									style={{ width: 40, height: 40 }}
 								/>
+								<TouchableOpacity
+									onPress={() => {
+										this.props.deletePhoto(photo.id);
+									}}
+								>
+									<Text>delete</Text>
+								</TouchableOpacity>
 							</View>
 						);
 					})}
@@ -43,13 +47,13 @@ export class Photos extends React.Component {
 const mapState = (state) => {
 	return {
 		photos: state.photos,
-		user: state.user,
 	};
 };
 
 const mapDispatch = (dispatch) => {
 	return {
 		fetchPhotos: () => dispatch(fetchPhotos()),
+		deletePhoto: (id) => dispatch(deletePhoto(id)),
 	};
 };
 
