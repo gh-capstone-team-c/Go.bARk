@@ -3,7 +3,6 @@
 import React from 'react';
 import { View, Image, Text, TouchableOpacity } from 'react-native';
 import { appStyles } from '../Styles';
-import CameraRoll from '@react-native-community/cameraroll';
 import { connect } from 'react-redux';
 import { fetchPhotos } from '../store/photos';
 
