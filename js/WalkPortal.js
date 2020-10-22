@@ -14,6 +14,7 @@ import {
 	ViroAmbientLight,
 	ViroParticleEmitter,
 	ViroAnimations,
+	ViroMaterials,
 } from 'react-viro';
 var createReactClass = require('create-react-class');
 
@@ -29,6 +30,7 @@ export default WalkPortal = createReactClass({
 			user: this.props.user,
 			addPoints: this.props.addPoints,
 			playSound: true,
+			currentAnimation: 'frolic',
 		};
 	},
 
@@ -53,18 +55,18 @@ export default WalkPortal = createReactClass({
 				// onDrag={() => {}}
 			>
 				{/* render the portal on the other side of the user */}
-				<ViroPortal position={[0, -2, 2]} scale={[1, 1, 1]}>
+				<ViroPortal position={[3, -1, 2]} scale={[3, 3, 3]}>
 					<Viro3DObject
-						source={require('./res/door/openDoor.obj')}
+						source={require('./res/door/portal_wood_frame.vrx')}
 						rotation={[0, 0, 0]}
-						scale={[4, 4, 4]}
-						resources={[
-							require('./res/door/openDoor.mtl'),
-							require('./res/door/InteriorDoor_Diffuce.jpg'),
-							require('./res/door/InteriorDoor_NRM.jpg'),
-							require('./res/door/InteriorDoor_SPEC.jpg'),
-						]}
-						type="OBJ"
+						scale={[1, 1, 1]}
+						// resources={[
+						// 	require('./res/door/InteriorDoor_Diffuce.jpg'),
+						// 	require('./res/door/InteriorDoor_NRM.jpg'),
+						// 	require('./res/door/InteriorDoor_SPEC.jpg'),
+						// ]}
+						materials={'door'}
+						type="VRX"
 					/>
 				</ViroPortal>
 				<Viro360Image source={require('./res/360_park.jpg')} />
@@ -75,12 +77,18 @@ export default WalkPortal = createReactClass({
 				<ViroNode
 					position={[0, -5, 10]}
 					scale={[0.03, 0.03, 0.03]}
-					rotation={[0, 180, 0]}
+					rotation={[0, 0, 0]}
 				>
 					<Viro3DObject
 						source={dog[dogColor]}
 						/* position={[0, -10, -10]}
-            scale={[0.1, 0.1, 0.1]} */
+			scale={[0.1, 0.1, 0.1]} */
+						animation={{
+							name: this.state.currentAnimation,
+							run: true,
+							interruptible: true,
+							loop: true,
+						}}
 						type="VRX"
 					/>
 				</ViroNode>
@@ -156,6 +164,13 @@ export default WalkPortal = createReactClass({
 		);
 	},
 });
+ViroMaterials.createMaterials({
+	door: {
+		lightingModel: 'Blinn',
+		diffuseTexture: require('./res/door/portal_wood_frame_diffuse.png'),
+		specularTexture: require('./res/door/portal_wood_frame_specular.png'),
+	},
+});
 ViroAnimations.registerAnimations({
 	rotate: {
 		properties: {
@@ -163,6 +178,58 @@ ViroAnimations.registerAnimations({
 		},
 		duration: 0, //0 seconds
 	},
+	frolic: [
+		[
+			{
+				properties: { rotateY: 300 },
+				duration: 500,
+			},
+			{
+				properties: { positionX: '+=40', positionZ: '-=20' },
+				duration: 500,
+			},
+			{
+				properties: { rotateY: 300 },
+				duration: 500,
+			},
+			{
+				properties: { positionZ: '+=40' },
+				duration: 500,
+			},
+			{
+				properties: { rotateY: 0 },
+				duration: 500,
+			},
+			{
+				properties: { positionX: '-=20', positionZ: '+=20' },
+				duration: 500,
+			},
+			{
+				properties: { rotateY: 60 },
+				duration: 500,
+			},
+			{
+				properties: { positionX: '-=20', positionZ: '-=20' },
+				duration: 500,
+			},
+			{
+				properties: { rotateY: 120 },
+				duration: 500,
+			},
+			{
+				properties: { positionZ: '+=40' },
+				duration: 500,
+			},
+			{
+				properties: { rotateY: 180 },
+				duration: 500,
+			},
+			{
+				properties: { positionX: '+=20', positionZ: '+=20' },
+				duration: 500,
+			},
+		],
+	],
 	lookLeft: {
 		properties: {
 			rotateY: '+=10',

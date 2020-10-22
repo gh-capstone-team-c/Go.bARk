@@ -18,6 +18,7 @@ import {
 } from 'react-viro';
 var createReactClass = require('create-react-class');
 var FoodTime = require('./FoodTime');
+var TugOfWar = require('./TugOfWar');
 var Walk = require('./Walk');
 const dog = {
   red: require('./res/dogColors/redDog.vrx'),
