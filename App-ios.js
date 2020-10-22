@@ -99,7 +99,7 @@ export class AppIos extends Component {
 					screenshot_count: currentCount,
 				});
         console.log('videourl', this.state.videoUrl);
-        this.props.addPhoto(this.state.videoUrl)
+        this.props.addPhoto(this.state.videoUrl, this.props.user.id)
 				// this.props.dispatchDisplayUIScreen(UIConstants.SHOW_SHARE_SCREEN);
 			});
 	}
@@ -343,7 +343,7 @@ const mapState = (state) => {
 const mapDispatch = (dispatch) => {
 	return {
     addPoints: (obj) => dispatch(addPoints(obj)),
-    addPhoto: (str) => dispatch(addPhoto(str))
+    addPhoto: (str, id) => dispatch(addPhoto(str, id))
 	};
 };
 

@@ -11,21 +11,8 @@ export class Photos extends React.Component {
 		super(props);
 	}
 
-	// async componentDidMount() {
-	// 	try {
-	// 		await CameraRoll.getPhotos({
-	// 			first: 20,
-	// 			assetType: 'Photos',
-	// 		});
-	// 		this.setState({
-	// 			photos: r.edges,
-	// 		});
-	// 	} catch (err) {
-	// 		console.log(err);
-	// 	}
-	// }
-
 	render() {
+		console.log('user pics in db', this.props.user.photos);
 		console.log('photos', this.props.photos);
 		return (
 			<View style={appStyles.individualMenu}>
@@ -50,6 +37,7 @@ export class Photos extends React.Component {
 const mapState = (state) => {
 	return {
 		photos: state.photos,
+		user: state.user,
 	};
 };
 

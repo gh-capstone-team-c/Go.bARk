@@ -10,10 +10,13 @@ const getPhotos = () => ({ type: GET_PHOTOS });
 const addPhotos = (photo) => ({ type: ADD_PHOTOS, photo });
 const removePhoto = (photo) => ({ type: REMOVE_PHOTOS, photo });
 
-//add points
-export const addPhoto = (photo) => {
+export const addPhoto = (photo, id) => {
 	return async (dispatch) => {
 		try {
+			console.log('photo redux', photo);
+			await axios.put(`https://gobark-backend.herokuapp.com/api/users/${id}`, {
+				pic: photo,
+			});
 			dispatch(addPhotos(photo));
 			//leaving async await for adding to db later;
 		} catch (err) {
