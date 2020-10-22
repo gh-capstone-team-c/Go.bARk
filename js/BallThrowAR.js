@@ -41,7 +41,9 @@ export default BallThrowAR = createReactClass({
 			rotation: [0, 0, 0],
 			dogAnimation: 'waiting',
 			showPortal: false,
+			//sound effects
 			playPoints: true,
+			playBark: true,
 			//passing redux function to AR component
 			user: this.props.arSceneNavigator.viroAppProps.user,
 			addPoints: this.props.arSceneNavigator.viroAppProps.addPoints,
@@ -75,15 +77,16 @@ export default BallThrowAR = createReactClass({
 					position={[2, -1, -0.7]}
 					transformBehaviors={['billboardY']}
 					dragType="FixedToWorld"
-					onDrag={() =>
+					onDrag={() => {
+						this.setState({ ...this.state, playBark: !this.state.playBark });
 						this.props.arSceneNavigator.push({
 							scene: FoodTime,
 							passProps: {
 								user: this.state.user,
 								addPoints: this.state.addPoints,
 							},
-						})
-					}
+						});
+					}}
 				>
 					<ViroAnimatedImage
 						scale={[0.7, 0.7, 0.7]}
@@ -251,6 +254,20 @@ export default BallThrowAR = createReactClass({
 					onFinish={() => {
 						this.setState({
 							playPoints: true,
+						});
+					}}
+					volume={1.0}
+				/>
+
+				{/* dog bark sound effects--this only plays sometimes awkwardly... */}
+				<ViroSound
+					paused={this.state.playBark}
+					muted={false}
+					source={require('./sounds/tinydogbark.mp3')}
+					loop={false}
+					onFinish={() => {
+						this.setState({
+							playBark: true,
 						});
 					}}
 					volume={1.0}
