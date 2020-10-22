@@ -45,8 +45,6 @@ export function renderIf(condition, renderedContent) {
 	}
 }
 
-const kPreviewTypePhoto = 1;
-
 import { appStyles } from './Styles';
 
 export class AppIos extends Component {
@@ -71,13 +69,9 @@ export class AppIos extends Component {
 			trackingInitialized: false,
 			isLoading: false,
 			videoUrl: null,
-			haveSavedMedia: false,
-			playPreview: false,
-			previewType: kPreviewTypePhoto,
-			screenshot_count: 0,
+			cameraNoise: true,
 		};
 		this._takeScreenshot = this._takeScreenshot.bind(this);
-		this._saveToCameraRoll = this._saveToCameraRoll.bind(this);
 		this._setARNavigatorRef = this._setARNavigatorRef.bind(this);
 	}
 
@@ -90,27 +84,13 @@ export class AppIos extends Component {
 			._takeScreenshot('screenshot' + this.state.screenshot_count, true)
 			.then((retDict) => {
 				console.log('hi');
-				let currentCount = this.state.screenshot_count + 1;
 				this.setState({
 					videoUrl: 'file://' + retDict.url,
-					haveSavedMedia: false,
-					playPreview: false,
-					previewType: kPreviewTypePhoto,
-					screenshot_count: currentCount,
+					cameraClick: !this.state.cameraNoise,
 				});
 				console.log('videourl', this.state.videoUrl);
 				this.props.addPhoto(this.state.videoUrl);
-				// this.props.dispatchDisplayUIScreen(UIConstants.SHOW_SHARE_SCREEN);
 			});
-	}
-
-	_saveToCameraRoll() {
-		if (this.state.videoUrl != undefined && !this.state.haveSavedMedia) {
-			this.setState({
-				haveSavedMedia: true,
-			});
-		}
-		CameraRoll.saveToCameraRoll(this.state.videoUrl);
 	}
 
 	render() {
