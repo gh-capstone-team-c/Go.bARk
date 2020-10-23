@@ -30,7 +30,8 @@ export default WalkPortal = createReactClass({
 			user: this.props.user,
 			addPoints: this.props.addPoints,
 			playSound: true,
-			currentAnimation: 'frolic',
+			currentAnimation: 'waiting',
+			position: [0, -5, 5],
 		};
 	},
 
@@ -43,13 +44,23 @@ export default WalkPortal = createReactClass({
 					this.state.addPoints({ points: this.state.user.points++ });
 					this.setState({
 						playSound: !this.state.playSound,
+						currentAnimation: 'run',
 					});
+					setTimeout(() => {
+						if (this.state.currentAnimation === 'run')
+							this.setState({ currentAnimation: 'frolic' });
+					}, 3000);
 				}}
 				onPortalExit={() => {
 					this.state.addPoints({ points: this.state.user.points++ });
 					this.setState({
 						playSound: !this.state.playSound,
+						currentAnimation: 'return',
 					});
+					setTimeout(() => {
+						if (this.state.currentAnimation === 'return')
+							this.setState({ currentAnimation: 'waiting' });
+					}, 3000);
 				}}
 				// dragType="FixedDistance"
 				// onDrag={() => {}}
@@ -74,22 +85,19 @@ export default WalkPortal = createReactClass({
 				<ViroAmbientLight color={'#e8e0dc'} />
 
 				{/* dog */}
-				<ViroNode
-					position={[0, -5, 15]}
+				<Viro3DObject
+					position={this.state.position}
 					scale={[0.03, 0.03, 0.03]}
 					rotation={[0, 0, 0]}
-				>
-					<Viro3DObject
-						source={dog[dogColor]}
-						animation={{
-							name: this.state.currentAnimation,
-							run: true,
-							interruptible: true,
-							loop: true,
-						}}
-						type="VRX"
-					/>
-				</ViroNode>
+					source={dog[dogColor]}
+					animation={{
+						name: this.state.currentAnimation,
+						run: true,
+						interruptible: true,
+						loop: true,
+					}}
+					type="VRX"
+				/>
 				<ViroParticleEmitter
 					position={[0, 4.5, 0]}
 					duration={2000}
@@ -184,7 +192,7 @@ ViroAnimations.registerAnimations({
 				duration: 500,
 			},
 			{
-				properties: { positionX: '-=26', positionZ: '-=13' },
+				properties: { positionX: '-=13', positionZ: '-=6.5' },
 				duration: 500,
 			},
 			{
@@ -192,7 +200,7 @@ ViroAnimations.registerAnimations({
 				duration: 500,
 			},
 			{
-				properties: { positionZ: '-=30' },
+				properties: { positionZ: '-=15' },
 				duration: 500,
 			},
 			{
@@ -200,7 +208,7 @@ ViroAnimations.registerAnimations({
 				duration: 500,
 			},
 			{
-				properties: { positionX: '+=26', positionZ: '-=13' },
+				properties: { positionX: '+=13', positionZ: '-=6.5' },
 				duration: 500,
 			},
 			{
@@ -208,7 +216,7 @@ ViroAnimations.registerAnimations({
 				duration: 500,
 			},
 			{
-				properties: { positionX: '+=26', positionZ: '+=13' },
+				properties: { positionX: '+=13', positionZ: '+=6.5' },
 				duration: 500,
 			},
 			{
@@ -216,7 +224,7 @@ ViroAnimations.registerAnimations({
 				duration: 500,
 			},
 			{
-				properties: { positionZ: '+=30' },
+				properties: { positionZ: '+=15' },
 				duration: 500,
 			},
 			{
@@ -224,11 +232,15 @@ ViroAnimations.registerAnimations({
 				duration: 500,
 			},
 			{
-				properties: { positionX: '-=26', positionZ: '+=13' },
+				properties: { positionX: '-=13', positionZ: '+=6.5' },
 				duration: 500,
 			},
 		],
 	],
+	run: {
+		properties: { rotateY: 0, positionX: 5, positionZ: 30 },
+		duration: 3000,
+	},
 	lookLeft: {
 		properties: {
 			rotateY: '+=10',
@@ -240,6 +252,15 @@ ViroAnimations.registerAnimations({
 			rotateY: '-=10',
 		},
 		duration: 500,
+	},
+	waiting: [['lookLeft', 'lookRight']],
+	return: {
+		properties: {
+			rotateY: 180,
+			positionX: 0,
+			positionZ: 5,
+		},
+		duration: 1500,
 	},
 });
 module.exports = WalkPortal;
