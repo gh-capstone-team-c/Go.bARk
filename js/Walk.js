@@ -73,11 +73,7 @@ export default Walk = createReactClass({
         />
         <ViroNode
           dragType="FixedToWorld"
-          position={[
-            0,
-            -1,
-            -2,
-          ]} /* issue with this position and the portal which is at the walk position */
+          position={[0, -1, -2]}
           transformBehaviors={['billboardY']}
           key={'ball'}
           ref={this._setARNodeRef}
@@ -99,6 +95,19 @@ export default Walk = createReactClass({
             }}
           />
         </ViroNode>
+        {/* foodTime L Arrow */}
+        <ViroAnimatedImage
+          scale={[0.7, 0.7, 0.7]}
+          height={1}
+          width={1}
+          source={require('./res/gifs/foodTimeLArrow.gif')}
+          position={[1, -0.4, 0.4]}
+          transformBehaviors={['billboardY']}
+          animation={{
+            loop: true,
+            delay: 0,
+          }}
+        />
         <ViroNode
           position={this.state.foodPosition}
           transformBehaviors={['billboardY']}
