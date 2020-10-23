@@ -4,7 +4,7 @@ import React from 'react';
 import { View, Image, Text, TouchableOpacity } from 'react-native';
 import { appStyles } from '../Styles';
 import { connect } from 'react-redux';
-import { fetchPhotos } from '../store/photos';
+import { fetchPhotos, deletePhoto } from '../store/photos';
 
 export class Photos extends React.Component {
 	constructor(props) {
@@ -16,7 +16,6 @@ export class Photos extends React.Component {
 	}
 
 	render() {
-		console.log('photos', this.props.photos);
 		return (
 			<View style={appStyles.individualMenu}>
 				<Text style={appStyles.centerText}>Photo Gallery</Text>
@@ -24,11 +23,19 @@ export class Photos extends React.Component {
 				<View>
 					{this.props.photos.map((photo) => {
 						return (
-							<Image
-								key={this.props.photos.indexOf(photo)}
-								source={{ uri: photo.path }}
-								style={{ width: 40, height: 40 }}
-							/>
+							<View key={photo.id}>
+								<Image
+									source={{ uri: photo.path }}
+									style={{ width: 40, height: 40 }}
+								/>
+								<TouchableOpacity
+									onPress={() => {
+										this.props.deletePhoto(photo.id);
+									}}
+								>
+									<Text>delete</Text>
+								</TouchableOpacity>
+							</View>
 						);
 					})}
 				</View>
@@ -40,13 +47,13 @@ export class Photos extends React.Component {
 const mapState = (state) => {
 	return {
 		photos: state.photos,
-		user: state.user,
 	};
 };
 
 const mapDispatch = (dispatch) => {
 	return {
 		fetchPhotos: () => dispatch(fetchPhotos()),
+		deletePhoto: (id) => dispatch(deletePhoto(id)),
 	};
 };
 

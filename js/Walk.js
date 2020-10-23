@@ -2,16 +2,16 @@
 
 import React from 'react';
 import {
-	ViroARScene,
-	ViroNode,
-	Viro3DObject,
-	Viro360Image,
-	ViroPortalScene,
-	ViroPortal,
-	ViroImage,
-	ViroAnimatedImage,
-	ViroText,
-	ViroAmbientLight,
+  ViroARScene,
+  ViroNode,
+  Viro3DObject,
+  Viro360Image,
+  ViroPortalScene,
+  ViroPortal,
+  ViroImage,
+  ViroAnimatedImage,
+  ViroText,
+  ViroAmbientLight,
 } from 'react-viro';
 var createReactClass = require('create-react-class');
 import WalkPortal from './WalkPortal';
@@ -20,9 +20,9 @@ import FoodTime from './FoodTime';
 import TugOfWar from './TugOfWar';
 
 const dog = {
-	red: require('./res/dogColors/redDog.vrx'),
-	blackTan: require('./res/dogColors/blackTanDog.vrx'),
-	cream: require('./res/dogColors/creamDog.vrx'),
+  red: require('./res/dogColors/redDog.vrx'),
+  blackTan: require('./res/dogColors/blackTanDog.vrx'),
+  cream: require('./res/dogColors/creamDog.vrx'),
 };
 
 export default Walk = createReactClass({
@@ -39,13 +39,12 @@ export default Walk = createReactClass({
 			towPosition: this.props.towPosition,
 		};
 	},
-
-	render() {
-		const dogColor = this.state.user.dog.color;
-		return (
-			<ViroARScene>
-				<ViroAmbientLight color={'#e8e0dc'} />
-
+  
+  render() {
+    const dogColor = this.state.user.dog.color;
+    return (
+      <ViroARScene>
+        <ViroAmbientLight color={'#e8e0dc'} />
 				<ViroNode
 					dragType="FixedToWorld"
 					position={this.state.mainPosition}
@@ -139,10 +138,11 @@ export default Walk = createReactClass({
 					/>
 				</ViroNode>
 
-				<WalkPortal user={this.state.user} addPoints={this.state.addPoints} />
-			</ViroARScene>
-		);
-	},
+
+        <WalkPortal user={this.state.user} addPoints={this.state.addPoints} />
+      </ViroARScene>
+    );
+  },
 });
 
 module.exports = Walk;

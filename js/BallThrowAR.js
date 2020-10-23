@@ -11,6 +11,7 @@ import {
 	ViroAnimatedImage,
 	ViroText,
 	ViroQuad,
+  ViroSound,
 } from 'react-viro';
 var createReactClass = require('create-react-class');
 var FoodTime = require('./FoodTime');
@@ -33,28 +34,47 @@ export default BallThrowAR = createReactClass({
 			playCount: 0,
 			rotation: [0, 0, 0],
 			dogAnimation: 'waiting',
-			walkPosition: [0, 0, 3],
-			foodPosition: [3, 0, 0],
-			towPosition: [-3, 0, 0],
+			walkPosition: [0, -1, 1.7],
+      foodPosition: [2, -1, -0.7],
+      towPosition: [-2, -1, -0.7],
+      //sound effects
+			playPoints: true,
+			playBark: true,
 			//passing redux function to AR component
 			user: this.props.arSceneNavigator.viroAppProps.user,
 			addPoints: this.props.arSceneNavigator.viroAppProps.addPoints,
 		};
 	},
-	render() {
-		const dogColor = this.state.user.dog.color;
-		return (
-			<ViroARScene ref="arscene" _onTrackingUpdated={this._onTrackingUpdated}>
-				<ViroNode
-					dragType="FixedToWorld"
-					position={this.state.towPosition}
-					transformBehaviors={['billboardY']}
-					key={'tow'}
-					ref={this._setARNodeRef}
-					onClick={() =>
-						this.props.arSceneNavigator.push({
-							scene: TugOfWar,
-							passProps: {
+  render() {
+    const dogColor = this.state.user.dog.color;
+    return (
+      <ViroARScene ref="arscene" _onTrackingUpdated={this._onTrackingUpdated}>
+        {/* tugOfWar L Arrow */}
+        <ViroNode
+          transformBehaviors={['billboardY']}
+          position={[-0.6, -0.5, -0.7]}
+        >
+          <ViroAnimatedImage
+            scale={[0.7, 0.7, 0.7]}
+            height={1}
+            width={1}
+            source={require('./res/gifs/tugOfWarLArrow.gif')}
+            position={[0, 0, 0]}
+            animation={{
+              loop: true,
+              delay: 0,
+            }}
+          />
+        </ViroNode>
+        {/* tugOfWar gif */}
+        <ViroNode
+          position={this.state.towPosition}
+          transformBehaviors={['billboardY']}
+          dragType="FixedToWorld"
+          onDrag={() =>
+            this.props.arSceneNavigator.push({
+              scene: require('./TugOfWar'),
+              passProps: {
 								user: this.state.user,
 								addPoints: this.state.addPoints,
 								dogScale: this.state.dogScale,
@@ -65,29 +85,48 @@ export default BallThrowAR = createReactClass({
 								foodPosition: this.state.foodPosition,
 								towPosition: this.state.towPosition,
 							},
-						})
-					}
-				>
-					<ViroAnimatedImage
-						scale={[0.7, 0.7, 0.7]}
-						height={1}
-						width={1}
-						source={require('./res/ropetoy.gif')}
-						onLoadEnd={() => this._onLoadEnd('tow')}
-						onLoadStart={this._onLoadStart}
-					/>
-				</ViroNode>
-
-				<ViroNode
-					dragType="FixedToWorld"
-					position={this.state.foodPosition}
-					transformBehaviors={['billboardY']}
-					key={'food'}
-					ref={this._setARNodeRef}
-					onClick={() =>
-						this.props.arSceneNavigator.push({
-							scene: FoodTime,
-							passProps: {
+            })
+          }
+        >
+          <ViroAnimatedImage
+            scale={[0.8, 0.8, 0.8]}
+            height={1}
+            width={1}
+            source={require('./res/gifs/towGif.gif')}
+            position={[0, 0, 0]}
+            animation={{
+              loop: true,
+              delay: 0,
+            }}
+          />
+        </ViroNode>
+        {/* foodTime R Arrow */}
+        <ViroNode
+          transformBehaviors={['billboardY']}
+          position={[0.7, -0.5, -0.7]}
+        >
+          <ViroAnimatedImage
+            scale={[0.7, 0.7, 0.7]}
+            height={1}
+            width={1}
+            source={require('./res/gifs/foodTimeRArrow.gif')}
+            position={[0, 0, 0]}
+            animation={{
+              loop: true,
+              delay: 0,
+            }}
+          />
+        </ViroNode>
+        {/* foodTime gif */}
+        <ViroNode
+          position={this.state.foodPosition}
+          transformBehaviors={['billboardY']}
+          dragType="FixedToWorld"
+          onDrag={() =>
+            this.setState({ ...this.state, playBark: !this.state.playBark });
+            this.props.arSceneNavigator.push({
+              scene: require('./FoodTime'),
+              passProps: {
 								user: this.state.user,
 								addPoints: this.state.addPoints,
 								dogScale: this.state.dogScale,
@@ -98,32 +137,94 @@ export default BallThrowAR = createReactClass({
 								foodPosition: this.state.foodPosition,
 								towPosition: this.state.towPosition,
 							},
-						})
-					}
-				>
-					<ViroAnimatedImage
-						scale={[0.7, 0.7, 0.7]}
-						height={1}
-						width={1}
-						source={require('./res/dogBowlIcon.gif')}
-						animation={{
-							run: this.state.playAnim,
-							loop: true,
-							delay: 0,
-						}}
-						onLoadEnd={() => this._onLoadEnd('food')}
-						onLoadStart={this._onLoadStart}
-					/>
-				</ViroNode>
-
-				<ViroText
-					text={this.state.text}
-					scale={[1, 1, 1]}
-					position={[0, 0, -4]}
-				/>
-				<ViroAmbientLight color={'#e8e0dc'} />
-
-				{/* dog object */}
+            })
+          }
+        >
+          <ViroAnimatedImage
+            scale={[0.7, 0.7, 0.7]}
+            height={1}
+            width={1}
+            source={require('./res/gifs/dogBowlIcon.gif')}
+            position={[0, 0, 0]}
+            animation={{
+              loop: true,
+              delay: 0,
+            }}
+          />
+        </ViroNode>
+        {/* walk L Arrow */}
+        <ViroNode
+          transformBehaviors={['billboardY']}
+          position={[-0.9, -0.4, 0.3]}
+        >
+          <ViroAnimatedImage
+            scale={[0.7, 0.7, 0.7]}
+            height={1}
+            width={1}
+            source={require('./res/gifs/walkLArrow.gif')}
+            position={[0, 0, 0]}
+            animation={{
+              loop: true,
+              delay: 0,
+            }}
+          />
+        </ViroNode>
+        {/* walk R Arrow */}
+        <ViroNode transformBehaviors={['billboardY']} position={[1, -0.4, 0.6]}>
+          <ViroAnimatedImage
+            scale={[0.7, 0.7, 0.7]}
+            height={1}
+            width={1}
+            source={require('./res/gifs/walkRArrow.gif')}
+            position={[0, 0, 0]}
+            animation={{
+              loop: true,
+              delay: 0,
+            }}
+          />
+        </ViroNode>
+        {/* walk gif */}
+        <ViroNode
+          position={this.state.walkPosition}
+          transformBehaviors={['billboardY']}
+          dragType="FixedToWorld"
+          onDrag={() =>
+            this.props.arSceneNavigator.push({
+              scene: require('./Walk'),
+              passProps: {
+								user: this.state.user,
+								addPoints: this.state.addPoints,
+								dogScale: this.state.dogScale,
+								scale: this.state.scale,
+								dogPosition: this.state.dogPosition,
+								mainPosition: this.state.mainPosition,
+								walkPosition: this.state.walkPosition,
+								foodPosition: this.state.foodPosition,
+								towPosition: this.state.towPosition,
+							},
+            })
+          }
+        >
+          <ViroAnimatedImage
+            scale={[0.8, 0.8, 0.8]}
+            height={1}
+            width={1}
+            source={require('./res/gifs/walkGif.gif')}
+            position={[0, 0, 0]}
+            animation={{
+              loop: true,
+              delay: 0,
+            }}
+          />
+        </ViroNode>
+        <ViroText
+          text={this.state.text}
+          scale={[1, 1, 1]}
+          position={[0, 0, -4]}
+        />
+        <ViroAmbientLight color={'#e8e0dc'} />
+       
+        {/* dog object */}
 				<ViroNode
 					position={this.state.dogPosition}
 					scale={this.state.dogScale}
@@ -221,63 +322,34 @@ export default BallThrowAR = createReactClass({
 						onLoadStart={this._onLoadStart}
 						onClick={this._onBallDrag}
 					/>
-					{/* <ViroQuad
-						rotation={[0, 0, 0]}
-						position={[
-							this.state.mainPosition[0],
-							this.state.mainPosition[1] - 0.5,
-							this.state.mainPosition[2],
-						]}
-						width={2.5}
-						height={2.5}
-						arShadowReceiver={true}
-						ignoreEventHandling={true}
-					/> */}
 				</ViroNode>
+				{/* points sound effects */}
+				<ViroSound
+					paused={this.state.playPoints}
+					muted={false}
+					source={require('./sounds/points.mp3')}
+					loop={false}
+					onFinish={() => {
+						this.setState({
+							playPoints: true,
+						});
+					}}
+					volume={1.0}
+				/>
 
-				{/* emoji next to the portal*/}
-				<ViroNode
-					position={[-1, 0, 2]}
-					dragType="FixedToWorld"
-					position={this.state.walkPosition}
-					transformBehaviors={['billboardY']}
-					key={'walk'}
-					ref={this._setARNodeRef}
-					onClick={() =>
-						this.props.arSceneNavigator.push({
-							scene: Walk,
-							passProps: {
-								user: this.state.user,
-								addPoints: this.state.addPoints,
-								dogScale: this.state.dogScale,
-								scale: this.state.scale,
-								dogPosition: this.state.dogPosition,
-								mainPosition: this.state.mainPosition,
-								walkPosition: this.state.walkPosition,
-								foodPosition: this.state.foodPosition,
-								towPosition: this.state.towPosition,
-							},
-						})
-					}
-					scale={[1, 1, 1]}
-					transformBehaviors={['billboardY']}
-				>
-					<ViroAnimatedImage
-						scale={[0.5, 0.5, 0.5]}
-						animation={{
-							run: this.state.playAnim,
-							loop: true,
-							delay: 0,
-						}}
-						height={1}
-						width={1}
-						source={{
-							uri: 'https://media.giphy.com/media/WqFXkK7CsTReoyGwWd/giphy.gif',
-						}}
-						onLoadEnd={() => this._onLoadEnd('walk')}
-						onLoadStart={this._onLoadStart}
-					/>
-				</ViroNode>
+				{/* dog bark sound effects--this only plays sometimes awkwardly... */}
+				<ViroSound
+					paused={this.state.playBark}
+					muted={false}
+					source={require('./sounds/tinydogbark.mp3')}
+					loop={false}
+					onFinish={() => {
+						this.setState({
+							playBark: true,
+						});
+					}}
+					volume={1.0}
+				/>
 			</ViroARScene>
 		);
 	},
