@@ -15,40 +15,40 @@ const removeUser = () => ({ type: REMOVE_USER });
 
 //add following
 export const addFollowing = (id, obj) => {
-  return async (dispatch, getState) => {
-    try {
-      await axios.put(
-        `https://gobark-backend.herokuapp.com/auth/me/${id}`,
-        obj
-      );
-      dispatch({
-        type: ADD_FOLLOW,
-        obj,
-        state: getState,
-      });
-    } catch (err) {
-      console.log(err);
-    }
-  };
+	return async (dispatch, getState) => {
+		try {
+			await axios.put(
+				`https://gobark-backend.herokuapp.com/auth/me/${id}`,
+				obj
+			);
+			dispatch({
+				type: ADD_FOLLOW,
+				obj,
+				state: getState,
+			});
+		} catch (err) {
+			console.log(err);
+		}
+	};
 };
 
 //remove following
 export const removeFollowing = (id, obj) => {
-  return async (dispatch, getState) => {
-    try {
-      await axios.post(
-        `https://gobark-backend.herokuapp.com/auth/me/${id}`,
-        obj
-      );
-      dispatch({
-        type: REMOVE_FOLLOW,
-        obj,
-        state: getState,
-      });
-    } catch (err) {
-      console.log(err);
-    }
-  };
+	return async (dispatch, getState) => {
+		try {
+			await axios.post(
+				`https://gobark-backend.herokuapp.com/auth/me/${id}`,
+				obj
+			);
+			dispatch({
+				type: REMOVE_FOLLOW,
+				obj,
+				state: getState,
+			});
+		} catch (err) {
+			console.log(err);
+		}
+	};
 };
 
 //add points
@@ -61,7 +61,6 @@ export const addPoints = (stateObj) => {
 				stateObj,
 				state: getState,
 			});
-			console.log('stateobj in redux', stateObj);
 		} catch (err) {
 			console.log(err);
 		}
@@ -83,22 +82,22 @@ export const me = () => {
 
 //login
 export const login = (email, password) => async (dispatch, getState) => {
-  try {
-    let object = { email, password };
+	try {
+		let object = { email, password };
 
-    let res = await axios.post(
-      `https://gobark-backend.herokuapp.com/auth/login`,
-      object
-    );
+		let res = await axios.post(
+			`https://gobark-backend.herokuapp.com/auth/login`,
+			object
+		);
 
-    dispatch({
-      type: GET_USER,
-      user: res.data,
-      state: getState,
-    });
-  } catch (err) {
-    console.log(err);
-  }
+		dispatch({
+			type: GET_USER,
+			user: res.data,
+			state: getState,
+		});
+	} catch (err) {
+		console.log(err);
+	}
 };
 
 // signup;
@@ -122,19 +121,19 @@ export const signup = (email, password) => async (dispatch, getState) => {
 
 //associate a newly signed up user to their new dog
 export const myDog = (dog) => {
-  return async (dispatch, getState) => {
-    try {
-      await axios.post('https://gobark-backend.herokuapp.com/auth/me', dog);
+	return async (dispatch, getState) => {
+		try {
+			await axios.post('https://gobark-backend.herokuapp.com/auth/me', dog);
 
-      dispatch({
-        type: MY_DOG,
-        dog,
-        state: getState,
-      });
-    } catch (err) {
-      console.log(err);
-    }
-  };
+			dispatch({
+				type: MY_DOG,
+				dog,
+				state: getState,
+			});
+		} catch (err) {
+			console.log(err);
+		}
+	};
 };
 
 //logout
@@ -158,7 +157,6 @@ export const updateUser = (stateObj) => {
 				stateObj,
 				state: getState,
 			});
-		
 		} catch (err) {
 			console.log(err);
 		}
@@ -167,65 +165,65 @@ export const updateUser = (stateObj) => {
 
 //update the user's dog
 export const updateDog = (nameObj, id) => {
-  return async (dispatch, getState) => {
-    try {
-      await axios.put(
-        `https://gobark-backend.herokuapp.com/api/dogs/${id}`,
-        nameObj
-      );
-      dispatch({
-        type: UPDATE_DOG,
-        nameObj,
-        state: getState,
-      });
-    } catch (err) {
-      console.log(err);
-    }
-  };
+	return async (dispatch, getState) => {
+		try {
+			await axios.put(
+				`https://gobark-backend.herokuapp.com/api/dogs/${id}`,
+				nameObj
+			);
+			dispatch({
+				type: UPDATE_DOG,
+				nameObj,
+				state: getState,
+			});
+		} catch (err) {
+			console.log(err);
+		}
+	};
 };
 
 const defaultUser = {};
 
 export default function userReducer(state = defaultUser, action) {
-  switch (action.type) {
-    case GET_USER:
-      return action.user;
-    case REMOVE_USER:
-      return defaultUser;
-    case ADD_POINTS:
-      return { ...state, points: action.stateObj.points };
-    case MY_DOG:
-      return { ...state, dog: action.dog };
-    case UPDATE_USER:
-      return {
-        ...state,
-        email: action.stateObj.email,
-        dog: { ...state.dog, name: action.stateObj.name },
-      };
-    case UPDATE_DOG:
-      return {
-        ...state,
-        dog: {
-          ...state.dog,
-          name: action.nameObj.name,
-          color: action.nameObj.color,
-        },
-      };
-    case ADD_FOLLOW:
-      return {
-        ...state,
-        following: [...state.following, action.obj],
-      };
-    case REMOVE_FOLLOW:
-      return {
-        ...state,
-        following: [
-          ...state.following.filter((user) => {
-            return user.id !== action.obj.id;
-          }),
-        ],
-      };
-    default:
-      return state;
-  }
+	switch (action.type) {
+		case GET_USER:
+			return action.user;
+		case REMOVE_USER:
+			return defaultUser;
+		case ADD_POINTS:
+			return { ...state, points: action.stateObj.points };
+		case MY_DOG:
+			return { ...state, dog: action.dog };
+		case UPDATE_USER:
+			return {
+				...state,
+				email: action.stateObj.email,
+				dog: { ...state.dog, name: action.stateObj.name },
+			};
+		case UPDATE_DOG:
+			return {
+				...state,
+				dog: {
+					...state.dog,
+					name: action.nameObj.name,
+					color: action.nameObj.color,
+				},
+			};
+		case ADD_FOLLOW:
+			return {
+				...state,
+				following: [...state.following, action.obj],
+			};
+		case REMOVE_FOLLOW:
+			return {
+				...state,
+				following: [
+					...state.following.filter((user) => {
+						return user.id !== action.obj.id;
+					}),
+				],
+			};
+		default:
+			return state;
+	}
 }

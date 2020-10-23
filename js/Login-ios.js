@@ -62,7 +62,8 @@ class LoginIos extends React.Component {
             />
             <TextInput
               style={appStyles.input}
-              type="password"
+                type="password"
+                secureTextEntry={true}
               placeholder="password"
               onChangeText={(password) => this.setState({ password })}
               value={this.state.password}
