@@ -11,8 +11,10 @@ import {
 	ViroSpotLight,
 } from 'react-viro';
 import BallThrowAR, { locationConstants } from './BallThrowAR';
-var createReactClass = require('create-react-class');
+import Walk from './Walk';
+import TugOfWar from './TugOfWar';
 
+var createReactClass = require('create-react-class');
 const dogPose = {
 	red: require('./res/dogPose/redDogEat.vrx'),
 	blackTan: require('./res/dogPose/blackTanDogEat.vrx'),
@@ -73,7 +75,7 @@ export default FoodTime = createReactClass({
 					dragType="FixedToWorld"
 					onDrag={() =>
 						this.props.arSceneNavigator.push({
-							scene: require('./Walk'),
+							scene: Walk,
 							passProps: {
 								user: this.props.user,
 								addPoints: this.props.addPoints,
@@ -128,9 +130,9 @@ export default FoodTime = createReactClass({
 				{/* food bowl & clicking on food bowl to get user points */}
 				<ViroNode
 					position={[
-						this.props.dogPosition[0],
-						this.props.dogPosition[1],
-						this.props.dogPosition[2] + 5,
+						locationConstants.dogPosition[0],
+						locationConstants.dogPosition[1],
+						locationConstants.dogPosition[2] + 5,
 					]}
 					scale={this.state.bowlScale}
 					onClickState={this._onBowlClicked}
