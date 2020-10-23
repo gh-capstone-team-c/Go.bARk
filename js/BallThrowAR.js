@@ -122,7 +122,7 @@ export default BallThrowAR = createReactClass({
           position={this.state.foodPosition}
           transformBehaviors={['billboardY']}
           dragType="FixedToWorld"
-          onDrag={() =>
+          onDrag={() => {
             this.setState({ ...this.state, playBark: !this.state.playBark });
             this.props.arSceneNavigator.push({
               scene: require('./FoodTime'),
@@ -137,7 +137,7 @@ export default BallThrowAR = createReactClass({
 								foodPosition: this.state.foodPosition,
 								towPosition: this.state.towPosition,
 							},
-            })
+            })}
           }
         >
           <ViroAnimatedImage
