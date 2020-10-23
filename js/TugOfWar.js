@@ -86,6 +86,23 @@ export default TugOfWar = createReactClass({
             }}
           />
         </ViroNode>
+        {/* walk L Arrow */}
+        <ViroNode
+          transformBehaviors={['billboardY']}
+          position={[-1, -0.4, 0.3]}
+        >
+          <ViroAnimatedImage
+            scale={[0.7, 0.7, 0.7]}
+            height={1}
+            width={1}
+            source={require('./res/gifs/walkLArrow.gif')}
+            position={[0, 0, 0]}
+            animation={{
+              loop: true,
+              delay: 0,
+            }}
+          />
+        </ViroNode>
         {/* walk R Arrow */}
         <ViroNode transformBehaviors={['billboardY']} position={[1, -0.4, 0.6]}>
           <ViroAnimatedImage
