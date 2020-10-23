@@ -7,16 +7,11 @@ import {
 	ViroAmbientLight,
 	ViroSpotLight,
 	ViroNode,
-	Viro360Image,
-	ViroPortalScene,
-	ViroPortal,
 	ViroAnimations,
 	ViroAnimatedImage,
-	ViroSound,
 	ViroText,
 	ViroQuad,
-	ViroARPlane,
-	ViroImage,
+  ViroSound,
 } from 'react-viro';
 var createReactClass = require('create-react-class');
 var FoodTime = require('./FoodTime');
@@ -27,32 +22,29 @@ const dog = {
 	blackTan: require('./res/dogColors/blackTanDog.vrx'),
 	cream: require('./res/dogColors/creamDog.vrx'),
 };
-
 export default BallThrowAR = createReactClass({
-
-  getInitialState() {
-    return {
-      currentAnimation: 'rotate',
-      text: 'Play with me!',
-      dogScale: [0.1, 0.1, 0.1],
-      scale: [0.7, 0.7, 0.7],
-      dogPosition: [0, -10, -20],
-      ballPosition: [0, -10, -10],
-      playCount: 0,
-      rotation: [0, 0, 0],
-      dogAnimation: 'waiting',
-      showPortal: false,
+	getInitialState() {
+		return {
+			currentAnimation: 'rotate',
+			text: 'Play with me!',
+			dogScale: [0.1, 0.1, 0.1],
+			scale: [0.7, 0.7, 0.7],
+			dogPosition: [0, -10, -20],
+			mainPosition: [0, -10, -10],
+			playCount: 0,
+			rotation: [0, 0, 0],
+			dogAnimation: 'waiting',
+			walkPosition: [0, -1, 1.7],
+      foodPosition: [2, -1, -0.7],
+      towPosition: [-2, -1, -0.7],
       //sound effects
 			playPoints: true,
 			playBark: true,
-      //passing redux function to AR component
-      user: this.props.arSceneNavigator.viroAppProps.user,
-      addPoints: this.props.arSceneNavigator.viroAppProps.addPoints,
-      walkPosition: [0, -1, 1.7],
-      foodPosition: [2, -1, -0.7],
-      towPosition: [-2, -1, -0.7],
-    };
-  },
+			//passing redux function to AR component
+			user: this.props.arSceneNavigator.viroAppProps.user,
+			addPoints: this.props.arSceneNavigator.viroAppProps.addPoints,
+		};
+	},
   render() {
     const dogColor = this.state.user.dog.color;
     return (
@@ -83,9 +75,16 @@ export default BallThrowAR = createReactClass({
             this.props.arSceneNavigator.push({
               scene: require('./TugOfWar'),
               passProps: {
-                user: this.state.user,
-                addPoints: this.state.addPoints,
-              },
+								user: this.state.user,
+								addPoints: this.state.addPoints,
+								dogScale: this.state.dogScale,
+								scale: this.state.scale,
+								dogPosition: this.state.dogPosition,
+								mainPosition: this.state.mainPosition,
+								walkPosition: this.state.walkPosition,
+								foodPosition: this.state.foodPosition,
+								towPosition: this.state.towPosition,
+							},
             })
           }
         >
@@ -120,19 +119,26 @@ export default BallThrowAR = createReactClass({
         </ViroNode>
         {/* foodTime gif */}
         <ViroNode
-					position={this.state.foodPosition}
-					transformBehaviors={['billboardY']}
-					dragType="FixedToWorld"
-					onDrag={() => {
-						this.setState({ ...this.state, playBark: !this.state.playBark });
-						this.props.arSceneNavigator.push({
-							scene: require('./FoodTime'),
-							passProps: {
+          position={this.state.foodPosition}
+          transformBehaviors={['billboardY']}
+          dragType="FixedToWorld"
+          onDrag={() => {
+            this.setState({ ...this.state, playBark: !this.state.playBark });
+            this.props.arSceneNavigator.push({
+              scene: require('./FoodTime'),
+              passProps: {
 								user: this.state.user,
 								addPoints: this.state.addPoints,
+								dogScale: this.state.dogScale,
+								scale: this.state.scale,
+								dogPosition: this.state.dogPosition,
+								mainPosition: this.state.mainPosition,
+								walkPosition: this.state.walkPosition,
+								foodPosition: this.state.foodPosition,
+								towPosition: this.state.towPosition,
 							},
-						})
-					}}
+            })}
+          }
         >
           <ViroAnimatedImage
             scale={[0.7, 0.7, 0.7]}
@@ -186,9 +192,16 @@ export default BallThrowAR = createReactClass({
             this.props.arSceneNavigator.push({
               scene: require('./Walk'),
               passProps: {
-                user: this.state.user,
-                addPoints: this.state.addPoints,
-              },
+								user: this.state.user,
+								addPoints: this.state.addPoints,
+								dogScale: this.state.dogScale,
+								scale: this.state.scale,
+								dogPosition: this.state.dogPosition,
+								mainPosition: this.state.mainPosition,
+								walkPosition: this.state.walkPosition,
+								foodPosition: this.state.foodPosition,
+								towPosition: this.state.towPosition,
+							},
             })
           }
         >
@@ -210,110 +223,106 @@ export default BallThrowAR = createReactClass({
           position={[0, 0, -4]}
         />
         <ViroAmbientLight color={'#e8e0dc'} />
-        {/* <ViroARPlane minHeight={0.5} minWidth={0.5} alignment={'Horizontal'}> */}
+       
         {/* dog object */}
-        <ViroNode
-          position={this.state.dogPosition}
-          scale={this.state.dogScale}
-          onDrag={() => {}}
-          key={'dog'}
-          ref={this._setARNodeRef}
-          rotation={this.state.rotation}
-        >
-          <ViroSpotLight
-            innerAngle={5}
-            outerAngle={20}
-            direction={[0, -1, 0]}
-            position={[
-              this.state.dogPosition[0],
-              this.state.dogPosition[1] + 4,
-              this.state.dogPosition[2],
-            ]}
-            color="#ffffff"
-            intensity={10000}
-            castsShadow={true}
-            shadowNearZ={0.1}
-            shadowFarZ={6}
-            shadowOpacity={0.9}
-            ref={this._setSpotLightRef}
-          />
-          <Viro3DObject
-            source={dog[dogColor]}
-            position={[0, 0, 0]}
-            animation={{
-              name: this.state.dogAnimation,
-              run: true,
-              //loop: true,
-              interruptible: true,
-            }}
-            onLoadEnd={() => this._onLoadEnd('dog')}
-            onLoadStart={this._onLoadStart}
-            ignoreEventHandling={true}
-            type="VRX"
-            transformBehaviors={['billboardY']}
-          />
-          <ViroQuad
-            rotation={[-90, 0, 0]}
-            position={[0, -0.001, 0]}
-            width={2.5}
-            height={2.5}
-            arShadowReceiver={true}
-            ignoreEventHandling={true}
-          />
-        </ViroNode>
-        {/* ball object */}
-        <ViroNode
-          position={this.state.ballPosition}
-          onDrag={() => {}}
-          key={'ball'}
-          scale={this.state.scale}
-          ref={this._setARNodeRef}
-          rotation={this.state.rotation}
-        >
-          <ViroSpotLight
-            innerAngle={5}
-            outerAngle={20}
-            direction={[0, -1, 0]}
-            position={[
-              this.state.ballPosition[0],
-              this.state.ballPosition[1] + 10,
-              this.state.ballPosition[2],
-            ]}
-            color="#ffffff"
-            castsShadow={true}
-            shadowNearZ={0.1}
-            shadowFarZ={6}
-            shadowOpacity={0.9}
-            ref={this._setSpotLightRef}
-          />
-          <Viro3DObject
-            source={require('./res/object_sphere.vrx')}
-            resources={[
-              require('./res/sphere_diffuse.png'),
+				<ViroNode
+					position={this.state.dogPosition}
+					scale={this.state.dogScale}
+					onClick={() => {}}
+					key={'dog'}
+					ref={this._setARNodeRef}
+					//rotation={this.state.rotation}
+				>
+					<ViroSpotLight
+						innerAngle={5}
+						outerAngle={40}
+						direction={[0, -1, 0]}
+						position={[
+							this.state.dogPosition[0],
+							this.state.dogPosition[1] + 4,
+							this.state.dogPosition[2] + 6,
+						]}
+						color="#ffffff"
+						intensity={10000}
+						castsShadow={true}
+						shadowNearZ={0.1}
+						shadowFarZ={6}
+						shadowOpacity={0.9}
+						ref={this._setSpotLightRef}
+					/>
+					<Viro3DObject
+						source={dog[dogColor]}
+						animation={{
+							name: this.state.dogAnimation,
+							run: true,
+							//loop: true,
+							interruptible: true,
+						}}
+						onLoadEnd={() => this._onLoadEnd('dog')}
+						onLoadStart={this._onLoadStart}
+						ignoreEventHandling={true}
+						type="VRX"
+						transformBehaviors={['billboardY']}
+					/>
+					<ViroQuad
+						rotation={this.state.rotation}
+						position={[
+							this.state.dogPosition[0],
+							this.state.dogPosition[1] - 4,
+							this.state.dogPosition[2],
+						]}
+						width={7.5}
+						height={7.5}
+						arShadowReceiver={true}
+						ignoreEventHandling={true}
+					/>
+				</ViroNode>
+				{/* ball object */}
+				<ViroNode
+					position={this.state.mainPosition}
+					onClick={() => {}}
+					key={'ball'}
+					scale={this.state.scale}
+					ref={this._setARNodeRef}
+					// rotation={this.state.rotation}
+				>
+					<ViroSpotLight
+						innerAngle={5}
+						outerAngle={20}
+						direction={[0, -1, 0]}
+						position={[
+							this.state.mainPosition[0],
+							this.state.mainPosition[1] + 5,
+							this.state.mainPosition[2],
+						]}
+						color="#ffffff"
+						castsShadow={true}
+						shadowNearZ={0.1}
+						shadowFarZ={6}
+						shadowOpacity={0.9}
+						ref={this._setSpotLightRef}
+					/>
+					<Viro3DObject
+						position={this.state.mainPosition}
+						key={'ball'}
+						source={require('./res/object_sphere.vrx')}
+						resources={[
+							require('./res/sphere_diffuse.png'),
 
-              require('./res/sphere_specular.png'),
-            ]}
-            position={[0, 0, 0]}
-            type="VRX"
-            onClickState={this._onBallClick}
-            animation={{
-              name: this.state.currentAnimation,
-              run: true,
-              interruptible: true,
-            }}
-            onLoadEnd={() => this._onLoadEnd('ball')}
-            onLoadStart={this._onLoadStart}
-            onDrag={this._onBallDrag}
-          />
-          <ViroQuad
-            rotation={[-90, 0, 0]}
-            position={[0, -0.001, 0]}
-            width={2.5}
-            height={2.5}
-            arShadowReceiver={true}
-            ignoreEventHandling={true}
-          />
-        </ViroNode>
+							require('./res/sphere_specular.png'),
+						]}
+						type="VRX"
+						onClickState={this._onBallClick}
+						animation={{
+							name: this.state.currentAnimation,
+							run: true,
+							interruptible: false,
+						}}
+						onLoadEnd={() => this._onLoadEnd('main')}
+						onLoadStart={this._onLoadStart}
+						onClick={this._onBallDrag}
+					/>
+				</ViroNode>
 				{/* points sound effects */}
 				<ViroSound
 					paused={this.state.playPoints}
@@ -352,11 +361,7 @@ export default BallThrowAR = createReactClass({
 			this.state.currentAnimation !== ('arc' || 'rollAway')
 		) {
 			const play = this.state.playCount + 1;
-			this.setState({
-				...this.state,
-				playCount: play,
-				playPoints: !this.state.playPoints,
-			});
+			this.setState({ ...this.state, playCount: play });
 			// let pts = this.state.user.points;
 			this.state.addPoints({ points: this.state.user.points++ });
 		}
@@ -403,7 +408,7 @@ export default BallThrowAR = createReactClass({
 						...this.state,
 						currentAnimation: 'returnBall',
 						dogAnimation: 'return',
-						ballPosition: [0, -2.4, -3],
+						mainPosition: [0, -2.4, -3],
 						dogPosition: [0, -9, -9],
 					});
 				}
@@ -429,7 +434,6 @@ export default BallThrowAR = createReactClass({
 						results,
 						str
 					);
-					console.log(str);
 				});
 		});
 		this.props.arSceneNavigator.viroAppProps._onLoadEnd();

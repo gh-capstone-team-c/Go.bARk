@@ -17,6 +17,7 @@ import {
 	ViroMaterials,
 } from 'react-viro';
 var createReactClass = require('create-react-class');
+import { locationConstants } from './BallThrowAR';
 
 const dog = {
 	red: require('./res/dogColors/redDog.vrx'),
@@ -55,10 +56,10 @@ export default WalkPortal = createReactClass({
 				// onDrag={() => {}}
 			>
 				{/* render the portal on the other side of the user */}
-				<ViroPortal position={[3, -1, 2]} scale={[3, 3, 3]}>
+				<ViroPortal position={locationConstants.walkPosition} scale={[3, 3, 3]}>
 					<Viro3DObject
 						source={require('./res/door/portal_wood_frame.vrx')}
-						rotation={[0, 0, 0]}
+						transformBehavious={['billboardY']}
 						scale={[1, 1, 1]}
 						// resources={[
 						// 	require('./res/door/InteriorDoor_Diffuce.jpg'),
@@ -75,14 +76,12 @@ export default WalkPortal = createReactClass({
 
 				{/* dog */}
 				<ViroNode
-					position={[0, -5, 10]}
+					position={[0, -5, 15]}
 					scale={[0.03, 0.03, 0.03]}
 					rotation={[0, 0, 0]}
 				>
 					<Viro3DObject
 						source={dog[dogColor]}
-						/* position={[0, -10, -10]}
-			scale={[0.1, 0.1, 0.1]} */
 						animation={{
 							name: this.state.currentAnimation,
 							run: true,
@@ -153,6 +152,7 @@ export default WalkPortal = createReactClass({
 						},
 					}}
 				/>
+				{/* nav */}
 				<ViroSound
 					paused={this.state.playSound}
 					muted={false}
@@ -181,43 +181,11 @@ ViroAnimations.registerAnimations({
 	frolic: [
 		[
 			{
-				properties: { rotateY: 300 },
+				properties: { rotateY: 210 },
 				duration: 500,
 			},
 			{
-				properties: { positionX: '+=40', positionZ: '-=20' },
-				duration: 500,
-			},
-			{
-				properties: { rotateY: 300 },
-				duration: 500,
-			},
-			{
-				properties: { positionZ: '+=40' },
-				duration: 500,
-			},
-			{
-				properties: { rotateY: 0 },
-				duration: 500,
-			},
-			{
-				properties: { positionX: '-=20', positionZ: '+=20' },
-				duration: 500,
-			},
-			{
-				properties: { rotateY: 60 },
-				duration: 500,
-			},
-			{
-				properties: { positionX: '-=20', positionZ: '-=20' },
-				duration: 500,
-			},
-			{
-				properties: { rotateY: 120 },
-				duration: 500,
-			},
-			{
-				properties: { positionZ: '+=40' },
+				properties: { positionX: '-=26', positionZ: '-=13' },
 				duration: 500,
 			},
 			{
@@ -225,7 +193,39 @@ ViroAnimations.registerAnimations({
 				duration: 500,
 			},
 			{
-				properties: { positionX: '+=20', positionZ: '+=20' },
+				properties: { positionZ: '-=30' },
+				duration: 500,
+			},
+			{
+				properties: { rotateY: 150 },
+				duration: 500,
+			},
+			{
+				properties: { positionX: '+=26', positionZ: '-=13' },
+				duration: 500,
+			},
+			{
+				properties: { rotateY: 30 },
+				duration: 500,
+			},
+			{
+				properties: { positionX: '+=26', positionZ: '+=13' },
+				duration: 500,
+			},
+			{
+				properties: { rotateY: 0 },
+				duration: 500,
+			},
+			{
+				properties: { positionZ: '+=30' },
+				duration: 500,
+			},
+			{
+				properties: { rotateY: 330 },
+				duration: 500,
+			},
+			{
+				properties: { positionX: '-=26', positionZ: '+=13' },
 				duration: 500,
 			},
 		],
