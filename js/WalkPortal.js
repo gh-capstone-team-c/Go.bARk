@@ -17,7 +17,6 @@ import {
 	ViroMaterials,
 } from 'react-viro';
 var createReactClass = require('create-react-class');
-import { locationConstants } from './BallThrowAR';
 
 const dog = {
 	red: require('./res/dogColors/redDog.vrx'),
@@ -56,7 +55,7 @@ export default WalkPortal = createReactClass({
 				// onDrag={() => {}}
 			>
 				{/* render the portal on the other side of the user */}
-				<ViroPortal position={locationConstants.walkPosition} scale={[3, 3, 3]}>
+				<ViroPortal position={this.props.walkPosition} scale={[3, 3, 3]}>
 					<Viro3DObject
 						source={require('./res/door/portal_wood_frame.vrx')}
 						transformBehavious={['billboardY']}
