@@ -8,36 +8,18 @@ import { updateUser, updateDog } from '../store/users';
 import { appStyles } from '../Styles';
 import AwesomeAlert from 'react-native-awesome-alerts';
 import RNPickerSelect from 'react-native-picker-select';
-import io from 'socket.io-client';
 
 class Settings extends React.Component {
 	constructor(props) {
 		super(props);
-		this.socket = io('https://gobark-backend.herokuapp.com');
+
 		this.state = {
 			editSettings: false,
 			email: '',
 			name: '',
 			color: '',
 			showAlert: false,
-			//playing with socket
-			chatMessage: '',
-			chatMessages: [],
 		};
-	}
-
-	componentDidMount() {
-		this.socket.connect();
-		this.socket.on('connect', () => {
-			console.log('connect to server');
-			// this.setState({ chatMessages: [...this.state.chatMessages, msg] });
-			// console.log(this.state.chatMessages);
-		});
-	}
-
-	submitChatMessage() {
-		this.socket.emit(console.log('emitted'));
-		this.setState({ chatMessage: '' });
 	}
 
 	showAlert = () => {
@@ -107,17 +89,6 @@ class Settings extends React.Component {
 								value={this.state.name}
 							/>
 
-							{/* socket */}
-							{/* <TextInput
-								style={appStyles.input}
-								autoCorrect={false}
-								value={this.state.chatMessage}
-								onSubmitEditing={() => this.submitChatMessage()}
-								onChangeText={(chatMessage) => {
-									this.setState({ chatMessage });
-								}}
-							/> */}
-
 							<RNPickerSelect
 								onValueChange={(value) => {
 									this.setState({ color: value });
@@ -151,9 +122,9 @@ class Settings extends React.Component {
 											this.setState({
 												editSettings: false,
 											});
-                       alert(
-                        "Your dog's color will be reflected once you refresh the app"
-                      );
+											alert(
+												"Your dog's color will be reflected once you refresh the app"
+											);
 										}
 									}}
 								>
