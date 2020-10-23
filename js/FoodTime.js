@@ -11,8 +11,11 @@ import {
 	ViroSound,
 	ViroSpotLight,
 } from 'react-viro';
-var createReactClass = require('create-react-class');
+import BallThrowAR from './BallThrowAR';
+import Walk from './Walk';
+import TugOfWar from './TugOfWar';
 
+var createReactClass = require('create-react-class');
 const dogPose = {
 	red: require('./res/dogPose/redDogEat.vrx'),
 	blackTan: require('./res/dogPose/blackTanDogEat.vrx'),
@@ -26,24 +29,22 @@ const dogStand = {
 };
 
 export default FoodTime = createReactClass({
-  getInitialState() {
-    return {
-      user: this.props.user,
-      addPoints: this.props.addPoints,
-      changePose: false,
-      dogPosition: [0, -10, -20],
-      dogScale: [0.1, 0.1, 0.1],
-      bowlScale: [0.25, 0.25, 0.25],
-      bowlPosition: [0, -10, -15],
-      walkPosition: [0, -1, 1.7],
-      foodPosition: [2, -1, -0.7],
-      towPosition: [-2, -1, -0.7],
-  //sound effects
-			playPoints: true,
-			playBark: true,
-    };
-  },
 
+	getInitialState() {
+		return {
+			user: this.props.user,
+			addPoints: this.props.addPoints,
+			changePose: false,
+			bowlScale: [0.25, 0.25, 0.25],
+			dogScale: this.props.dogScale,
+			scale: this.props.scale,
+			dogPosition: this.props.dogPosition,
+			mainPosition: this.props.mainPosition,
+			walkPosition: this.props.walkPosition,
+			foodPosition: this.props.foodPosition,
+			towPosition: this.props.towPosition,
+		};
+	},
   render() {
     const dogColor = this.state.user.dog.color;
     let dog;
@@ -137,9 +138,16 @@ export default FoodTime = createReactClass({
             this.props.arSceneNavigator.push({
               scene: require('./Walk'),
               passProps: {
-                user: this.state.user,
-                addPoints: this.state.addPoints,
-              },
+								user: this.props.user,
+								addPoints: this.props.addPoints,
+								dogScale: this.props.dogScale,
+								scale: this.props.scale,
+								dogPosition: this.props.dogPosition,
+								mainPosition: this.props.mainPosition,
+								walkPosition: this.props.walkPosition,
+								foodPosition: this.props.foodPosition,
+								towPosition: this.props.towPosition,
+							},
             })
           }
         >
@@ -181,9 +189,16 @@ export default FoodTime = createReactClass({
             this.props.arSceneNavigator.push({
               scene: require('./TugOfWar'),
               passProps: {
-                user: this.state.user,
-                addPoints: this.state.addPoints,
-              },
+								user: this.props.user,
+								addPoints: this.props.addPoints,
+								dogScale: this.props.dogScale,
+								scale: this.props.scale,
+								dogPosition: this.props.dogPosition,
+								mainPosition: this.props.mainPosition,
+								walkPosition: this.props.walkPosition,
+								foodPosition: this.props.foodPosition,
+								towPosition: this.props.towPosition,
+							},
             })
           }
         >
@@ -213,29 +228,8 @@ export default FoodTime = createReactClass({
 				{/* dog */}
 				<ViroNode position={this.state.dogPosition} scale={this.state.dogScale}>
 					{/* NEED TO ADD SPOTLIGHT */}
-					{/* <ViroSpotLight
-            innerAngle={5}
-            outerAngle={25}
-            direction={[0, 0, 0]}
-            // position={[0, 0, 0]}
-            color="rgb(245, 224, 183)"
-            castsShadow={true}
-            shadowMapSize={2048}
-            shadowNearZ={2}
-            shadowFarZ={7}
-            shadowOpacity={0.7}
-          /> */}
-					{/* <Viro3DObject
-            source={dog[dogColor]}
-            type="VRX"
-          /> */}
+					<Viro3DObject source={dog} type="VRX" ignoreEventHandling={true} />
 
-					<Viro3DObject
-						position={[0, -10, -20]}
-						source={dog}
-						type="VRX"
-						ignoreEventHandling={true}
-					/>
 				</ViroNode>
 
 				<ViroText
