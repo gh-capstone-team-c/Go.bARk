@@ -141,6 +141,19 @@ export default Walk = createReactClass({
             }}
           />
         </ViroNode>
+        {/* tugOfWar R Arrow */}
+        <ViroAnimatedImage
+          scale={[0.7, 0.7, 0.7]}
+          height={1}
+          width={1}
+          source={require('./res/gifs/tugOfWarRArrow.gif')}
+          position={[-1, -0.4, 0.3]}
+          transformBehaviors={['billboardY']}
+          animation={{
+            loop: true,
+            delay: 0,
+          }}
+        />
         <ViroNode
           dragType="FixedToWorld"
           position={this.state.towPosition}
