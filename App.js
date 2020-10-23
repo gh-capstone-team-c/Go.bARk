@@ -23,11 +23,9 @@ import {
 	PermissionsAndroid,
 } from 'react-native';
 const { width, height } = Dimensions.get('window');
-import { ViroARSceneNavigator } from 'react-viro';
+import { ViroARSceneNavigator, ViroConstants } from 'react-viro';
 import { connect } from 'react-redux';
 import { addPoints } from './store/users';
-
-import Screenshot from './js/Screenshot';
 import Photos from './js/Photos';
 import Settings from './js/Settings';
 import Friends from './js/Friends';
@@ -53,6 +51,7 @@ class App extends Component {
 		this._renderTrackingText = this._renderTrackingText.bind(this);
 		this._onLoadStart = this._onLoadStart.bind(this);
 		this._onLoadEnd = this._onLoadEnd.bind(this);
+		this._onTrackingUpdated = this._onTrackingUpdated.bind(this);
 		this.state = {
 			pressed: false,
 			menuItem: null,
@@ -61,8 +60,10 @@ class App extends Component {
 				addPoints: this.props.addPoints,
 				_onLoadEnd: this._onLoadEnd,
 				_onLoadStart: this._onLoadStart,
+				_onTrackingUpdated: this._onTrackingUpdated,
 			},
 			isLoading: false,
+			trackingFound: false,
 			videoUrl: null,
 			haveSavedMedia: false,
 			playPreview: false,
@@ -258,7 +259,7 @@ class App extends Component {
 								/>
 								{this._renderTrackingText()}
 								{renderIf(
-									this.state.isLoading,
+									!this.state.trackingFound,
 									<View
 										style={{
 											position: 'absolute',
@@ -352,9 +353,17 @@ class App extends Component {
 		this.setState({
 			isLoading: false,
 		});
-		console.log('this.state', this.state.isLoading);
 	}
-
+	_onTrackingUpdated(state, reason) {
+		if (state === ViroConstants.TRACKING_NORMAL) {
+			this.setState({ trackingInitialized: true });
+			alert('Tracking is available :)');
+		} else if (state == ViroConstants.TRACKING_NONE) {
+			alert('Please move camera to find a location for your dog!');
+		} else if (state == ViroConstants.TRACKING_LIMITED) {
+			alert('Tracking is available but may be inaccurate!');
+		}
+	}
 	_renderTrackingText() {
 		if (this.state.isLoading) {
 			return (
