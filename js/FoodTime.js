@@ -36,7 +36,7 @@ export default FoodTime = createReactClass({
       changePose: false,
       bowlScale: [0.25, 0.25, 0.25],
       dogScale: this.props.dogScale,
-      bowlPosition: [0, -10, -15],
+      bowlPosition: [0, -10, -17],
       scale: this.props.scale,
       dogPosition: this.props.dogPosition,
       mainPosition: this.props.mainPosition,
@@ -57,6 +57,7 @@ export default FoodTime = createReactClass({
         <ViroNode
           transformBehaviors={['billboardY']}
           position={[0.8, -0.5, -0.7]}
+          interruptible={true}
         >
           <ViroAnimatedImage
             scale={[0.7, 0.7, 0.7]}
@@ -72,6 +73,7 @@ export default FoodTime = createReactClass({
         </ViroNode>
         {/* ballThrow gif */}
         <ViroNode
+          interruptible={true}
           position={this.state.foodPosition}
           transformBehaviors={['billboardY']}
           dragType="FixedToWorld"
@@ -102,6 +104,7 @@ export default FoodTime = createReactClass({
         <ViroNode
           transformBehaviors={['billboardY']}
           position={[-1, -0.4, 0.3]}
+          interruptible={true}
         >
           <ViroAnimatedImage
             scale={[0.7, 0.7, 0.7]}
@@ -116,7 +119,11 @@ export default FoodTime = createReactClass({
           />
         </ViroNode>
         {/* walk R Arrow */}
-        <ViroNode transformBehaviors={['billboardY']} position={[1, -0.4, 0.6]}>
+        <ViroNode
+          transformBehaviors={['billboardY']}
+          position={[1, -0.4, 0.6]}
+          interruptible={true}
+        >
           <ViroAnimatedImage
             scale={[0.7, 0.7, 0.7]}
             height={1}
@@ -167,6 +174,7 @@ export default FoodTime = createReactClass({
         <ViroNode
           transformBehaviors={['billboardY']}
           position={[-0.7, -0.5, -0.7]}
+          interruptible={true}
         >
           <ViroAnimatedImage
             scale={[0.7, 0.7, 0.7]}
@@ -183,6 +191,7 @@ export default FoodTime = createReactClass({
         {/* tugOfWar gif */}
         <ViroNode
           position={this.state.towPosition}
+          interruptible={true}
           transformBehaviors={['billboardY']}
           dragType="FixedToWorld"
           onDrag={() =>
@@ -220,7 +229,7 @@ export default FoodTime = createReactClass({
         <ViroNode
           position={this.state.bowlPosition}
           scale={this.state.bowlScale}
-          onClickState={this._onBowlClicked}
+          onClick={this._onBowlClicked}
         >
           <Viro3DObject source={require('./res/dogBowl.vrx')} type="VRX" />
         </ViroNode>
