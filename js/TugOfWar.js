@@ -13,8 +13,9 @@ import {
 	ViroSpotLight,
 	ViroMaterials,
 } from 'react-viro';
+import { Vibration } from 'react-native';
 var createReactClass = require('create-react-class');
-import BallThrowAR, { locationConstants } from './BallThrowAR';
+import BallThrowAR from './BallThrowAR';
 import FoodTime from './FoodTime';
 import Walk from './Walk';
 
@@ -30,6 +31,13 @@ export default TugOfWar = createReactClass({
 			user: this.props.user,
 			addPoints: this.props.addPoints,
 			tugging: false,
+			dogScale: this.props.dogScale,
+			scale: this.props.scale,
+			dogPosition: this.props.dogPosition,
+			mainPosition: this.props.mainPosition,
+			walkPosition: this.props.walkPosition,
+			foodPosition: this.props.foodPosition,
+			towPosition: this.props.towPosition,
 		};
 	},
 
@@ -39,7 +47,7 @@ export default TugOfWar = createReactClass({
 			<ViroARScene>
 				<ViroNode
 					dragType="FixedToWorld"
-					position={locationConstants.towPosition}
+					position={this.state.towPosition}
 					transformBehaviors={['billboardY']}
 					key={'home'}
 					ref={this._setARNodeRef}
@@ -62,7 +70,7 @@ export default TugOfWar = createReactClass({
 					/>
 				</ViroNode>
 				<ViroNode
-					position={locationConstants.walkPosition}
+					position={this.state.walkPosition}
 					transformBehaviors={['billboardY']}
 					dragType="FixedToWorld"
 					onDrag={() =>
@@ -91,7 +99,7 @@ export default TugOfWar = createReactClass({
 				</ViroNode>
 				<ViroNode
 					dragType="FixedToWorld"
-					position={locationConstants.foodPosition}
+					position={this.state.foodPosition}
 					transformBehaviors={['billboardY']}
 					key={'food'}
 					ref={this._setARNodeRef}
@@ -119,16 +127,11 @@ export default TugOfWar = createReactClass({
 				</ViroNode>
 				<ViroAmbientLight color={'#e8e0dc'} />
 				{/* wrestle with your dog to get points! */}
-				<ViroNode
-					position={[0, 0, -7]}
-					scale={[0.7, 0.7, 0.7]}
-					onClickState={this._wrestle}
-				>
+				<ViroNode position={this.state.mainPosition} scale={[0.7, 0.7, 0.7]}>
 					<ViroSpotLight
 						innerAngle={5}
 						outerAngle={25}
 						direction={[0, 0, 0]}
-						position={[0, 0, 0]}
 						color="rgb(245, 224, 183)"
 						intensity={10000}
 						castsShadow={true}
@@ -138,36 +141,41 @@ export default TugOfWar = createReactClass({
 						shadowOpacity={0.7}
 					/>
 					<Viro3DObject
-						source={require('./res/dogtoy/ringToy3.vrx')}
+						source={require('./res/dogtoy/ringToy.vrx')}
 						materials={'chewy'}
 						type="VRX"
+						onDrag={(position) => {
+							if (this.state.tugging) {
+								this.setState({
+									dogPosition: [
+										position[0],
+										position[1] - 6.6,
+										position[2] - 6,
+									],
+								});
+								Vibration.vibrate();
+							}
+						}}
+						interruptible={true}
+						onClickState={this._wrestle}
 					/>
 				</ViroNode>
 
 				{/* dog */}
-				<ViroNode
-					position={locationConstants.dogPosition}
-					scale={locationConstants.dogScale}
-				>
+				<ViroNode position={this.state.dogPosition} scale={this.state.dogScale}>
 					{/* NEED TO ADD SPOTLIGHT */}
-					{/* <ViroSpotLight
-            innerAngle={5}
-            outerAngle={25}
-            direction={[0, 0, 0]}
-            // position={[0, 0, 0]}
-            color="rgb(245, 224, 183)"
-            castsShadow={true}
-            shadowMapSize={2048}
-            shadowNearZ={2}
-            shadowFarZ={7}
-            shadowOpacity={0.7}
-          /> */}
-					{/* <Viro3DObject
-            source={dog[dogColor]}
-            type="VRX"
-          /> */}
+					<ViroSpotLight
+						innerAngle={5}
+						outerAngle={25}
+						direction={[0, 0, 0]}
+						color="rgb(245, 224, 183)"
+						castsShadow={true}
+						shadowMapSize={2048}
+						shadowNearZ={2}
+						shadowFarZ={7}
+						shadowOpacity={0.7}
+					/>
 					<Viro3DObject
-						position={[0, -10, -20]}
 						source={dogStand[dogColor]}
 						type="VRX"
 						ignoreEventHandling={true}
@@ -175,7 +183,7 @@ export default TugOfWar = createReactClass({
 				</ViroNode>
 
 				<ViroText
-					text={'Tap the bowl to feed your dog!'}
+					text={'Tap the bowl to play tug of war with your dog!'}
 					scale={[1, 1, 1]}
 					position={[0, 1, -4]}
 				/>
@@ -186,6 +194,8 @@ export default TugOfWar = createReactClass({
 		if (stateValue === 1) {
 			this.setState({ tugging: true });
 		} else this.setState({ tugging: false });
+		if (stateValue === 3)
+			this.state.addPoints({ points: this.state.user.points++ });
 	},
 });
 ViroMaterials.createMaterials({

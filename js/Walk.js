@@ -15,7 +15,7 @@ import {
 } from 'react-viro';
 var createReactClass = require('create-react-class');
 import WalkPortal from './WalkPortal';
-import BallThrowAR, { locationConstants } from './BallThrowAR';
+import BallThrowAR from './BallThrowAR';
 import FoodTime from './FoodTime';
 import TugOfWar from './TugOfWar';
 
@@ -30,6 +30,13 @@ export default Walk = createReactClass({
 		return {
 			user: this.props.user,
 			addPoints: this.props.addPoints,
+			dogScale: this.props.dogScale,
+			scale: this.props.scale,
+			dogPosition: this.props.dogPosition,
+			mainPosition: this.props.mainPosition,
+			walkPosition: this.props.walkPosition,
+			foodPosition: this.props.foodPosition,
+			towPosition: this.props.towPosition,
 		};
 	},
 
@@ -41,7 +48,7 @@ export default Walk = createReactClass({
 
 				<ViroNode
 					dragType="FixedToWorld"
-					position={locationConstants.mainPosition}
+					position={this.state.mainPosition}
 					transformBehaviors={['billboardY']}
 					key={'ball'}
 					ref={this._setARNodeRef}
@@ -64,7 +71,7 @@ export default Walk = createReactClass({
 					/>
 				</ViroNode>
 				<ViroNode
-					position={locationConstants.foodPosition}
+					position={this.state.foodPosition}
 					transformBehaviors={['billboardY']}
 					dragType="FixedToWorld"
 					onDrag={() =>
@@ -73,6 +80,13 @@ export default Walk = createReactClass({
 							passProps: {
 								user: this.props.user,
 								addPoints: this.props.addPoints,
+								dogScale: this.props.dogScale,
+								scale: this.props.scale,
+								dogPosition: this.props.dogPosition,
+								mainPosition: this.props.mainPosition,
+								walkPosition: this.props.walkPosition,
+								foodPosition: this.props.foodPosition,
+								towPosition: this.props.towPosition,
 							},
 						})
 					}
@@ -91,7 +105,7 @@ export default Walk = createReactClass({
 				</ViroNode>
 				<ViroNode
 					dragType="FixedToWorld"
-					position={locationConstants.towPosition}
+					position={this.state.towPosition}
 					transformBehaviors={['billboardY']}
 					key={'tow'}
 					ref={this._setARNodeRef}
@@ -101,6 +115,13 @@ export default Walk = createReactClass({
 							passProps: {
 								user: this.state.user,
 								addPoints: this.state.addPoints,
+								dogScale: this.props.dogScale,
+								scale: this.props.scale,
+								dogPosition: this.props.dogPosition,
+								mainPosition: this.props.mainPosition,
+								walkPosition: this.props.walkPosition,
+								foodPosition: this.props.foodPosition,
+								towPosition: this.props.towPosition,
 							},
 						})
 					}

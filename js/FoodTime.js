@@ -10,7 +10,7 @@ import {
 	ViroAnimatedImage,
 	ViroSpotLight,
 } from 'react-viro';
-import BallThrowAR, { locationConstants } from './BallThrowAR';
+import BallThrowAR from './BallThrowAR';
 import Walk from './Walk';
 import TugOfWar from './TugOfWar';
 
@@ -34,6 +34,13 @@ export default FoodTime = createReactClass({
 			addPoints: this.props.addPoints,
 			changePose: false,
 			bowlScale: [0.25, 0.25, 0.25],
+			dogScale: this.props.dogScale,
+			scale: this.props.scale,
+			dogPosition: this.props.dogPosition,
+			mainPosition: this.props.mainPosition,
+			walkPosition: this.props.walkPosition,
+			foodPosition: this.props.foodPosition,
+			towPosition: this.props.towPosition,
 		};
 	},
 
@@ -47,7 +54,7 @@ export default FoodTime = createReactClass({
 			/* this.state.changePose ? */ <ViroARScene>
 				<ViroNode
 					dragType="FixedToWorld"
-					position={locationConstants.foodPosition}
+					position={this.state.foodPosition}
 					transformBehaviors={['billboardY']}
 					key={'food'}
 					ref={this._setARNodeRef}
@@ -70,7 +77,7 @@ export default FoodTime = createReactClass({
 					/>
 				</ViroNode>
 				<ViroNode
-					position={locationConstants.walkPosition}
+					position={this.state.walkPosition}
 					transformBehaviors={['billboardY']}
 					dragType="FixedToWorld"
 					onDrag={() =>
@@ -79,6 +86,13 @@ export default FoodTime = createReactClass({
 							passProps: {
 								user: this.props.user,
 								addPoints: this.props.addPoints,
+								dogScale: this.props.dogScale,
+								scale: this.props.scale,
+								dogPosition: this.props.dogPosition,
+								mainPosition: this.props.mainPosition,
+								walkPosition: this.props.walkPosition,
+								foodPosition: this.props.foodPosition,
+								towPosition: this.props.towPosition,
 							},
 						})
 					}
@@ -99,7 +113,7 @@ export default FoodTime = createReactClass({
 				</ViroNode>
 				<ViroNode
 					dragType="FixedToWorld"
-					position={locationConstants.towPosition}
+					position={this.state.towPosition}
 					transformBehaviors={['billboardY']}
 					key={'tow'}
 					ref={this._setARNodeRef}
@@ -109,6 +123,13 @@ export default FoodTime = createReactClass({
 							passProps: {
 								user: this.state.user,
 								addPoints: this.state.addPoints,
+								dogScale: this.props.dogScale,
+								scale: this.props.scale,
+								dogPosition: this.props.dogPosition,
+								mainPosition: this.props.mainPosition,
+								walkPosition: this.props.walkPosition,
+								foodPosition: this.props.foodPosition,
+								towPosition: this.props.towPosition,
 							},
 						})
 					}
@@ -130,9 +151,9 @@ export default FoodTime = createReactClass({
 				{/* food bowl & clicking on food bowl to get user points */}
 				<ViroNode
 					position={[
-						locationConstants.dogPosition[0],
-						locationConstants.dogPosition[1],
-						locationConstants.dogPosition[2] + 5,
+						this.state.dogPosition[0],
+						this.state.dogPosition[1],
+						this.state.dogPosition[2] + 5,
 					]}
 					scale={this.state.bowlScale}
 					onClickState={this._onBowlClicked}
@@ -141,10 +162,7 @@ export default FoodTime = createReactClass({
 				</ViroNode>
 
 				{/* dog */}
-				<ViroNode
-					position={locationConstants.dogPosition}
-					scale={locationConstants.dogScale}
-				>
+				<ViroNode position={this.state.dogPosition} scale={this.state.dogScale}>
 					{/* NEED TO ADD SPOTLIGHT */}
 					{/* <ViroSpotLight
             innerAngle={5}
