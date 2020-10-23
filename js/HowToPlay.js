@@ -17,7 +17,7 @@ export default class HowToPlay extends React.Component {
     super(props);
     this.state = {
       back: false,
-      showScreenInputs: false,
+      showFriends: false,
     };
   }
 
@@ -38,13 +38,13 @@ export default class HowToPlay extends React.Component {
       returnLogin
     ) : (
       <View>
-        {this.state.showMaps ? (
+        {this.state.showFriends ? (
           <View style={appStyles.container}>
-            <Text style={appStyles.titleText}>How to Play in each Scene</Text>
-            {/* put directions on how to interact with screen */}
+            <Text style={appStyles.titleText}>Friends</Text>
+            {/* put directions on friends */}
             <TouchableOpacity
               onPress={() => {
-                this.setState({ showScreenInputs: false });
+                this.setState({ showFriends: false });
               }}
               style={appStyles.rectButton}
             >
@@ -56,11 +56,11 @@ export default class HowToPlay extends React.Component {
             <Text style={appStyles.titleText}>How To Play: </Text>
             <TouchableOpacity
               onPress={() => {
-                this.setState({ showScreenInputs: true });
+                this.setState({ showFriends: true });
               }}
               style={appStyles.rectButton}
             >
-              <Text style={appStyles.buttonText}>Maps</Text>
+              <Text style={appStyles.buttonText}>Friends</Text>
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {

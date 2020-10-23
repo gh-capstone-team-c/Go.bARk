@@ -2,14 +2,14 @@
 
 import React from 'react';
 import {
-	ViroARScene,
-	ViroNode,
-	Viro3DObject,
-	ViroText,
-	ViroAmbientLight,
-	ViroAnimatedImage,
-	ViroSound,
-	ViroSpotLight,
+  ViroARScene,
+  ViroNode,
+  Viro3DObject,
+  ViroText,
+  ViroAmbientLight,
+  ViroAnimatedImage,
+  ViroSound,
+  ViroSpotLight,
 } from 'react-viro';
 import BallThrowAR from './BallThrowAR';
 import Walk from './Walk';
@@ -17,34 +17,34 @@ import TugOfWar from './TugOfWar';
 
 var createReactClass = require('create-react-class');
 const dogPose = {
-	red: require('./res/dogPose/redDogEat.vrx'),
-	blackTan: require('./res/dogPose/blackTanDogEat.vrx'),
-	cream: require('./res/dogPose/creamDogEat.vrx'),
+  red: require('./res/dogPose/redDogEat.vrx'),
+  blackTan: require('./res/dogPose/blackTanDogEat.vrx'),
+  cream: require('./res/dogPose/creamDogEat.vrx'),
 };
 
 const dogStand = {
-	red: require('./res/dogColors/redDog.vrx'),
-	blackTan: require('./res/dogColors/blackTanDog.vrx'),
-	cream: require('./res/dogColors/creamDog.vrx'),
+  red: require('./res/dogColors/redDog.vrx'),
+  blackTan: require('./res/dogColors/blackTanDog.vrx'),
+  cream: require('./res/dogColors/creamDog.vrx'),
 };
 
 export default FoodTime = createReactClass({
-
-	getInitialState() {
-		return {
-			user: this.props.user,
-			addPoints: this.props.addPoints,
-			changePose: false,
-			bowlScale: [0.25, 0.25, 0.25],
-			dogScale: this.props.dogScale,
-			scale: this.props.scale,
-			dogPosition: this.props.dogPosition,
-			mainPosition: this.props.mainPosition,
-			walkPosition: this.props.walkPosition,
-			foodPosition: this.props.foodPosition,
-			towPosition: this.props.towPosition,
-		};
-	},
+  getInitialState() {
+    return {
+      user: this.props.user,
+      addPoints: this.props.addPoints,
+      changePose: false,
+      bowlScale: [0.25, 0.25, 0.25],
+      dogScale: this.props.dogScale,
+      bowlPosition: [0, -10, -15],
+      scale: this.props.scale,
+      dogPosition: this.props.dogPosition,
+      mainPosition: this.props.mainPosition,
+      walkPosition: this.props.walkPosition,
+      foodPosition: this.props.foodPosition,
+      towPosition: this.props.towPosition,
+    };
+  },
   render() {
     const dogColor = this.state.user.dog.color;
     let dog;
@@ -83,7 +83,7 @@ export default FoodTime = createReactClass({
                 user: this.state.user,
                 addPoints: this.state.addPoints,
               },
-            })
+            });
           }}
         >
           <ViroAnimatedImage
@@ -138,16 +138,16 @@ export default FoodTime = createReactClass({
             this.props.arSceneNavigator.push({
               scene: require('./Walk'),
               passProps: {
-								user: this.props.user,
-								addPoints: this.props.addPoints,
-								dogScale: this.props.dogScale,
-								scale: this.props.scale,
-								dogPosition: this.props.dogPosition,
-								mainPosition: this.props.mainPosition,
-								walkPosition: this.props.walkPosition,
-								foodPosition: this.props.foodPosition,
-								towPosition: this.props.towPosition,
-							},
+                user: this.props.user,
+                addPoints: this.props.addPoints,
+                dogScale: this.props.dogScale,
+                scale: this.props.scale,
+                dogPosition: this.props.dogPosition,
+                mainPosition: this.props.mainPosition,
+                walkPosition: this.props.walkPosition,
+                foodPosition: this.props.foodPosition,
+                towPosition: this.props.towPosition,
+              },
             })
           }
         >
@@ -189,16 +189,16 @@ export default FoodTime = createReactClass({
             this.props.arSceneNavigator.push({
               scene: require('./TugOfWar'),
               passProps: {
-								user: this.props.user,
-								addPoints: this.props.addPoints,
-								dogScale: this.props.dogScale,
-								scale: this.props.scale,
-								dogPosition: this.props.dogPosition,
-								mainPosition: this.props.mainPosition,
-								walkPosition: this.props.walkPosition,
-								foodPosition: this.props.foodPosition,
-								towPosition: this.props.towPosition,
-							},
+                user: this.props.user,
+                addPoints: this.props.addPoints,
+                dogScale: this.props.dogScale,
+                scale: this.props.scale,
+                dogPosition: this.props.dogPosition,
+                mainPosition: this.props.mainPosition,
+                walkPosition: this.props.walkPosition,
+                foodPosition: this.props.foodPosition,
+                towPosition: this.props.towPosition,
+              },
             })
           }
         >
@@ -216,66 +216,64 @@ export default FoodTime = createReactClass({
         </ViroNode>
         <ViroAmbientLight color={'#e8e0dc'} />
 
-				{/* food bowl & clicking on food bowl to get user points */}
-				<ViroNode
-					position={this.state.bowlPosition}
-					scale={this.state.bowlScale}
-					onClickState={this._onBowlClicked}
-				>
-					<Viro3DObject source={require('./res/dogBowl.vrx')} type="VRX" />
-				</ViroNode>
+        {/* food bowl & clicking on food bowl to get user points */}
+        <ViroNode
+          position={this.state.bowlPosition}
+          scale={this.state.bowlScale}
+          onClickState={this._onBowlClicked}
+        >
+          <Viro3DObject source={require('./res/dogBowl.vrx')} type="VRX" />
+        </ViroNode>
 
-				{/* dog */}
-				<ViroNode position={this.state.dogPosition} scale={this.state.dogScale}>
-					{/* NEED TO ADD SPOTLIGHT */}
-					<Viro3DObject source={dog} type="VRX" ignoreEventHandling={true} />
+        {/* dog */}
+        <ViroNode position={this.state.dogPosition} scale={this.state.dogScale}>
+          <Viro3DObject source={dog} type="VRX" />
+        </ViroNode>
 
-				</ViroNode>
+        <ViroText
+          text={'Tap the bowl to feed your dog!'}
+          scale={[1, 1, 1]}
+          position={[0, 1, -4]}
+        />
 
-				<ViroText
-					text={'Tap the bowl to feed your dog!'}
-					scale={[1, 1, 1]}
-					position={[0, 1, -4]}
-				/>
+        {/* points sound effects */}
+        <ViroSound
+          paused={this.state.playPoints}
+          muted={false}
+          source={require('./sounds/points.mp3')}
+          loop={false}
+          onFinish={() => {
+            this.setState({
+              playPoints: true,
+            });
+          }}
+          volume={1.0}
+        />
+        {/* dog bark sound effects--this only plays sometimes awkwardly... */}
+        <ViroSound
+          paused={this.state.playBark}
+          muted={false}
+          source={require('./sounds/tinydogbark.mp3')}
+          loop={false}
+          onFinish={() => {
+            this.setState({
+              playBark: true,
+            });
+          }}
+          volume={1.0}
+        />
+      </ViroARScene>
+    );
+  },
 
-				{/* points sound effects */}
-				<ViroSound
-					paused={this.state.playPoints}
-					muted={false}
-					source={require('./sounds/points.mp3')}
-					loop={false}
-					onFinish={() => {
-						this.setState({
-							playPoints: true,
-						});
-					}}
-					volume={1.0}
-				/>
-				{/* dog bark sound effects--this only plays sometimes awkwardly... */}
-				<ViroSound
-					paused={this.state.playBark}
-					muted={false}
-					source={require('./sounds/tinydogbark.mp3')}
-					loop={false}
-					onFinish={() => {
-						this.setState({
-							playBark: true,
-						});
-					}}
-					volume={1.0}
-				/>
-			</ViroARScene>
-		);
-	},
-
-	_onBowlClicked() {
-		const currentPose = this.state.changePose;
-		this.setState({
-			changePose: !currentPose,
-			playPoints: !this.state.playPoints,
-		});
-		this.state.addPoints({ points: this.state.user.points++ });
-	},
+  _onBowlClicked() {
+    const currentPose = this.state.changePose;
+    this.setState({
+      changePose: !currentPose,
+      playPoints: !this.state.playPoints,
+    });
+    this.state.addPoints({ points: this.state.user.points++ });
+  },
 });
 
 module.exports = FoodTime;
