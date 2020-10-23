@@ -108,7 +108,7 @@ class Settings extends React.Component {
 							/>
 
 							{/* socket */}
-							<TextInput
+							{/* <TextInput
 								style={appStyles.input}
 								autoCorrect={false}
 								value={this.state.chatMessage}
@@ -116,7 +116,7 @@ class Settings extends React.Component {
 								onChangeText={(chatMessage) => {
 									this.setState({ chatMessage });
 								}}
-							/>
+							/> */}
 
 							<RNPickerSelect
 								onValueChange={(value) => {
