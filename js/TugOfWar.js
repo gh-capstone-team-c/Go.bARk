@@ -27,7 +27,7 @@ export default TugOfWar = createReactClass({
       user: this.props.user,
       addPoints: this.props.addPoints,
       tugging: false,
-      walkPosition: [-0.7, -1, 2],
+      walkPosition: [0, -1, 1.7],
       foodPosition: [2, -1, -0.7],
       towPosition: [-2, -1, -0.7],
     };
@@ -37,6 +37,24 @@ export default TugOfWar = createReactClass({
     const dogColor = this.state.user.dog.color;
     return (
       <ViroARScene>
+        {/* ballThrow L Arrow */}
+        <ViroNode
+          transformBehaviors={['billboardY']}
+          position={[-0.6, -0.5, -0.7]}
+        >
+          <ViroAnimatedImage
+            scale={[0.7, 0.7, 0.7]}
+            height={1}
+            width={1}
+            source={require('./res/gifs/ballThrowArrow.gif')}
+            position={[0, 0, 0]}
+            animation={{
+              loop: true,
+              delay: 0,
+            }}
+          />
+        </ViroNode>
+        {/* ballThrow gif */}
         <ViroNode
           position={this.state.towPosition}
           transformBehaviors={['billboardY']}
@@ -63,6 +81,38 @@ export default TugOfWar = createReactClass({
             }}
           />
         </ViroNode>
+        {/* walk L Arrow */}
+        <ViroNode
+          transformBehaviors={['billboardY']}
+          position={[-0.9, -0.4, 0.3]}
+        >
+          <ViroAnimatedImage
+            scale={[0.7, 0.7, 0.7]}
+            height={1}
+            width={1}
+            source={require('./res/gifs/walkLArrow.gif')}
+            position={[0, 0, 0]}
+            animation={{
+              loop: true,
+              delay: 0,
+            }}
+          />
+        </ViroNode>
+        {/* walk R Arrow */}
+        <ViroNode transformBehaviors={['billboardY']} position={[1, -0.4, 0.6]}>
+          <ViroAnimatedImage
+            scale={[0.7, 0.7, 0.7]}
+            height={1}
+            width={1}
+            source={require('./res/gifs/walkRArrow.gif')}
+            position={[0, 0, 0]}
+            animation={{
+              loop: true,
+              delay: 0,
+            }}
+          />
+        </ViroNode>
+        {/* walk gif */}
         <ViroNode
           position={this.state.walkPosition}
           transformBehaviors={['billboardY']}
@@ -89,13 +139,31 @@ export default TugOfWar = createReactClass({
             }}
           />
         </ViroNode>
+        {/* foodTime R Arrow */}
+        <ViroNode
+          transformBehaviors={['billboardY']}
+          position={[0.7, -0.5, -0.7]}
+        >
+          <ViroAnimatedImage
+            scale={[0.7, 0.7, 0.7]}
+            height={1}
+            width={1}
+            source={require('./res/gifs/foodTimeRArrow.gif')}
+            position={[0, 0, 0]}
+            animation={{
+              loop: true,
+              delay: 0,
+            }}
+          />
+        </ViroNode>
+        {/* foodTime gif */}
         <ViroNode
           position={this.state.foodPosition}
           transformBehaviors={['billboardY']}
           dragType="FixedToWorld"
           onDrag={() =>
             this.props.arSceneNavigator.push({
-              scene: require('./BallThrowAR'),
+              scene: require('./FoodTime'),
               passProps: {
                 user: this.state.user,
                 addPoints: this.state.addPoints,

@@ -43,7 +43,7 @@ export default BallThrowAR = createReactClass({
       //passing redux function to AR component
       user: this.props.arSceneNavigator.viroAppProps.user,
       addPoints: this.props.arSceneNavigator.viroAppProps.addPoints,
-      walkPosition: [-0.7, -1, 2],
+      walkPosition: [0, -1, 1.7],
       foodPosition: [2, -1, -0.7],
       towPosition: [-2, -1, -0.7],
     };
@@ -52,6 +52,24 @@ export default BallThrowAR = createReactClass({
     const dogColor = this.state.user.dog.color;
     return (
       <ViroARScene ref="arscene" _onTrackingUpdated={this._onTrackingUpdated}>
+        {/* tugOfWar L Arrow */}
+        <ViroNode
+          transformBehaviors={['billboardY']}
+          position={[-0.6, -0.5, -0.7]}
+        >
+          <ViroAnimatedImage
+            scale={[0.7, 0.7, 0.7]}
+            height={1}
+            width={1}
+            source={require('./res/gifs/tugOfWarLArrow.gif')}
+            position={[0, 0, 0]}
+            animation={{
+              loop: true,
+              delay: 0,
+            }}
+          />
+        </ViroNode>
+        {/* tugOfWar gif */}
         <ViroNode
           position={this.state.towPosition}
           transformBehaviors={['billboardY']}
@@ -78,6 +96,7 @@ export default BallThrowAR = createReactClass({
             }}
           />
         </ViroNode>
+        {/* foodTime R Arrow */}
         <ViroNode
           transformBehaviors={['billboardY']}
           position={[0.7, -0.5, -0.7]}
@@ -94,6 +113,7 @@ export default BallThrowAR = createReactClass({
             }}
           />
         </ViroNode>
+        {/* foodTime gif */}
         <ViroNode
           position={this.state.foodPosition}
           transformBehaviors={['billboardY']}
@@ -120,6 +140,38 @@ export default BallThrowAR = createReactClass({
             }}
           />
         </ViroNode>
+        {/* walk L Arrow */}
+        <ViroNode
+          transformBehaviors={['billboardY']}
+          position={[-0.9, -0.4, 0.3]}
+        >
+          <ViroAnimatedImage
+            scale={[0.7, 0.7, 0.7]}
+            height={1}
+            width={1}
+            source={require('./res/gifs/walkLArrow.gif')}
+            position={[0, 0, 0]}
+            animation={{
+              loop: true,
+              delay: 0,
+            }}
+          />
+        </ViroNode>
+        {/* walk R Arrow */}
+        <ViroNode transformBehaviors={['billboardY']} position={[1, -0.4, 0.6]}>
+          <ViroAnimatedImage
+            scale={[0.7, 0.7, 0.7]}
+            height={1}
+            width={1}
+            source={require('./res/gifs/walkRArrow.gif')}
+            position={[0, 0, 0]}
+            animation={{
+              loop: true,
+              delay: 0,
+            }}
+          />
+        </ViroNode>
+        {/* walk gif */}
         <ViroNode
           position={this.state.walkPosition}
           transformBehaviors={['billboardY']}

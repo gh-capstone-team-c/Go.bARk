@@ -34,7 +34,7 @@ export default FoodTime = createReactClass({
       dogScale: [0.1, 0.1, 0.1],
       bowlScale: [0.25, 0.25, 0.25],
       bowlPosition: [0, -10, -15],
-      walkPosition: [-0.7, -1, 2],
+      walkPosition: [0, -1, 1.7],
       foodPosition: [2, -1, -0.7],
       towPosition: [-2, -1, -0.7],
     };
@@ -48,6 +48,24 @@ export default FoodTime = createReactClass({
       : (dog = dogStand[dogColor]);
     return (
       <ViroARScene>
+        {/* ballThrow R Arrow */}
+        <ViroNode
+          transformBehaviors={['billboardY']}
+          position={[0.8, -0.5, -0.7]}
+        >
+          <ViroAnimatedImage
+            scale={[0.7, 0.7, 0.7]}
+            height={1}
+            width={1}
+            source={require('./res/gifs/ballThrowRArrow.gif')}
+            position={[0, 0, 0]}
+            animation={{
+              loop: true,
+              delay: 0,
+            }}
+          />
+        </ViroNode>
+        {/* ballThrow gif */}
         <ViroNode
           position={this.state.foodPosition}
           transformBehaviors={['billboardY']}
@@ -74,6 +92,38 @@ export default FoodTime = createReactClass({
             }}
           />
         </ViroNode>
+        {/* walk L Arrow */}
+        <ViroNode
+          transformBehaviors={['billboardY']}
+          position={[-1, -0.4, 0.3]}
+        >
+          <ViroAnimatedImage
+            scale={[0.7, 0.7, 0.7]}
+            height={1}
+            width={1}
+            source={require('./res/gifs/walkLArrow.gif')}
+            position={[0, 0, 0]}
+            animation={{
+              loop: true,
+              delay: 0,
+            }}
+          />
+        </ViroNode>
+        {/* walk R Arrow */}
+        <ViroNode transformBehaviors={['billboardY']} position={[1, -0.4, 0.6]}>
+          <ViroAnimatedImage
+            scale={[0.7, 0.7, 0.7]}
+            height={1}
+            width={1}
+            source={require('./res/gifs/walkRArrow.gif')}
+            position={[0, 0, 0]}
+            animation={{
+              loop: true,
+              delay: 0,
+            }}
+          />
+        </ViroNode>
+        {/* walk gif */}
         <ViroNode
           position={this.state.walkPosition}
           transformBehaviors={['billboardY']}
@@ -100,6 +150,24 @@ export default FoodTime = createReactClass({
             }}
           />
         </ViroNode>
+        {/* tugOfWar L Arrow */}
+        <ViroNode
+          transformBehaviors={['billboardY']}
+          position={[-0.7, -0.5, -0.7]}
+        >
+          <ViroAnimatedImage
+            scale={[0.7, 0.7, 0.7]}
+            height={1}
+            width={1}
+            source={require('./res/gifs/tugOfWarLArrow.gif')}
+            position={[0, 0, 0]}
+            animation={{
+              loop: true,
+              delay: 0,
+            }}
+          />
+        </ViroNode>
+        {/* tugOfWar gif */}
         <ViroNode
           position={this.state.towPosition}
           transformBehaviors={['billboardY']}
@@ -170,7 +238,6 @@ export default FoodTime = createReactClass({
           scale={[1, 1, 1]}
           position={[0, 1, -4]}
         />
-
       </ViroARScene>
     );
   },
