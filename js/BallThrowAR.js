@@ -83,7 +83,8 @@ export default BallThrowAR = createReactClass({
 					interruptible={true}
 					position={this.state.towPosition}
 					transformBehaviors={['billboardY']}
-					onDrag={() =>
+					onDrag={() => {
+						this.setState({ playBark: !this.state.playBark });
 						this.props.arSceneNavigator.push({
 							scene: require('./TugOfWar'),
 							passProps: {
@@ -97,8 +98,8 @@ export default BallThrowAR = createReactClass({
 								foodPosition: this.state.foodPosition,
 								towPosition: this.state.towPosition,
 							},
-						})
-					}
+						});
+					}}
 				/>
 				{/* foodTime R Arrow */}
 				<ViroAnimatedImage
@@ -124,7 +125,7 @@ export default BallThrowAR = createReactClass({
 					transformBehaviors={['billboardY']}
 					dragType="FixedToWorld"
 					onClick={() => {
-						this.setState({ ...this.state, playBark: !this.state.playBark });
+						this.setState({ playBark: !this.state.playBark });
 						this.props.arSceneNavigator.push({
 							scene: require('./FoodTime'),
 							passProps: {
@@ -195,7 +196,8 @@ export default BallThrowAR = createReactClass({
 					position={this.state.walkPosition}
 					transformBehaviors={['billboardY']}
 					dragType="FixedToWorld"
-					onClick={() =>
+					onClick={() => {
+						this.setState({ playBark: !this.state.playBark });
 						this.props.arSceneNavigator.push({
 							scene: require('./Walk'),
 							passProps: {
@@ -209,8 +211,8 @@ export default BallThrowAR = createReactClass({
 								foodPosition: this.state.foodPosition,
 								towPosition: this.state.towPosition,
 							},
-						})
-					}
+						});
+					}}
 				>
 					<ViroAnimatedImage
 						scale={[0.8, 0.8, 0.8]}
@@ -328,11 +330,12 @@ export default BallThrowAR = createReactClass({
 						onClick={this._onBallDrag}
 					/>
 				</ViroNode>
+
 				{/* points sound effects */}
 				<ViroSound
 					paused={this.state.playPoints}
 					muted={false}
-					source={require('./sounds/points.mp3')}
+					source={require('./sounds/points3.mp3')}
 					loop={false}
 					onFinish={() => {
 						this.setState({
@@ -342,11 +345,11 @@ export default BallThrowAR = createReactClass({
 					volume={1.0}
 				/>
 
-				{/* dog bark sound effects--this only plays sometimes awkwardly... */}
+				{/* dog bark sound effects*/}
 				<ViroSound
 					paused={this.state.playBark}
 					muted={false}
-					source={require('./sounds/tinydogbark.mp3')}
+					source={require('./sounds/smallBark.mp3')}
 					loop={false}
 					onFinish={() => {
 						this.setState({
@@ -365,7 +368,11 @@ export default BallThrowAR = createReactClass({
 			this.state.currentAnimation !== ('arc' || 'rollAway')
 		) {
 			const play = this.state.playCount + 1;
-			this.setState({ ...this.state, playCount: play });
+			this.setState({
+				...this.state,
+				playCount: play,
+				playPoints: !this.state.playPoints,
+			});
 			// let pts = this.state.user.points;
 			this.state.addPoints({ points: this.state.user.points++ });
 		}
