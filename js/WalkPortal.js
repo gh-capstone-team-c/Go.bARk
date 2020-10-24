@@ -29,9 +29,10 @@ export default WalkPortal = createReactClass({
 		return {
 			user: this.props.user,
 			addPoints: this.props.addPoints,
-			playSound: true,
 			currentAnimation: 'waiting',
 			position: [0, -5, 5],
+			playWhistle: true,
+			playSound: true,
 		};
 	},
 
@@ -55,6 +56,7 @@ export default WalkPortal = createReactClass({
 					this.state.addPoints({ points: this.state.user.points++ });
 					this.setState({
 						playSound: !this.state.playSound,
+						playWhistle: !this.state.playWhistle,
 						currentAnimation: 'return',
 					});
 					setTimeout(() => {
@@ -165,6 +167,20 @@ export default WalkPortal = createReactClass({
 					muted={false}
 					source={require('./sounds/birdsPark.mp3')}
 					loop={true}
+					volume={1.0}
+				/>
+
+				{/* whistle sound effects */}
+				<ViroSound
+					paused={this.state.playWhistle}
+					muted={false}
+					source={require('./sounds/whistle.mp3')}
+					loop={false}
+					onFinish={() => {
+						this.setState({
+							playWhistle: true,
+						});
+					}}
 					volume={1.0}
 				/>
 			</ViroPortalScene>

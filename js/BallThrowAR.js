@@ -84,7 +84,7 @@ export default BallThrowAR = createReactClass({
 					position={this.state.towPosition}
 					transformBehaviors={['billboardY']}
 					onDrag={() => {
-						this.setState({ playBark: !this.state.playBark });
+						this.setState({ playBark: false });
 						this.props.arSceneNavigator.push({
 							scene: require('./TugOfWar'),
 							passProps: {
@@ -125,7 +125,7 @@ export default BallThrowAR = createReactClass({
 					transformBehaviors={['billboardY']}
 					dragType="FixedToWorld"
 					onClick={() => {
-						this.setState({ playBark: !this.state.playBark });
+						this.setState({ playBark: false });
 						this.props.arSceneNavigator.push({
 							scene: require('./FoodTime'),
 							passProps: {
@@ -197,7 +197,7 @@ export default BallThrowAR = createReactClass({
 					transformBehaviors={['billboardY']}
 					dragType="FixedToWorld"
 					onClick={() => {
-						this.setState({ playBark: !this.state.playBark });
+						this.setState({ playBark: false });
 						this.props.arSceneNavigator.push({
 							scene: require('./Walk'),
 							passProps: {
