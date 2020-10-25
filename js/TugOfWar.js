@@ -31,14 +31,8 @@ export default TugOfWar = createReactClass({
 			user: this.props.user,
 			addPoints: this.props.addPoints,
 			tugging: false,
-			dogPosition: [
-				// this.props.towPosition[0],
-				// this.props.towPosition[1],
-				// this.props.towPosition[2],
-				0,
-				this.props.towPosition[1],
-				0,
-			],
+			dogPosition: [-1, -3, -1],
+			rotation: [0, 90, 0],
 		};
 	},
 
@@ -72,10 +66,11 @@ export default TugOfWar = createReactClass({
 							if (this.state.tugging) {
 								this.setState({
 									dogPosition: [
-										position[0] + 2.2,
-										position[1],
-										position[2] + 2.2,
+										position[0] + 1.9,
+										position[1] - 1.011,
+										position[2] + 1.9,
 									],
+									rotation: position[0] >= 0 ? [0, 45, 0] : [0, 90, 0],
 								});
 								Vibration.vibrate();
 							}
@@ -83,7 +78,8 @@ export default TugOfWar = createReactClass({
 						interruptible={true}
 						onClickState={this._wrestle}
 					/>
-
+				</ViroNode>
+				<ViroNode>
 					{/* dog */}
 					{/* NEED TO ADD SPOTLIGHT */}
 					<ViroSpotLight
@@ -98,11 +94,11 @@ export default TugOfWar = createReactClass({
 						shadowOpacity={0.7}
 					/>
 					<Viro3DObject
-						transformBehaviors={['billboardY']}
 						position={this.state.dogPosition}
 						scale={[0.03, 0.03, 0.03]}
 						source={dogStand[dogColor]}
 						type="VRX"
+						rotation={this.state.rotation}
 					/>
 				</ViroNode>
 
