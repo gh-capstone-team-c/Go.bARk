@@ -2,6 +2,7 @@
 
 import React from 'react';
 import {
+
 	Viro3DObject,
 	ViroAmbientLight,
 	ViroSpotLight,
@@ -10,9 +11,17 @@ import {
 	ViroText,
 	ViroQuad,
 	ViroSound,
+
 } from 'react-viro';
 
 var createReactClass = require('create-react-class');
+
+const dog = {
+  red: require('./res/dogColors/redDog.vrx'),
+  blackTan: require('./res/dogColors/blackTanDog.vrx'),
+  cream: require('./res/dogColors/creamDog.vrx'),
+};
+
 export default BallThrowAR = createReactClass({
 	getInitialState() {
 		return {
@@ -399,5 +408,6 @@ ViroAnimations.registerAnimations({
 		duration: 1800,
 		easing: 'EaseOut',
 	},
+
 });
 module.exports = BallThrowAR;

@@ -3,11 +3,11 @@
 import { StyleSheet, Dimensions } from 'react-native';
 const { width, height } = Dimensions.get('window');
 const palette = {
-	lightest: '#e8e0dc',
-	darkBrown: '#775d3b',
-	highlight: '#90af1b',
-	lightBrown: '#ccb9a2',
-	midBrown: '#a8916b',
+  lightest: '#e8e0dc',
+  darkBrown: '#775d3b',
+  highlight: '#90af1b',
+  lightBrown: '#ccb9a2',
+  midBrown: '#a8916b',
 };
 export const appStyles = StyleSheet.create({
 	//all container pages
@@ -244,4 +244,42 @@ export const appStyles = StyleSheet.create({
 		alignItems: 'center',
 		backgroundColor: palette.lightBrown,
 	},
+     /****** friends styles ****** */
+  followingFollowerContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginVertical: 5,
+    alignContent: 'center',
+    width: width,
+    paddingHorizontal: 40,
+  },
+  friendsContainer: {
+    height: 110,
+    borderColor: palette.darkBrown,
+    borderWidth: 1,
+    width: width,
+    padding: 10,
+    backgroundColor: palette.lightBrown,
+    borderRadius: 10,
+    marginBottom: 5,
+  },
+  friendInfo: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    // marginVertical: 3,
+    alignContent: 'center',
+    width: 200,
+    paddingHorizontal: 10,
+  },
+  pointsAndRemove: {
+    flexDirection: 'column',
+    alignContent: 'center',
+    justifyContent: 'space-around',
+    // marginTop: 10,
+  },
+  centerTextLessPadding: {
+    paddingVertical: 5,
+    textAlign: 'center',
+  },                                        
+
 });
