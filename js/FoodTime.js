@@ -24,6 +24,7 @@ const dogStand = {
 	blackTan: require('./res/dogColors/blackTanDog.vrx'),
 	cream: require('./res/dogColors/creamDog.vrx'),
 };
+import socket from '../socket/socket';
 
 export default FoodTime = createReactClass({
 	getInitialState() {
@@ -31,6 +32,9 @@ export default FoodTime = createReactClass({
 			user: this.props.user,
 			addPoints: this.props.addPoints,
 			changePose: false,
+			//sound effects
+			playPoints: true,
+			playBark: true,
 			bowlScale: [0.05, 0.05, 0.05],
 			bowlPosition: [
 				this.props.foodPosition[0] - 3,
@@ -86,7 +90,7 @@ export default FoodTime = createReactClass({
 				<ViroSound
 					paused={this.state.playPoints}
 					muted={false}
-					source={require('./sounds/points.mp3')}
+					source={require('./sounds/points3.mp3')}
 					loop={false}
 					onFinish={() => {
 						this.setState({
@@ -95,11 +99,11 @@ export default FoodTime = createReactClass({
 					}}
 					volume={1.0}
 				/>
-				{/* dog bark sound effects--this only plays sometimes awkwardly... */}
+				{/* dog bark sound effects */}
 				<ViroSound
 					paused={this.state.playBark}
 					muted={false}
-					source={require('./sounds/tinydogbark.mp3')}
+					source={require('./sounds/smallBark.mp3')}
 					loop={false}
 					onFinish={() => {
 						this.setState({
@@ -112,13 +116,18 @@ export default FoodTime = createReactClass({
 		);
 	},
 
+	//socket
+	updatePoints() {
+		this.state.addPoints({ points: this.state.user.points++ });
+		socket.emit('updatePoints');
+	},
 	_onBowlClicked() {
 		const currentPose = this.state.changePose;
 		this.setState({
 			changePose: !currentPose,
 			playPoints: !this.state.playPoints,
 		});
-		this.state.addPoints({ points: this.state.user.points++ });
+		this.updatePoints();
 	},
 });
 

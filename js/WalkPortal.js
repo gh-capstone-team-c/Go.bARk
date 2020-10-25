@@ -35,16 +35,25 @@ const scenes = [
 	},
 ];
 
+import socket from '../socket/socket';
+
 export default WalkPortal = createReactClass({
 	getInitialState() {
 		return {
 			user: this.props.user,
 			addPoints: this.props.addPoints,
-			playSound: true,
 			currentAnimation: 'waiting',
 			position: [0, -5, 5],
+			playWhistle: true,
+			playSound: true,
 			scene: scenes[Math.floor(Math.random() * scenes.length)],
 		};
+	},
+
+	//socket
+	updatePoints() {
+		this.state.addPoints({ points: this.state.user.points++ });
+		socket.emit('updatePoints');
 	},
 
 	render() {
@@ -53,7 +62,7 @@ export default WalkPortal = createReactClass({
 			<ViroPortalScene
 				passable={true}
 				onPortalEnter={() => {
-					this.state.addPoints({ points: this.state.user.points++ });
+					this.updatePoints();
 					this.setState({
 						playSound: !this.state.playSound,
 						currentAnimation: 'run',
@@ -64,9 +73,10 @@ export default WalkPortal = createReactClass({
 					}, 1500);
 				}}
 				onPortalExit={() => {
-					this.state.addPoints({ points: this.state.user.points++ });
+					this.updatePoints();
 					this.setState({
 						playSound: !this.state.playSound,
+						playWhistle: !this.state.playWhistle,
 						currentAnimation: 'return',
 					});
 					setTimeout(() => {
@@ -174,6 +184,20 @@ export default WalkPortal = createReactClass({
 					muted={false}
 					source={this.state.scene.sound}
 					loop={true}
+					volume={1.0}
+				/>
+
+				{/* whistle sound effects */}
+				<ViroSound
+					paused={this.state.playWhistle}
+					muted={false}
+					source={require('./sounds/whistle.mp3')}
+					loop={false}
+					onFinish={() => {
+						this.setState({
+							playWhistle: true,
+						});
+					}}
 					volume={1.0}
 				/>
 			</ViroPortalScene>

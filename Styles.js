@@ -31,6 +31,7 @@ export const appStyles = StyleSheet.create({
 		backgroundColor: palette.highlight,
 		color: palette.lightest,
 	},
+
 	//attempted to make the friend stuff into neat rows???
 	friendContainer: {
 		flexDirection: 'row',
@@ -244,6 +245,16 @@ export const appStyles = StyleSheet.create({
 		alignItems: 'center',
 		backgroundColor: palette.lightBrown,
 	},
+	//for camera flash
+	flashMessage: {
+		position: 'absolute',
+		backgroundColor: 'green',
+		width: '100%',
+		justifyContent: 'center',
+		alignItems: 'center',
+		height: 40,
+		bottom: 0,
+	},
      /****** friends styles ****** */
   followingFollowerContainer: {
     flexDirection: 'row',
@@ -281,5 +292,4 @@ export const appStyles = StyleSheet.create({
     paddingVertical: 5,
     textAlign: 'center',
   },                                        
-
 });

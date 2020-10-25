@@ -11,6 +11,7 @@ import {
 	ViroAmbientLight,
 	ViroAnimatedImage,
 	ViroSpotLight,
+	ViroSound,
 	ViroMaterials,
 } from 'react-viro';
 import { Vibration } from 'react-native';
@@ -25,12 +26,17 @@ const dogStand = {
 	cream: require('./res/dogColors/creamDog.vrx'),
 };
 
+import socket from '../socket/socket';
+
 export default TugOfWar = createReactClass({
 	getInitialState() {
 		return {
 			user: this.props.user,
 			addPoints: this.props.addPoints,
 			tugging: false,
+      //sound effects
+			playPoints: true,
+			playBark: true,
 			dogPosition: [-1, -3, -1],
 			rotation: [0, 90, 0],
 		};
@@ -108,15 +114,50 @@ export default TugOfWar = createReactClass({
 					position={[0, 1, 0]}
 					transformBehaviors={['billboardY']}
 				/>
+				{/* points sound effects */}
+				<ViroSound
+					paused={this.state.playPoints}
+					muted={false}
+					source={require('./sounds/points3.mp3')}
+					loop={false}
+					onFinish={() => {
+						this.setState({
+							playPoints: true,
+						});
+					}}
+					volume={1.0}
+				/>
+				{/* dog bark sound effects */}
+				<ViroSound
+					paused={this.state.playBark}
+					muted={false}
+					source={require('./sounds/smallBark.mp3')}
+					loop={false}
+					onFinish={() => {
+						this.setState({
+							playBark: true,
+						});
+					}}
+					volume={1.0}
+				/>
 			</ViroNode>
 		);
+	},
+
+	//socket
+	updatePoints() {
+		this.state.addPoints({ points: this.state.user.points++ });
+		socket.emit('updatePoints');
 	},
 	_wrestle(stateValue, position, source) {
 		if (stateValue === 1) {
 			this.setState({ tugging: true });
 		} else this.setState({ tugging: false });
 		if (stateValue === 3)
-			this.state.addPoints({ points: this.state.user.points++ });
+			this.updatePoints();
+		this.setState({
+			playPoints: !this.state.playPoints,
+		});
 	},
 });
 ViroMaterials.createMaterials({

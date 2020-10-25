@@ -1,7 +1,7 @@
 /** @format */
 
 import React from 'react';
-import { ViroNode } from 'react-viro';
+import { ViroNode} from 'react-viro';
 var createReactClass = require('create-react-class');
 import WalkPortal from './WalkPortal';
 

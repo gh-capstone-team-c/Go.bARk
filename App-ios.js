@@ -71,8 +71,8 @@ export class AppIos extends Component {
 				red: require(`./js/res/shibaFace.png`),
 				cream: require(`./js/res/creamlogo.png`),
 			},
-
-			cameraNoise: true,
+			//for camera flash
+			flashMessage: false,
 		};
 		this._takeScreenshot = this._takeScreenshot.bind(this);
 		this._setARNavigatorRef = this._setARNavigatorRef.bind(this);
@@ -93,6 +93,24 @@ export class AppIos extends Component {
 
 				this.props.addPhoto(this.state.videoUrl);
 			});
+	}
+
+	//for camera flash
+	onPress() {
+		this.setState(
+			{
+				flashMessage: true,
+			},
+			() => {
+				setTimeout(() => this.closeFlashMessage(), 3000);
+			}
+		);
+	}
+
+	closeFlashMessage() {
+		this.setState({
+			flashMessage: false,
+		});
 	}
 
 	render() {
@@ -243,12 +261,22 @@ export class AppIos extends Component {
 								<TouchableOpacity
 									key="camera_button"
 									title="screenshot"
-									onPress={() => this._takeScreenshot()}
+									onPress={() => {
+										this._takeScreenshot();
+										this.onPress();
+									}}
 									style={{ position: 'absolute', bottom: 25, right: 10 }}
 								>
 									<Text style={appStyles.menuButton}>📷</Text>
 								</TouchableOpacity>
 							</View>
+
+							{/* for camera flash */}
+							{this.state.flashMessage == true ? (
+								<View style={appStyles.flashMessage}>
+									<Text style={{ color: 'white' }}>Screenshot saved!</Text>
+								</View>
+							) : null}
 						</View>
 					)}
 				</View>

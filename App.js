@@ -77,6 +77,8 @@ class App extends Component {
 				red: require(`./js/res/shibaFace.png`),
 				cream: require(`./js/res/creamlogo.png`),
 			},
+			//camera flash
+			flashMessage: false,
 		};
 		this._takeScreenshot = this._takeScreenshot.bind(this);
 		this._saveToCameraRoll = this._saveToCameraRoll.bind(this);
@@ -186,6 +188,24 @@ class App extends Component {
 			});
 		}
 		CameraRoll.saveToCameraRoll(this.state.videoUrl);
+	}
+
+	//for camera flash
+	onPress() {
+		this.setState(
+			{
+				flashMessage: true,
+			},
+			() => {
+				setTimeout(() => this.closeFlashMessage(), 3000);
+			}
+		);
+	}
+
+	closeFlashMessage() {
+		this.setState({
+			flashMessage: false,
+		});
 	}
 
 	render() {
@@ -337,12 +357,22 @@ class App extends Component {
 								<TouchableOpacity
 									key="camera_button"
 									title="screenshot"
-									onPress={() => this._takeScreenshot()}
+									onPress={() => {
+										this._takeScreenshot();
+										this.onPress();
+									}}
 									style={{ position: 'absolute', bottom: 25, right: 10 }}
 								>
 									<Text style={appStyles.menuButton}>📷</Text>
 								</TouchableOpacity>
 							</View>
+
+							{/* for camera flash */}
+							{this.state.flashMessage == true ? (
+								<View style={appStyles.flashMessage}>
+									<Text style={{ color: 'white' }}>Screenshot saved!</Text>
+								</View>
+							) : null}
 						</View>
 					)}
 				</View>

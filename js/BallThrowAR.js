@@ -21,6 +21,7 @@ const dog = {
   blackTan: require('./res/dogColors/blackTanDog.vrx'),
   cream: require('./res/dogColors/creamDog.vrx'),
 };
+import socket from '../socket/socket';
 
 export default BallThrowAR = createReactClass({
 	getInitialState() {
@@ -138,11 +139,12 @@ export default BallThrowAR = createReactClass({
 						onDrag={() => {}}
 					/>
 				</ViroNode>
+
 				{/* points sound effects */}
 				<ViroSound
 					paused={this.state.playPoints}
 					muted={false}
-					source={require('./sounds/points.mp3')}
+					source={require('./sounds/points3.mp3')}
 					loop={false}
 					onFinish={() => {
 						this.setState({
@@ -152,11 +154,11 @@ export default BallThrowAR = createReactClass({
 					volume={1.0}
 				/>
 
-				{/* dog bark sound effects--this only plays sometimes awkwardly... */}
+				{/* dog bark sound effects*/}
 				<ViroSound
 					paused={this.state.playBark}
 					muted={false}
-					source={require('./sounds/tinydogbark.mp3')}
+					source={require('./sounds/smallBark.mp3')}
 					loop={false}
 					onFinish={() => {
 						this.setState({
@@ -168,6 +170,13 @@ export default BallThrowAR = createReactClass({
 			</ViroNode>
 		);
 	},
+
+	//socket
+	updatePoints() {
+		this.state.addPoints({ points: this.state.user.points++ });
+		socket.emit('updatePoints');
+	},
+
 	_onBallClick(stateValue, position, source) {
 		//incremental counter to limit number of consecutive games of catch with dog
 		if (
@@ -175,9 +184,13 @@ export default BallThrowAR = createReactClass({
 			this.state.currentAnimation !== ('arc' || 'rollAway')
 		) {
 			const play = this.state.playCount + 1;
-			this.setState({ ...this.state, playCount: play });
+			this.setState({
+				...this.state,
+				playCount: play,
+				playPoints: !this.state.playPoints,
+			});
 			// let pts = this.state.user.points;
-			this.state.addPoints({ points: this.state.user.points++ });
+			this.updatePoints();
 		}
 		// capture when dog and ball are super close to user(already fetched) and returns gameplay loop to near start.
 		if (position[2] >= -5 && this.state.playCount >= 3) {
