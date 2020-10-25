@@ -23,7 +23,7 @@ import {
 	PermissionsAndroid,
 } from 'react-native';
 const { width, height } = Dimensions.get('window');
-import { ViroARSceneNavigator, ViroConstants } from 'react-viro';
+import { ViroARSceneNavigator } from 'react-viro';
 import { connect } from 'react-redux';
 import { addPoints } from './store/users';
 import Photos from './js/Photos';
@@ -42,7 +42,7 @@ export function renderIf(condition, renderedContent) {
 
 const kPreviewTypePhoto = 1;
 
-var InitialARScene = require('./js/BallThrowAR');
+var InitialARScene = require('./js/NavAR');
 
 class App extends Component {
 	constructor(props) {
@@ -354,15 +354,8 @@ class App extends Component {
 			isLoading: false,
 		});
 	}
-	_onTrackingUpdated(state, reason) {
-		if (state === ViroConstants.TRACKING_NORMAL) {
-			this.setState({ trackingInitialized: true });
-			alert('Tracking is available :)');
-		} else if (state == ViroConstants.TRACKING_NONE) {
-			alert('Please move camera to find a location for your dog!');
-		} else if (state == ViroConstants.TRACKING_LIMITED) {
-			alert('Tracking is available but may be inaccurate!');
-		}
+	_onTrackingUpdated() {
+		this.setState({ trackingInitialized: true });
 	}
 	_renderTrackingText() {
 		if (this.state.isLoading) {
