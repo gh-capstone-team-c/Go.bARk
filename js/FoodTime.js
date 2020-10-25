@@ -27,6 +27,7 @@ const dogStand = {
 	blackTan: require('./res/dogColors/blackTanDog.vrx'),
 	cream: require('./res/dogColors/creamDog.vrx'),
 };
+import socket from '../socket/socket';
 
 export default FoodTime = createReactClass({
 	getInitialState() {
@@ -280,13 +281,19 @@ export default FoodTime = createReactClass({
 		);
 	},
 
+	//socket
+	updatePoints() {
+		this.state.addPoints({ points: this.state.user.points++ });
+		socket.emit('updatePoints');
+	},
+
 	_onBowlClicked() {
 		const currentPose = this.state.changePose;
 		this.setState({
 			changePose: !currentPose,
 			playPoints: !this.state.playPoints,
 		});
-		this.state.addPoints({ points: this.state.user.points++ });
+		this.updatePoints();
 	},
 });
 

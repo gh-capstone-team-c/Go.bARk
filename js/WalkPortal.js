@@ -24,6 +24,8 @@ const dog = {
 	cream: require('./res/dogColors/creamDog.vrx'),
 };
 
+import socket from '../socket/socket';
+
 export default WalkPortal = createReactClass({
 	getInitialState() {
 		return {
@@ -36,13 +38,19 @@ export default WalkPortal = createReactClass({
 		};
 	},
 
+	//socket
+	updatePoints() {
+		this.state.addPoints({ points: this.state.user.points++ });
+		socket.emit('updatePoints');
+	},
+
 	render() {
 		const dogColor = this.state.user.dog.color;
 		return (
 			<ViroPortalScene
 				passable={true}
 				onPortalEnter={() => {
-					this.state.addPoints({ points: this.state.user.points++ });
+					this.updatePoints();
 					this.setState({
 						playSound: !this.state.playSound,
 						currentAnimation: 'run',
@@ -53,7 +61,7 @@ export default WalkPortal = createReactClass({
 					}, 3000);
 				}}
 				onPortalExit={() => {
-					this.state.addPoints({ points: this.state.user.points++ });
+					this.updatePoints();
 					this.setState({
 						playSound: !this.state.playSound,
 						playWhistle: !this.state.playWhistle,

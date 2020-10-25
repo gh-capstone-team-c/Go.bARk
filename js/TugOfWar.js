@@ -26,6 +26,8 @@ const dogStand = {
 	cream: require('./res/dogColors/creamDog.vrx'),
 };
 
+import socket from '../socket/socket';
+
 export default TugOfWar = createReactClass({
 	getInitialState() {
 		return {
@@ -301,12 +303,19 @@ export default TugOfWar = createReactClass({
 			</ViroARScene>
 		);
 	},
+
+	//socket
+	updatePoints() {
+		this.state.addPoints({ points: this.state.user.points++ });
+		socket.emit('updatePoints');
+	},
+
 	_wrestle(stateValue, position, source) {
 		if (stateValue === 1) {
 			this.setState({ tugging: true });
 		} else this.setState({ tugging: false });
 		if (stateValue === 3)
-			this.state.addPoints({ points: this.state.user.points++ });
+			this.updatePoints();
 		this.setState({
 			playPoints: !this.state.playPoints,
 		});
