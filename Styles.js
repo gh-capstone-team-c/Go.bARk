@@ -31,7 +31,7 @@ export const appStyles = StyleSheet.create({
     backgroundColor: palette.highlight,
     color: palette.lightest,
   },
-  /******   friends styles ****** */
+  /****** friends styles ****** */
   followingFollowerContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
