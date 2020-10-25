@@ -10,7 +10,7 @@ export class Friends extends React.Component {
     return (
       <View style={appStyles.container}>
         <Text style={appStyles.titleText}>Friends</Text>
-        <View>
+        <View style={appStyles.centerDirectionsContainers}>
           <Text style={[{ fontSize: 20 }, appStyles.centerText]}>
             Using the friends option in the menu, connect with friends to show
             off how well you are taking care of your dog. If you click on
@@ -40,49 +40,55 @@ export class Activities extends React.Component {
     return (
       <View style={appStyles.container}>
         <Text style={appStyles.titleText}>Care Tips</Text>
-        <Text style={[{ fontSize: 15 }, appStyles.centerText]}>
-          Just like any other dog, your dog needs care! As you move your camera
-          around you will see various icons representing the different care you
-          can give to your dog. Tap on the icon to give your dog that care.
-        </Text>
-        <View>
-          <Text
-            style={[{ fontSize: 20, color: '#e8e0dc' }, appStyles.centerText]}
-          >
-            Fetch - Tennis Ball
+        <View style={appStyles.centerDirectionsContainers}>
+          <Text style={[{ fontSize: 15 }, appStyles.centerText]}>
+            Just like any other dog, your dog needs care! As you move your
+            camera around you will see various icons representing the different
+            care you can give to your dog. Tap on the icon to give your dog that
+            care.
           </Text>
+        </View>
+        <Text
+          style={[{ fontSize: 20, color: '#e8e0dc' }, appStyles.centerText]}
+        >
+          Fetch - Tennis Ball
+        </Text>
+        <View style={appStyles.centerDirectionsContainers}>
           <Text style={[{ fontSize: 15 }, appStyles.centerText]}>
             Tap the ball on the screen and watch as your dog fetches and brings
             the ball back to you!
           </Text>
         </View>
-        <View>
-          <Text
-            style={[{ fontSize: 20, color: '#e8e0dc' }, appStyles.centerText]}
-          >
-            Tug of War - Rope Toy
-          </Text>
+
+        <Text
+          style={[{ fontSize: 20, color: '#e8e0dc' }, appStyles.centerText]}
+        >
+          Tug of War - Rope Toy
+        </Text>
+        <View style={appStyles.centerDirectionsContainers}>
           <Text style={[{ fontSize: 15 }, appStyles.centerText]}>
             Drag the pink ring toy around to play tug of war with your dog!
           </Text>
         </View>
-        <View>
-          <Text
-            style={[{ fontSize: 20, color: '#e8e0dc' }, appStyles.centerText]}
-          >
-            Walk - Leash
-          </Text>
+
+        <Text
+          style={[{ fontSize: 20, color: '#e8e0dc' }, appStyles.centerText]}
+        >
+          Walk - Leash
+        </Text>
+        <View style={appStyles.centerDirectionsContainers}>
           <Text style={[{ fontSize: 15 }, appStyles.centerText]}>
             Follow your dog outside to walk them around and give them time to
             stretch their legs!
           </Text>
         </View>
-        <View>
-          <Text
-            style={[{ fontSize: 20, color: '#e8e0dc' }, appStyles.centerText]}
-          >
-            Feed - Dog Bowl
-          </Text>
+
+        <Text
+          style={[{ fontSize: 20, color: '#e8e0dc' }, appStyles.centerText]}
+        >
+          Feed - Dog Bowl
+        </Text>
+        <View style={appStyles.centerDirectionsContainers}>
           <Text style={[{ fontSize: 15 }, appStyles.centerText]}>
             Tap the bowl to feed your dog. Remember dogs need to be fed
             regularly!
@@ -107,8 +113,7 @@ export class Points extends React.Component {
     return (
       <View style={appStyles.container}>
         <Text style={appStyles.titleText}>Happy Points</Text>
-        {/* ADD MORE */}
-        <View>
+        <View style={appStyles.centerDirectionsContainers}>
           <Text style={[{ fontSize: 20 }, appStyles.centerText]}>
             As you play and care for your dog, you may notice the heart in the
             upper left corner of your screen change color. This heart reflects

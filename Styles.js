@@ -3,11 +3,11 @@
 import { StyleSheet, Dimensions } from 'react-native';
 const { width, height } = Dimensions.get('window');
 const palette = {
-	lightest: '#e8e0dc',
-	darkBrown: '#775d3b',
-	highlight: '#90af1b',
-	lightBrown: '#ccb9a2',
-	midBrown: '#a8916b',
+  lightest: '#e8e0dc',
+  darkBrown: '#775d3b',
+  highlight: '#90af1b',
+  lightBrown: '#ccb9a2',
+  midBrown: '#a8916b',
 };
 export const appStyles = StyleSheet.create({
   //all container pages
@@ -38,6 +38,12 @@ export const appStyles = StyleSheet.create({
   centerText: {
     paddingVertical: 10,
     textAlign: 'center',
+  },
+  centerDirectionsContainers: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 350,
   },
   /******   all menus styles ****** */
   menuBar: {
@@ -263,15 +269,15 @@ export const appStyles = StyleSheet.create({
     bottom: 0,
   },
   //for photo gallery
-	photoContainer: {
-		flexDirection: 'row',
-		justifyContent: 'space-between',
-		marginVertical: 5,
-		alignContent: 'center',
-		width: width,
-		paddingHorizontal: 40,
-		flexWrap: 'wrap',
-	},
+  photoContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginVertical: 5,
+    alignContent: 'center',
+    width: width,
+    paddingHorizontal: 40,
+    flexWrap: 'wrap',
+  },
   /****** friends styles ****** */
   followingFollowerContainer: {
     flexDirection: 'row',
