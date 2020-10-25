@@ -154,7 +154,9 @@ export default NavAR = createReactClass({
 						) : (
 							<ViroAnimatedImage
 								transformBehaviors={['billboardY']}
-								onClick={() => this.setState({ currScene: 'food' })}
+								onClick={() =>
+									this.setState({ currScene: 'food', playBark: false })
+								}
 								interruptible={true}
 								scale={this.state.scale}
 								height={1}
@@ -184,7 +186,9 @@ export default NavAR = createReactClass({
 								source={require('./res/gifs/towGif.gif')}
 								interruptible={true}
 								transformBehaviors={['billboardY']}
-								onClick={() => this.setState({ currScene: 'tow' })}
+								onClick={() =>
+									this.setState({ currScene: 'tow', playBark: false })
+								}
 							/>
 						)}
 					</ViroNode>
@@ -208,7 +212,9 @@ export default NavAR = createReactClass({
 								width={1}
 								source={require('./res/gifs/walkGif.gif')}
 								transformBehaviors={['billboardY']}
-								onClick={() => this.setState({ currScene: 'walk' })}
+								onClick={() => {
+									this.setState({ currScene: 'walk', playBark: false });
+								}}
 							/>
 						)}
 					</ViroNode>
@@ -238,7 +244,9 @@ export default NavAR = createReactClass({
 								width={1}
 								source={require('./res/gifs/ballThrowGif.gif')}
 								transformBehaviors={['billboardY']}
-								onClick={() => this.setState({ currScene: 'ball' })}
+								onClick={() => {
+									this.setState({ currScene: 'ball', playBark: false });
+								}}
 							/>
 						)}
 					</ViroNode>
@@ -251,7 +259,7 @@ export default NavAR = createReactClass({
 				<ViroSound
 					paused={this.state.playPoints}
 					muted={false}
-					source={require('./sounds/points.mp3')}
+					source={require('./sounds/points3.mp3')}
 					loop={false}
 					onFinish={() => {
 						this.setState({
@@ -265,7 +273,7 @@ export default NavAR = createReactClass({
 				<ViroSound
 					paused={this.state.playBark}
 					muted={false}
-					source={require('./sounds/tinydogbark.mp3')}
+					source={require('./sounds/smallBark.mp3')}
 					loop={false}
 					onFinish={() => {
 						this.setState({
