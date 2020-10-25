@@ -78,11 +78,14 @@ class HomeIos extends React.Component {
 										onValueChange={(value) => {
 											this.setState({ dogColor: value });
 										}}
+										value={this.state.dogColor}
 										items={[
 											{ label: 'Red', value: 'red' },
 											{ label: 'Black & Tan', value: 'blackTan' },
 											{ label: 'Cream', value: 'cream' },
 										]}
+										style={appStyles}
+										placeholder={{}}
 									/>
 									<TouchableOpacity
 										style={appStyles.rectButton}
