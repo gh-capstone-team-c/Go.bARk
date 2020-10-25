@@ -24,8 +24,8 @@ import socket from '../socket/socket';
 export default TugOfWar = createReactClass({
 	getInitialState() {
 		return {
-			user: this.props.user,
-			addPoints: this.props.addPoints,
+			user: {},
+			addPoints: () => {},
 			tugging: false,
 			//sound effects
 			playPoints: true,
@@ -34,109 +34,124 @@ export default TugOfWar = createReactClass({
 			rotation: [0, 90, 0],
 		};
 	},
-	componentWillUnmount() {
-		console.log('Tug of War has unmounted!');
+	componentDidMount() {
+		this.setState({
+			user: this.props.user,
+			addPoints: this.props.addPoints,
+		});
 	},
 	render() {
-		const dogColor = this.state.user.dog.color;
-		return (
-			<ViroNode>
-				{/****** scene items below ****** */}
-
-				<ViroAmbientLight color={'#e8e0dc'} />
-				{/* wrestle with your dog to get points! */}
+		if (this.state.user.id !== undefined) {
+			const dogColor = this.state.user.dog.color;
+			return (
 				<ViroNode>
-					<ViroSpotLight
-						innerAngle={5}
-						outerAngle={25}
-						direction={[0, 0, 0]}
-						color="rgb(245, 224, 183)"
-						intensity={10000}
-						castsShadow={true}
-						shadowMapSize={2048}
-						shadowNearZ={2}
-						shadowFarZ={7}
-						shadowOpacity={0.7}
+					{/****** scene items below ****** */}
+
+					<ViroAmbientLight color={'#e8e0dc'} />
+					{/* wrestle with your dog to get points! */}
+					<ViroNode>
+						<ViroSpotLight
+							innerAngle={5}
+							outerAngle={25}
+							direction={[0, 0, 0]}
+							color="rgb(245, 224, 183)"
+							intensity={10000}
+							castsShadow={true}
+							shadowMapSize={2048}
+							shadowNearZ={2}
+							shadowFarZ={7}
+							shadowOpacity={0.7}
+						/>
+						<Viro3DObject
+							scale={[0.5, 0.5, 0.5]}
+							source={require('./res/dogtoy/ringToy.vrx')}
+							materials={'chewy'}
+							type="VRX"
+							onDrag={(position) => {
+								if (this.state.tugging) {
+									this.setState({
+										dogPosition: [
+											position[0] + 1.9,
+											position[1] - 1.011,
+											position[2] + 1.9,
+										],
+										rotation: position[0] >= -2 ? [0, 75, 0] : [0, 90, 0],
+									});
+									Vibration.vibrate();
+								}
+							}}
+							interruptible={true}
+							onClickState={this._wrestle}
+						/>
+					</ViroNode>
+					<ViroNode>
+						{/* dog */}
+						{/* NEED TO ADD SPOTLIGHT */}
+						<ViroSpotLight
+							innerAngle={5}
+							outerAngle={25}
+							direction={[0, 0, 0]}
+							color="rgb(245, 224, 183)"
+							castsShadow={true}
+							shadowMapSize={2048}
+							shadowNearZ={2}
+							shadowFarZ={7}
+							shadowOpacity={0.7}
+						/>
+						<Viro3DObject
+							position={this.state.dogPosition}
+							scale={[0.03, 0.03, 0.03]}
+							source={dogStand[dogColor]}
+							type="VRX"
+							rotation={this.state.rotation}
+						/>
+					</ViroNode>
+
+					<ViroText
+						text={'Drag to play tug of war with your dog!'}
+						scale={[1, 1, 1]}
+						position={[0, 1, 0]}
+						transformBehaviors={['billboardY']}
 					/>
-					<Viro3DObject
-						scale={[0.5, 0.5, 0.5]}
-						source={require('./res/dogtoy/ringToy.vrx')}
-						materials={'chewy'}
-						type="VRX"
-						onDrag={(position) => {
-							if (this.state.tugging) {
-								this.setState({
-									dogPosition: [
-										position[0] + 1.9,
-										position[1] - 1.011,
-										position[2] + 1.9,
-									],
-									rotation: position[0] >= -2 ? [0, 75, 0] : [0, 90, 0],
-								});
-								Vibration.vibrate();
-							}
+					{/* points sound effects */}
+					<ViroSound
+						paused={this.state.playPoints}
+						muted={false}
+						source={require('./sounds/points3.mp3')}
+						loop={false}
+						onFinish={() => {
+							this.setState({
+								playPoints: true,
+							});
 						}}
-						interruptible={true}
-						onClickState={this._wrestle}
+						volume={1.0}
+					/>
+					{/* dog bark sound effects */}
+					<ViroSound
+						paused={this.state.playBark}
+						muted={false}
+						source={require('./sounds/smallBark.mp3')}
+						loop={false}
+						onFinish={() => {
+							this.setState({
+								playBark: true,
+							});
+						}}
+						volume={1.0}
 					/>
 				</ViroNode>
+			);
+		} else
+			return (
 				<ViroNode>
-					{/* dog */}
-					{/* NEED TO ADD SPOTLIGHT */}
-					<ViroSpotLight
-						innerAngle={5}
-						outerAngle={25}
-						direction={[0, 0, 0]}
-						color="rgb(245, 224, 183)"
-						castsShadow={true}
-						shadowMapSize={2048}
-						shadowNearZ={2}
-						shadowFarZ={7}
-						shadowOpacity={0.7}
-					/>
-					<Viro3DObject
-						position={this.state.dogPosition}
-						scale={[0.03, 0.03, 0.03]}
-						source={dogStand[dogColor]}
-						type="VRX"
-						rotation={this.state.rotation}
+					<ViroText
+						text={'Loading, Please wait!'}
+						scale={[3, 3, 3]}
+						position={[0, 1, 0]}
+						transformBehaviors={['billboardY']}
 					/>
 				</ViroNode>
-
-				<ViroText
-					text={'Drag to play tug of war with your dog!'}
-					scale={[1, 1, 1]}
-					position={[0, 1, 0]}
-					transformBehaviors={['billboardY']}
-				/>
-				{/* points sound effects */}
-				<ViroSound
-					paused={this.state.playPoints}
-					muted={false}
-					source={require('./sounds/points3.mp3')}
-					loop={false}
-					onFinish={() => {
-						this.setState({
-							playPoints: true,
-						});
-					}}
-					volume={1.0}
-				/>
-				{/* dog bark sound effects */}
-				<ViroSound
-					paused={this.state.playBark}
-					muted={false}
-					source={require('./sounds/smallBark.mp3')}
-					loop={false}
-					onFinish={() => {
-						this.setState({
-							playBark: true,
-						});
-					}}
-					volume={1.0}
-				/>
-			</ViroNode>
-		);
+			);
 	},
 
 	//socket

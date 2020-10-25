@@ -42,144 +42,158 @@ export default BallThrowAR = createReactClass({
 			playPoints: true,
 			playBark: true,
 			//passing redux function to AR component
-			user: this.props.user,
-			addPoints: this.props.addPoints,
+			user: {},
+			addPoints: () => {},
 		};
 	},
-	componentWillUnmount() {
-		console.log('BallThrow has unmounted!');
+	componentDidMount() {
+		this.setState({ user: this.props.user, addPoints: this.props.addPoints });
 	},
 	render() {
-		const dogColor = this.state.user.dog.color;
-		let dog;
-		this.state.getBall ? (dog = dogPose[dogColor]) : (dog = dogStand[dogColor]);
-		return (
-			<ViroNode>
-				{/****** scene items below ****** */}
-				<ViroText
-					text={this.state.text}
-					scale={[1, 1, 1]}
-					position={[0, 0, -4]}
-				/>
-				<ViroAmbientLight color={'#e8e0dc'} />
-				{/* dog object */}
+		if (this.state.user.id) {
+			const dogColor = this.state.user.dog.color;
+			let dog;
+			this.state.getBall
+				? (dog = dogPose[dogColor])
+				: (dog = dogStand[dogColor]);
+			return (
 				<ViroNode>
-					<ViroSpotLight
-						innerAngle={5}
-						outerAngle={40}
-						direction={[0, -1, 0]}
-						position={[
-							this.state.dogPosition[0],
-							this.state.dogPosition[1] + 3,
-							this.state.dogPosition[2] + 1,
-						]}
-						color="#ffffff"
-						intensity={10000}
-						castsShadow={true}
-						shadowNearZ={0.1}
-						shadowFarZ={6}
-						shadowOpacity={0.9}
+					{/****** scene items below ****** */}
+					<ViroText
+						text={this.state.text}
+						scale={[1, 1, 1]}
+						position={[0, 0, -4]}
 					/>
-					<Viro3DObject
-						source={dog}
-						animation={{
-							name: this.state.dogAnimation,
-							run: true,
-							interruptible: true,
+					<ViroAmbientLight color={'#e8e0dc'} />
+					{/* dog object */}
+					<ViroNode>
+						<ViroSpotLight
+							innerAngle={5}
+							outerAngle={40}
+							direction={[0, -1, 0]}
+							position={[
+								this.state.dogPosition[0],
+								this.state.dogPosition[1] + 3,
+								this.state.dogPosition[2] + 1,
+							]}
+							color="#ffffff"
+							intensity={10000}
+							castsShadow={true}
+							shadowNearZ={0.1}
+							shadowFarZ={6}
+							shadowOpacity={0.9}
+						/>
+						<Viro3DObject
+							source={dog}
+							animation={{
+								name: this.state.dogAnimation,
+								run: true,
+								interruptible: true,
+							}}
+							scale={this.state.dogScale}
+							ignoreEventHandling={true}
+							type="VRX"
+							position={this.state.dogPosition}
+						/>
+						<ViroQuad
+							position={[
+								this.state.dogPosition[0],
+								this.state.dogPosition[1] - 4,
+								this.state.dogPosition[2],
+							]}
+							width={7.5}
+							height={7.5}
+							arShadowReceiver={true}
+							ignoreEventHandling={true}
+						/>
+					</ViroNode>
+					{/* ball object */}
+					<ViroNode scale={this.state.scale}>
+						<ViroSpotLight
+							innerAngle={5}
+							outerAngle={20}
+							direction={[0, -1, 0]}
+							position={[
+								this.state.ballPosition[0],
+								this.state.ballPosition[1] + 5,
+								this.state.ballPosition[2],
+							]}
+							color="#ffffff"
+							castsShadow={true}
+							shadowNearZ={0.1}
+							shadowFarZ={6}
+							shadowOpacity={0.9}
+						/>
+						<Viro3DObject
+							position={this.state.ballPosition}
+							key={'ball'}
+							source={require('./res/object_sphere.vrx')}
+							resources={[
+								require('./res/sphere_diffuse.png'),
+
+								require('./res/sphere_specular.png'),
+							]}
+							type="VRX"
+							onClickState={this._onBallClick}
+							animation={{
+								name: this.state.currentAnimation,
+								run: true,
+								interruptible: false,
+								onFinish: () => {
+									if (this.state.currentAnimation === 'return') {
+										this.setState({
+											currentAnimation: 'rotate',
+											dogAnimation: 'faceMe',
+											dogPosition: [0, -2, -0.6],
+											ballPosition: [0, -1.6, 3],
+										});
+									}
+								},
+							}}
+							onDrag={() => {}}
+						/>
+					</ViroNode>
+
+					{/* points sound effects */}
+					<ViroSound
+						paused={this.state.playPoints}
+						muted={false}
+						source={require('./sounds/points3.mp3')}
+						loop={false}
+						onFinish={() => {
+							this.setState({
+								playPoints: true,
+							});
 						}}
-						scale={this.state.dogScale}
-						ignoreEventHandling={true}
-						type="VRX"
-						position={this.state.dogPosition}
+						volume={1.0}
 					/>
-					<ViroQuad
-						position={[
-							this.state.dogPosition[0],
-							this.state.dogPosition[1] - 4,
-							this.state.dogPosition[2],
-						]}
-						width={7.5}
-						height={7.5}
-						arShadowReceiver={true}
-						ignoreEventHandling={true}
+
+					{/* dog bark sound effects*/}
+					<ViroSound
+						paused={this.state.playBark}
+						muted={false}
+						source={require('./sounds/smallBark.mp3')}
+						loop={false}
+						onFinish={() => {
+							this.setState({
+								playBark: true,
+							});
+						}}
+						volume={1.0}
 					/>
 				</ViroNode>
-				{/* ball object */}
-				<ViroNode scale={this.state.scale}>
-					<ViroSpotLight
-						innerAngle={5}
-						outerAngle={20}
-						direction={[0, -1, 0]}
-						position={[
-							this.state.ballPosition[0],
-							this.state.ballPosition[1] + 5,
-							this.state.ballPosition[2],
-						]}
-						color="#ffffff"
-						castsShadow={true}
-						shadowNearZ={0.1}
-						shadowFarZ={6}
-						shadowOpacity={0.9}
-					/>
-					<Viro3DObject
-						position={this.state.ballPosition}
-						key={'ball'}
-						source={require('./res/object_sphere.vrx')}
-						resources={[
-							require('./res/sphere_diffuse.png'),
-
-							require('./res/sphere_specular.png'),
-						]}
-						type="VRX"
-						onClickState={this._onBallClick}
-						animation={{
-							name: this.state.currentAnimation,
-							run: true,
-							interruptible: false,
-							onFinish: () => {
-								if (this.state.currentAnimation === 'return') {
-									this.setState({
-										currentAnimation: 'rotate',
-										dogAnimation: 'faceMe',
-										dogPosition: [0, -2, -0.6],
-										ballPosition: [0, -1.6, 3],
-									});
-								}
-							},
-						}}
-						onDrag={() => {}}
+			);
+		} else
+			return (
+				<ViroNode>
+					<ViroText
+						text={'Loading, Please wait!'}
+						scale={[3, 3, 3]}
+						position={[0, 1, 0]}
+						transformBehaviors={['billboardY']}
 					/>
 				</ViroNode>
-
-				{/* points sound effects */}
-				<ViroSound
-					paused={this.state.playPoints}
-					muted={false}
-					source={require('./sounds/points3.mp3')}
-					loop={false}
-					onFinish={() => {
-						this.setState({
-							playPoints: true,
-						});
-					}}
-					volume={1.0}
-				/>
-
-				{/* dog bark sound effects*/}
-				<ViroSound
-					paused={this.state.playBark}
-					muted={false}
-					source={require('./sounds/smallBark.mp3')}
-					loop={false}
-					onFinish={() => {
-						this.setState({
-							playBark: true,
-						});
-					}}
-					volume={1.0}
-				/>
-			</ViroNode>
-		);
+			);
 	},
 
 	//socket
@@ -318,7 +332,7 @@ ViroAnimations.registerAnimations({
 			},
 			{
 				properties: {
-					positionZ: '-=6',
+					positionZ: '-=5',
 				},
 				duration: 2000,
 			},
@@ -335,20 +349,20 @@ ViroAnimations.registerAnimations({
 			{
 				properties: {
 					positionX: '-=2',
-					positionZ: '-=5',
+					positionZ: '-=11',
 				},
 				duration: 250, //0 seconds
 			},
 			{
 				properties: {
 					positionX: '+=2',
-					positionZ: '-=5',
+					positionZ: '-=11',
 				},
 				duration: 250, //0 seconds
 			},
 			{
 				properties: {
-					positionZ: -20,
+					positionZ: '-=10',
 				},
 				duration: 1000,
 			},
@@ -427,7 +441,7 @@ ViroAnimations.registerAnimations({
 					positionY: -2,
 					positionZ: -0.6,
 				},
-				duration: 1500,
+				duration: 1350,
 
 				easing: 'EaseOut',
 			},
