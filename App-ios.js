@@ -28,15 +28,13 @@ import { ViroARSceneNavigator } from 'react-viro';
 import { connect } from 'react-redux';
 import { addPoints } from './store/users';
 import { addPhoto } from './store/photos';
-
-import Screenshot from './js/Screenshot';
 import Photos from './js/Photos';
 import Settings from './js/Settings';
 import Friends from './js/Friends';
 import Points from './js/Points';
 import uuid from 'uuid-random';
 
-var InitialARScene = require('./js/BallThrowAR');
+var InitialARScene = require('./js/NavAR');
 
 export function renderIf(condition, renderedContent) {
 	if (condition) {

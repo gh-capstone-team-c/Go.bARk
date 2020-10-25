@@ -23,7 +23,7 @@ import {
 	PermissionsAndroid,
 } from 'react-native';
 const { width, height } = Dimensions.get('window');
-import { ViroARSceneNavigator, ViroConstants } from 'react-viro';
+import { ViroARSceneNavigator } from 'react-viro';
 import { connect } from 'react-redux';
 import { addPoints } from './store/users';
 import Photos from './js/Photos';
@@ -42,7 +42,7 @@ export function renderIf(condition, renderedContent) {
 
 const kPreviewTypePhoto = 1;
 
-var InitialARScene = require('./js/BallThrowAR');
+var InitialARScene = require('./js/NavAR');
 
 class App extends Component {
 	constructor(props) {
@@ -64,6 +64,7 @@ class App extends Component {
 			},
 			isLoading: false,
 			trackingFound: false,
+			//for screenshots
 			videoUrl: null,
 			haveSavedMedia: false,
 			playPreview: false,
@@ -93,20 +94,27 @@ class App extends Component {
 	async requestWriteAccessPermission() {
 		try {
 			console.log('write access');
-			const granted = await PermissionsAndroid.request(
-				PermissionsAndroid.permission.WRITE_EXTERNAL_STORAGE,
+			const granted = await PermissionsAndroid.requestMultiple(
+				[
+					PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+					PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+				],
 				{
-					title: 'Figment AR Audio Permission',
+					title: 'go.bARk Write Permission',
 					message:
-						'Figment AR App needs to access your photos / videos ' +
-						'so you can record cool videos and photos of' +
+						'go.bARk needs to access your photos' +
+						'so you can record photos of' +
 						'your augmented scenes.',
+					buttonNeutral: 'Ask Me Later',
+					buttonNegative: 'Cancel',
+					buttonPositive: 'OK',
 				}
 			);
 			if (granted == PermissionsAndroid.RESULTS.GRANTED) {
 				console.log('granted');
 				this.setState({
 					writeAccessPermission: true,
+					readAccessPermission: true,
 				});
 			} else {
 				console.log('not granted');
@@ -122,12 +130,15 @@ class App extends Component {
 	async requestReadAccessPermission() {
 		try {
 			const granted = await PermissionsAndroid.request(
-				PermissionsAndroid.permission.READ_EXTERNAL_STORAGE,
+				PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
 				{
-					title: 'Figment AR Audio Permission',
+					title: 'go.bARk File Permission',
 					message:
-						'Figment AR App needs to access your audio ' +
-						'so you can view your own images in portals.',
+						'go.bARk needs to access your file ' +
+						'so you can view your images in game.',
+					buttonNeutral: 'Ask Me Later',
+					buttonNegative: 'Cancel',
+					buttonPositive: 'OK',
 				}
 			);
 			if (granted == PermissionsAndroid.RESULTS.GRANTED) {
@@ -167,7 +178,6 @@ class App extends Component {
 					screenshot_count: currentCount,
 				});
 				console.log('videourl', this.state.videoUrl);
-				// this.props.dispatchDisplayUIScreen(UIConstants.SHOW_SHARE_SCREEN);
 			});
 	}
 
@@ -384,15 +394,8 @@ class App extends Component {
 			isLoading: false,
 		});
 	}
-	_onTrackingUpdated(state, reason) {
-		if (state === ViroConstants.TRACKING_NORMAL) {
-			this.setState({ trackingInitialized: true });
-			alert('Tracking is available :)');
-		} else if (state == ViroConstants.TRACKING_NONE) {
-			alert('Please move camera to find a location for your dog!');
-		} else if (state == ViroConstants.TRACKING_LIMITED) {
-			alert('Tracking is available but may be inaccurate!');
-		}
+	_onTrackingUpdated() {
+		this.setState({ trackingInitialized: true });
 	}
 	_renderTrackingText() {
 		if (this.state.isLoading) {

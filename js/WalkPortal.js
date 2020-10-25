@@ -2,15 +2,11 @@
 
 import React from 'react';
 import {
-	ViroARScene,
-	ViroNode,
 	Viro3DObject,
 	Viro360Image,
 	ViroPortalScene,
 	ViroPortal,
-	ViroImage,
 	ViroSound,
-	ViroText,
 	ViroAmbientLight,
 	ViroParticleEmitter,
 	ViroAnimations,
@@ -23,6 +19,21 @@ const dog = {
 	blackTan: require('./res/dogColors/blackTanDog.vrx'),
 	cream: require('./res/dogColors/creamDog.vrx'),
 };
+const scenes = [
+	{
+		scene: require('./res/360_park.jpg'),
+		particles: require('./res/fallleaf.png'),
+		parkAnim: 'frolic',
+		sound: require('./sounds/birdsPark.mp3'),
+	},
+	{
+		scene: require('./res/360_lake.jpeg'),
+		/***temp variables */
+		particles: require('./res/fallleaf.png'),
+		parkAnim: 'frolic',
+		sound: require('./sounds/birdsPark.mp3'),
+	},
+];
 
 import socket from '../socket/socket';
 
@@ -35,6 +46,7 @@ export default WalkPortal = createReactClass({
 			position: [0, -5, 5],
 			playWhistle: true,
 			playSound: true,
+			scene: scenes[Math.floor(Math.random() * scenes.length)],
 		};
 	},
 
@@ -57,8 +69,8 @@ export default WalkPortal = createReactClass({
 					});
 					setTimeout(() => {
 						if (this.state.currentAnimation === 'run')
-							this.setState({ currentAnimation: 'frolic' });
-					}, 3000);
+							this.setState({ currentAnimation: this.state.scene.parkAnim });
+					}, 1500);
 				}}
 				onPortalExit={() => {
 					this.updatePoints();
@@ -69,28 +81,25 @@ export default WalkPortal = createReactClass({
 					});
 					setTimeout(() => {
 						if (this.state.currentAnimation === 'return')
-							this.setState({ currentAnimation: 'waiting' });
+							this.setState({
+								currentAnimation: 'waiting',
+								scene: scenes[Math.floor(Math.random() * scenes.length)],
+							});
+						console.log(this.state.position, 'doggo');
 					}, 3000);
 				}}
-				// dragType="FixedDistance"
-				// onDrag={() => {}}
 			>
-				{/* render the portal on the other side of the user */}
-				<ViroPortal position={this.props.walkPosition} scale={[3, 3, 3]}>
+				{/* render the portal  */}
+				<ViroPortal position={[0, 0, 0]} scale={[3, 3, 3]}>
 					<Viro3DObject
 						source={require('./res/door/portal_wood_frame.vrx')}
 						transformBehavious={['billboardY']}
 						scale={[1, 1, 1]}
-						// resources={[
-						// 	require('./res/door/InteriorDoor_Diffuce.jpg'),
-						// 	require('./res/door/InteriorDoor_NRM.jpg'),
-						// 	require('./res/door/InteriorDoor_SPEC.jpg'),
-						// ]}
 						materials={'door'}
 						type="VRX"
 					/>
 				</ViroPortal>
-				<Viro360Image source={require('./res/360_park.jpg')} />
+				<Viro360Image source={this.state.scene.scene} />
 
 				<ViroAmbientLight color={'#e8e0dc'} />
 
@@ -117,7 +126,7 @@ export default WalkPortal = createReactClass({
 					loop={true}
 					fixedToEmitter={true}
 					image={{
-						source: require('./res/fallleaf.png'),
+						source: this.state.scene.particles,
 						height: 0.1,
 						width: 0.1,
 						bloomThreshold: 1.0,
@@ -173,7 +182,7 @@ export default WalkPortal = createReactClass({
 				<ViroSound
 					paused={this.state.playSound}
 					muted={false}
-					source={require('./sounds/birdsPark.mp3')}
+					source={this.state.scene.sound}
 					loop={true}
 					volume={1.0}
 				/>
@@ -216,7 +225,7 @@ ViroAnimations.registerAnimations({
 				duration: 500,
 			},
 			{
-				properties: { positionX: '-=13', positionZ: '-=6.5' },
+				properties: { positionX: '-=6.5', positionZ: '-=3.25' },
 				duration: 500,
 			},
 			{
@@ -224,7 +233,7 @@ ViroAnimations.registerAnimations({
 				duration: 500,
 			},
 			{
-				properties: { positionZ: '-=15' },
+				properties: { positionZ: '-=7.5' },
 				duration: 500,
 			},
 			{
@@ -232,7 +241,7 @@ ViroAnimations.registerAnimations({
 				duration: 500,
 			},
 			{
-				properties: { positionX: '+=13', positionZ: '-=6.5' },
+				properties: { positionX: '+=6.5', positionZ: '-=3.25' },
 				duration: 500,
 			},
 			{
@@ -240,7 +249,7 @@ ViroAnimations.registerAnimations({
 				duration: 500,
 			},
 			{
-				properties: { positionX: '+=13', positionZ: '+=6.5' },
+				properties: { positionX: '+=6.5', positionZ: '+=3.25' },
 				duration: 500,
 			},
 			{
@@ -248,7 +257,7 @@ ViroAnimations.registerAnimations({
 				duration: 500,
 			},
 			{
-				properties: { positionZ: '+=15' },
+				properties: { positionZ: '+=7.5' },
 				duration: 500,
 			},
 			{
@@ -256,7 +265,7 @@ ViroAnimations.registerAnimations({
 				duration: 500,
 			},
 			{
-				properties: { positionX: '-=13', positionZ: '+=6.5' },
+				properties: { positionX: '-=6.5', positionZ: '+=3.25' },
 				duration: 500,
 			},
 		],

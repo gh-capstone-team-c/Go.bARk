@@ -28,6 +28,11 @@ class LoginIos extends React.Component {
       showAlert: false,
       howTo: false,
     };
+    this.howTo = this.howTo.bind(this);
+  }
+
+  howTo() {
+    this.setState({ howTo: !this.state.howTo });
   }
 
   showAlert = () => {
@@ -46,7 +51,7 @@ class LoginIos extends React.Component {
     const { showAlert } = this.state;
     return this.state.howTo ? (
       <View style={appStyles.container}>
-        <HowToPlay phone={'iphone'} />
+        <HowToPlay back={this.howTo} />
       </View>
     ) : (
       <View style={appStyles.container}>
@@ -62,8 +67,8 @@ class LoginIos extends React.Component {
             />
             <TextInput
               style={appStyles.input}
-                type="password"
-                secureTextEntry={true}
+              type="password"
+              secureTextEntry={true}
               placeholder="password"
               onChangeText={(password) => this.setState({ password })}
               value={this.state.password}
@@ -102,9 +107,7 @@ class LoginIos extends React.Component {
                 <Text style={appStyles.buttonText}>Sign up</Text>
               </TouchableOpacity>
               <TouchableOpacity
-                onPress={() => {
-                  this.setState({ howTo: true });
-                }}
+                onPress={this.howTo}
                 style={appStyles.rectButton}
               >
                 <Text style={appStyles.buttonText}>How to Play</Text>

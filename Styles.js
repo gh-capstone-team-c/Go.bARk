@@ -3,11 +3,11 @@
 import { StyleSheet, Dimensions } from 'react-native';
 const { width, height } = Dimensions.get('window');
 const palette = {
-	lightest: '#e8e0dc',
-	darkBrown: '#775d3b',
-	highlight: '#90af1b',
-	lightBrown: '#ccb9a2',
-	midBrown: '#a8916b',
+  lightest: '#e8e0dc',
+  darkBrown: '#775d3b',
+  highlight: '#90af1b',
+  lightBrown: '#ccb9a2',
+  midBrown: '#a8916b',
 };
 export const appStyles = StyleSheet.create({
 	//all container pages
@@ -141,6 +141,28 @@ export const appStyles = StyleSheet.create({
 		color: palette.darkBrown,
 		borderRadius: 10,
 	},
+	underline: { borderWidth: 1 },
+	inputIOS: {
+		margin: 15,
+		height: 60,
+		borderColor: palette.lightest,
+		borderWidth: 1,
+		padding: 10,
+		backgroundColor: palette.lightBrown,
+		color: palette.darkBrown,
+		borderRadius: 10,
+	},
+	inputAndroid: {
+		margin: 15,
+		height: 60,
+		borderColor: palette.lightest,
+		borderWidth: 1,
+		width: 250,
+		padding: 10,
+		backgroundColor: palette.lightBrown,
+		color: palette.darkBrown,
+		borderRadius: 10,
+	},
 	/******   button styles ****** */
 	buttons: {
 		justifyContent: 'center',
@@ -177,7 +199,7 @@ export const appStyles = StyleSheet.create({
 		backgroundColor: palette.highlight,
 		borderRadius: 100,
 		borderWidth: 1,
-		borderColor: palette.lightBrown,
+		borderColor: palette.lightest,
 	},
 	/******   Home page styling ****** */
 	miniImage: {
@@ -233,4 +255,41 @@ export const appStyles = StyleSheet.create({
 		height: 40,
 		bottom: 0,
 	},
+     /****** friends styles ****** */
+  followingFollowerContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginVertical: 5,
+    alignContent: 'center',
+    width: width,
+    paddingHorizontal: 40,
+  },
+  friendsContainer: {
+    height: 110,
+    borderColor: palette.darkBrown,
+    borderWidth: 1,
+    width: width,
+    padding: 10,
+    backgroundColor: palette.lightBrown,
+    borderRadius: 10,
+    marginBottom: 5,
+  },
+  friendInfo: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    // marginVertical: 3,
+    alignContent: 'center',
+    width: 200,
+    paddingHorizontal: 10,
+  },
+  pointsAndRemove: {
+    flexDirection: 'column',
+    alignContent: 'center',
+    justifyContent: 'space-around',
+    // marginTop: 10,
+  },
+  centerTextLessPadding: {
+    paddingVertical: 5,
+    textAlign: 'center',
+  },                                        
 });

@@ -16,24 +16,11 @@ export default class HowToPlay extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      back: false,
       showFriends: false,
     };
   }
 
   render() {
-    let returnLogin;
-    this.props.phone === 'anroid'
-      ? (returnLogin = (
-          <View>
-            <LoginAndroid />
-          </View>
-        ))
-      : (returnLogin = (
-          <View>
-            <LoginIos />
-          </View>
-        ));
     return this.state.back ? (
       returnLogin
     ) : (
@@ -63,9 +50,7 @@ export default class HowToPlay extends React.Component {
               <Text style={appStyles.buttonText}>Friends</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={() => {
-                this.setState({ back: true });
-              }}
+              onPress={this.props.back}
               style={appStyles.rectButton}
             >
               <Text style={appStyles.buttonText}>Back</Text>
