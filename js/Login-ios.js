@@ -87,23 +87,24 @@ class LoginIos extends React.Component {
 										this.state.password
 									);
 
-									if (this.props.user.id) {
-										this.setState({ isLoggedIn: true });
-									} else {
-										this.showAlert();
-									}
-								}}
-								style={appStyles.rectButton}
-							>
-								<Text style={appStyles.buttonText}>Sign up</Text>
-							</TouchableOpacity>
-							<TouchableOpacity
-								onPress={this.howTo}
-								style={appStyles.rectButton}
-							>
-								<Text style={appStyles.buttonText}>How to Play</Text>
-							</TouchableOpacity>
-						</View>
+                  if (this.props.user.id) {
+                    this.setState({ isLoggedIn: true });
+                  } else {
+                    this.showAlert();
+                  }
+                }}
+                style={appStyles.rectButton}
+              >
+                <Text style={appStyles.buttonText}>Sign up</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={this.howTo}
+                style={appStyles.howToButton}
+              >
+                <Text style={appStyles.buttonText}>How to Play</Text>
+              </TouchableOpacity>
+            </View>
+
 
 						<AwesomeAlert
 							show={showAlert}

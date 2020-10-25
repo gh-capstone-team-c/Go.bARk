@@ -20,13 +20,13 @@ export class Photos extends React.Component {
 			<View style={appStyles.individualMenu}>
 				<Text style={appStyles.centerText}>Photo Gallery</Text>
 
-				<View>
+				<View style={appStyles.photoContainer}>
 					{this.props.photos.map((photo) => {
 						return (
 							<View key={photo.id}>
 								<Image
 									source={{ uri: photo.path }}
-									style={{ width: 40, height: 40 }}
+									style={{ width: 100, height: 100 }}
 								/>
 								<TouchableOpacity
 									onPress={() => {

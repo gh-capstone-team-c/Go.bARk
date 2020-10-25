@@ -2,54 +2,80 @@ import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { appStyles } from '../Styles';
 
-export default class HowToPlay extends React.Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			showFriends: false,
-		};
-	}
+import { Friends, Activities, Points } from './Directions';
 
-	render() {
-		return this.state.back ? (
-			returnLogin
-		) : (
-			<View>
-				{this.state.showFriends ? (
-					<View style={appStyles.container}>
-						<Text style={appStyles.titleText}>Friends</Text>
-						{/* put directions on friends */}
-						<TouchableOpacity
-							onPress={() => {
-								this.setState({ showFriends: false });
-							}}
-							style={appStyles.rectButton}
-						>
-							<Text style={appStyles.buttonText}>Done</Text>
-						</TouchableOpacity>
-					</View>
-				) : (
-					<View style={appStyles.titleText}>
-						<Text style={appStyles.titleText}>How To Play: </Text>
-						<TouchableOpacity
-							onPress={() => {
-								this.setState({ showFriends: true });
-							}}
-							style={appStyles.rectButton}
-						>
-							<Text style={appStyles.buttonText}>Friends</Text>
-						</TouchableOpacity>
-						<TouchableOpacity
-							onPress={this.props.back}
-							style={appStyles.rectButton}
-						>
-							<Text style={appStyles.buttonText}>Back</Text>
-						</TouchableOpacity>
-					</View>
-				)}
-			</View>
-		);
-	}
+export default class HowToPlay extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      showFriends: false,
+      showActivities: false,
+      showPoints: false,
+    };
+    this.changeFriends = this.changeFriends.bind(this);
+    this.changeActivities = this.changeActivities.bind(this);
+    this.changePoints = this.changePoints.bind(this);
+  }
+
+  changeFriends() {
+    this.setState({ showFriends: !this.state.showFriends });
+  }
+
+  changeActivities() {
+    this.setState({ showActivities: !this.state.showActivities });
+  }
+
+  changePoints() {
+    this.setState({ showPoints: !this.state.showPoints });
+  }
+
+  render() {
+    return (
+      <View>
+        {this.state.showPoints ? (
+          <View>
+            <Points changePoints={this.changePoints} />
+          </View>
+        ) : this.state.showActivities ? (
+          <View>
+            <Activities changeActivities={this.changeActivities} />
+          </View>
+        ) : this.state.showFriends ? (
+          <View>
+            <Friends changeFriends={this.changeFriends} />
+          </View>
+        ) : (
+          <View style={appStyles.container}>
+            <Text style={appStyles.titleText}>How To Play: </Text>
+            <TouchableOpacity
+              onPress={this.changeActivities}
+              style={appStyles.rectButton}
+            >
+              <Text style={appStyles.buttonText}>Care Tips</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={this.changePoints}
+              style={appStyles.rectButton}
+            >
+              <Text style={appStyles.buttonText}>Happy Points</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={this.changeFriends}
+              style={appStyles.rectButton}
+            >
+              <Text style={appStyles.buttonText}>Friends</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={this.props.back}
+              style={appStyles.howToButton}
+            >
+              <Text style={appStyles.buttonText}>Back to login</Text>
+            </TouchableOpacity>
+          </View>
+        )}
+      </View>
+    );
+  }
 }
 
 module.exports = HowToPlay;
