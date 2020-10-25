@@ -1,14 +1,7 @@
 /** @format */
 
 import React from 'react';
-import {
-	View,
-	StyleSheet,
-	Text,
-	TextInput,
-	TouchableOpacity,
-	Image,
-} from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Image } from 'react-native';
 import { connect } from 'react-redux';
 import App from '../App';
 import { appStyles } from '../Styles';
