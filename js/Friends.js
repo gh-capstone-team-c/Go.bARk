@@ -107,21 +107,6 @@ class Friends extends React.Component {
                               >
                                 {heart} points: {user.points}
                               </Text>
-                              <TouchableOpacity
-                                onPress={() => {
-                                  this.props.removeFollowing(user.id, user);
-                                  let newIds = this.state.friendIds;
-                                  newIds[user.id] = null;
-                                  this.setState({
-                                    ...this.state,
-                                    friendIds: newIds,
-                                  });
-                                }}
-                              >
-                                <Text style={appStyles.centerTextLessPadding}>
-                                  Remove Follow
-                                </Text>
-                              </TouchableOpacity>
                             </View>
                           </View>
                         );
@@ -149,25 +134,28 @@ class Friends extends React.Component {
 
                         return (
                           <View
-                            styles={appStyles.friendContainer}
+                            style={appStyles.friendsContainer}
                             key={user.id}
                           >
-                            <Image
-                              style={appStyles.tinyImage}
-                              source={{ uri: user.imageUrl }}
-                            />
-                            <Text style={appStyles.centerText}>
-                              {user.email}
-                            </Text>
-                            {/* <Image
-								style={appStyles.miniImage}
-								source={{ uri: user.dog.imageUrl }}
-							/> */}
-                            <Text
-                              style={[{ fontSize: 30 }, appStyles.centerText]}
-                            >
-                              {heart} points: {user.points}
-                            </Text>
+                            <View style={appStyles.friendInfo}>
+                              <Image
+                                style={appStyles.tinyImage}
+                                source={{ uri: user.imageUrl }}
+                              />
+                              <Text style={appStyles.centerText}>
+                                {user.email}
+                              </Text>
+                            </View>
+                            <View style={appStyles.pointsAndRemove}>
+                              <Text
+                                style={[
+                                  { fontSize: 20 },
+                                  appStyles.centerTextLessPadding,
+                                ]}
+                              >
+                                {heart} points: {user.points}
+                              </Text>
+                            </View>
                           </View>
                         );
                       })}

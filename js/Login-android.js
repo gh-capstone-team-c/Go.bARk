@@ -109,7 +109,7 @@ class LoginAndroid extends React.Component {
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={this.howTo}
-                style={appStyles.rectButton}
+                style={appStyles.howToButton}
               >
                 <Text style={appStyles.buttonText}>How to Play</Text>
               </TouchableOpacity>
