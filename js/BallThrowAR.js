@@ -29,9 +29,9 @@ export default BallThrowAR = createReactClass({
 				this.props.dogPosition[2] + 3,
 			],
 			playCount: 0,
-			rotation: [0, 0, 0],
 			dogAnimation: 'waiting',
 			dogScale: [0.025, 0.025, 0.025],
+			rotation: [0, 0, 0],
 			scale: [0.2, 0.2, 0.2],
 			//sound effects
 			playPoints: true,
@@ -79,10 +79,9 @@ export default BallThrowAR = createReactClass({
 						}}
 						ignoreEventHandling={true}
 						type="VRX"
-						transformBehaviors={['billboardY']}
+						position={this.state.dogPosition}
 					/>
 					<ViroQuad
-						rotation={this.state.rotation}
 						position={[
 							this.state.dogPosition[0],
 							this.state.dogPosition[1] - 4,
@@ -207,12 +206,12 @@ export default BallThrowAR = createReactClass({
 			//captures dog walking towards ball
 			setTimeout(() => {
 				if (this.state.currentAnimation === 'arc') {
-					const dogZ = this.state.dogPosition[2] - 5;
+					const dogZ = this.state.ballPosition[2] - 6;
 					this.setState({
 						...this.state,
 						dogPosition: [
-							this.state.dogPosition[0],
-							this.state.dogPosition[1],
+							this.state.ballPosition[0],
+							this.state.ballPosition[1],
 							dogZ,
 						],
 					});
@@ -228,12 +227,12 @@ export default BallThrowAR = createReactClass({
 						ballPosition: [
 							this.props.dogPosition[0],
 							this.props.dogPosition[1] + 0.5,
-							this.props.dogPosition[2] + 5,
+							this.props.dogPosition[2] + 5.8,
 						],
 						dogPosition: [
 							this.props.dogPosition[0],
 							this.props.dogPosition[1] - 1,
-							this.props.dogPosition[2] + 5.8,
+							this.props.dogPosition[2] + 5,
 						],
 					});
 				}
@@ -257,7 +256,7 @@ ViroAnimations.registerAnimations({
 	},
 	lookRight: {
 		properties: {
-			rotateY: '-=10',
+			rotateY: '-=20',
 		},
 		duration: 500,
 	},
@@ -310,26 +309,26 @@ ViroAnimations.registerAnimations({
 			{
 				properties: {
 					positionX: '-=2',
-					positionZ: '-=2',
+					positionZ: '-=5',
 				},
 				duration: 250, //0 seconds
 			},
 			{
 				properties: {
 					positionX: '+=2',
-					positionZ: '-=2',
+					positionZ: '-=5',
 				},
 				duration: 250, //0 seconds
 			},
 			{
 				properties: {
-					positionZ: -10,
+					positionZ: -20,
 				},
 				duration: 1000,
 			},
 			{
 				properties: {
-					positionY: -1,
+					positionY: -3,
 				},
 				duration: 1000,
 				easing: 'Bounce',
@@ -395,6 +394,7 @@ ViroAnimations.registerAnimations({
 			positionX: 0,
 			positionY: 0,
 			positionZ: 0,
+			rotateY: 0,
 		},
 		duration: 1800,
 		easing: 'EaseOut',

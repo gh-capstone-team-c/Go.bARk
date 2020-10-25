@@ -90,6 +90,10 @@ class Settings extends React.Component {
 							/>
 
 							<RNPickerSelect
+								style={appStyles}
+								value={this.state.color}
+								placeholder={{}}
+								useNativeAndroidPickerStyle={false}
 								onValueChange={(value) => {
 									this.setState({ color: value });
 								}}
@@ -98,6 +102,8 @@ class Settings extends React.Component {
 									{ label: 'Black & Tan', value: 'blackTan' },
 									{ label: 'Cream', value: 'cream' },
 								]}
+								style={appStyles}
+								placeholder={{}}
 							/>
 							<TouchableOpacity>
 								<Text

@@ -8,6 +8,7 @@ import {
 	ViroAnimatedImage,
 	ViroSound,
 	ViroARPlane,
+	ViroImage,
 } from 'react-viro';
 import BallThrowAR from './BallThrowAR';
 import FoodTime from './FoodTime';
@@ -34,7 +35,7 @@ export default NavAR = createReactClass({
 			rotation: [0, 0, 0],
 			offsetX: 2.5,
 			offsetY: 0.3,
-			currScene: 'none',
+			currScene: 'ball',
 			dog: {
 				red: require('./res/dogColors/redDog.vrx'),
 				blackTan: require('./res/dogColors/blackTanDog.vrx'),
@@ -59,63 +60,59 @@ export default NavAR = createReactClass({
 				<ViroNode ignoreEventHandling={true}>
 					{/***All Arrows*** */}
 					{/* tugOfWar L Arrow */}
-					<ViroAnimatedImage
+					<ViroImage
 						transformBehaviors={['billboardY']}
 						position={[
 							this.state.towPosition[0] + this.state.offsetX,
 							this.state.towPosition[1] + this.state.offsetY,
 							this.state.towPosition[2],
 						]}
-						interruptible={true}
 						scale={this.state.scale}
 						height={1}
 						width={1}
-						source={require('./res/gifs/tugOfWarLArrow.gif')}
+						source={require('./res/arrows/tugOfWarLArrow.png')}
 					/>
 					{/* tugOfWar R Arrow */}
-					<ViroAnimatedImage
+					<ViroImage
 						transformBehaviors={['billboardY']}
 						position={[
 							this.state.walkPosition[0] - this.state.offsetX / 2,
 							this.state.walkPosition[1],
 							this.state.walkPosition[2],
 						]}
-						interruptible={true}
 						scale={this.state.scale}
 						height={1}
 						width={1}
-						source={require('./res/gifs/tugOfWarRArrow.gif')}
+						source={require('./res/arrows/tugOfWarRArrow.png')}
 					/>
 					{/* foodTime R Arrow */}
-					<ViroAnimatedImage
+					<ViroImage
 						transformBehaviors={['billboardY']}
 						position={[
 							this.state.foodPosition[0] - this.state.offsetX,
 							this.state.foodPosition[1] + this.state.offsetY,
 							this.state.foodPosition[2],
 						]}
-						interruptible={true}
 						scale={this.state.scale}
 						height={1}
 						width={1}
-						source={require('./res/gifs/foodTimeRArrow.gif')}
+						source={require('./res/arrows/foodTimeRArrow.png')}
 					/>
 					{/* foodTime L Arrow */}
-					<ViroAnimatedImage
+					<ViroImage
 						transformBehaviors={['billboardY']}
 						position={[
 							this.state.walkPosition[0] + this.state.offsetX / 2,
 							this.state.walkPosition[1],
 							this.state.walkPosition[2],
 						]}
-						interruptible={true}
 						scale={this.state.scale}
 						height={1}
 						width={1}
-						source={require('./res/gifs/foodTimeLArrow.gif')}
+						source={require('./res/arrows/foodTimeLArrow.png')}
 					/>
 					{/* walk L Arrow */}
-					<ViroAnimatedImage
+					<ViroImage
 						transformBehaviors={['billboardY']}
 						position={[
 							this.state.towPosition[0] + this.state.offsetX / 2,
@@ -125,14 +122,14 @@ export default NavAR = createReactClass({
 						scale={this.state.scale}
 						height={1}
 						width={1}
-						source={require('./res/gifs/walkLArrow.gif')}
+						source={require('./res/arrows/walkLArrow.png')}
 					/>
 					{/* walk R Arrow */}
-					<ViroAnimatedImage
+					<ViroImage
 						scale={this.state.scale}
 						height={1}
 						width={1}
-						source={require('./res/gifs/walkRArrow.gif')}
+						source={require('./res/arrows/walkRArrow.png')}
 						transformBehaviors={['billboardY']}
 						position={[
 							this.state.foodPosition[0] - this.state.offsetX / 2,
@@ -220,7 +217,7 @@ export default NavAR = createReactClass({
 						position={[
 							this.state.walkPosition[0],
 							this.state.walkPosition[1],
-							this.state.walkPosition[2] * -1,
+							this.state.walkPosition[2] * -1.5,
 						]}
 					>
 						{this.state.currScene === 'ball' ? (
@@ -231,7 +228,7 @@ export default NavAR = createReactClass({
 								dogPosition={[
 									this.state.walkPosition[0],
 									this.state.walkPosition[1],
-									-2 * this.state.walkPosition[2],
+									-1.5 * this.state.walkPosition[2],
 								]}
 							/>
 						) : (

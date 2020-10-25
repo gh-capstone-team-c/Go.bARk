@@ -70,7 +70,7 @@ export default TugOfWar = createReactClass({
 										position[1] - 1.011,
 										position[2] + 1.9,
 									],
-									rotation: position[0] >= 0 ? [0, 45, 0] : [0, 90, 0],
+									rotation: position[0] >= -2 ? [0, 75, 0] : [0, 90, 0],
 								});
 								Vibration.vibrate();
 							}

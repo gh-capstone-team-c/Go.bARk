@@ -64,6 +64,7 @@ class App extends Component {
 			},
 			isLoading: false,
 			trackingFound: false,
+			//for screenshots
 			videoUrl: null,
 			haveSavedMedia: false,
 			playPreview: false,
@@ -91,20 +92,27 @@ class App extends Component {
 	async requestWriteAccessPermission() {
 		try {
 			console.log('write access');
-			const granted = await PermissionsAndroid.request(
-				PermissionsAndroid.permission.WRITE_EXTERNAL_STORAGE,
+			const granted = await PermissionsAndroid.requestMultiple(
+				[
+					PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+					PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+				],
 				{
-					title: 'Figment AR Audio Permission',
+					title: 'go.bARk Write Permission',
 					message:
-						'Figment AR App needs to access your photos / videos ' +
-						'so you can record cool videos and photos of' +
+						'go.bARk needs to access your photos' +
+						'so you can record photos of' +
 						'your augmented scenes.',
+					buttonNeutral: 'Ask Me Later',
+					buttonNegative: 'Cancel',
+					buttonPositive: 'OK',
 				}
 			);
 			if (granted == PermissionsAndroid.RESULTS.GRANTED) {
 				console.log('granted');
 				this.setState({
 					writeAccessPermission: true,
+					readAccessPermission: true,
 				});
 			} else {
 				console.log('not granted');
@@ -120,12 +128,15 @@ class App extends Component {
 	async requestReadAccessPermission() {
 		try {
 			const granted = await PermissionsAndroid.request(
-				PermissionsAndroid.permission.READ_EXTERNAL_STORAGE,
+				PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
 				{
-					title: 'Figment AR Audio Permission',
+					title: 'go.bARk File Permission',
 					message:
-						'Figment AR App needs to access your audio ' +
-						'so you can view your own images in portals.',
+						'go.bARk needs to access your file ' +
+						'so you can view your images in game.',
+					buttonNeutral: 'Ask Me Later',
+					buttonNegative: 'Cancel',
+					buttonPositive: 'OK',
 				}
 			);
 			if (granted == PermissionsAndroid.RESULTS.GRANTED) {
@@ -165,7 +176,6 @@ class App extends Component {
 					screenshot_count: currentCount,
 				});
 				console.log('videourl', this.state.videoUrl);
-				// this.props.dispatchDisplayUIScreen(UIConstants.SHOW_SHARE_SCREEN);
 			});
 	}
 
