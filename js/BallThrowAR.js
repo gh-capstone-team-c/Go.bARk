@@ -19,6 +19,8 @@ const dog = {
 	blackTan: require('./res/dogColors/blackTanDog.vrx'),
 	cream: require('./res/dogColors/creamDog.vrx'),
 };
+import socket from '../socket/socket';
+
 export default BallThrowAR = createReactClass({
 	getInitialState() {
 		return {
@@ -361,6 +363,13 @@ export default BallThrowAR = createReactClass({
 			</ViroARScene>
 		);
 	},
+
+	//socket
+	updatePoints() {
+		this.state.addPoints({ points: this.state.user.points++ });
+		socket.emit('updatePoints');
+	},
+
 	_onBallClick(stateValue, position, source) {
 		//incremental counter to limit number of consecutive games of catch with dog
 		if (
@@ -374,7 +383,7 @@ export default BallThrowAR = createReactClass({
 				playPoints: !this.state.playPoints,
 			});
 			// let pts = this.state.user.points;
-			this.state.addPoints({ points: this.state.user.points++ });
+			this.updatePoints();
 		}
 		// capture when dog and ball are super close to user(already fetched) and returns gameplay loop to near start.
 		if (position[2] >= -5 && this.state.playCount >= 3) {
