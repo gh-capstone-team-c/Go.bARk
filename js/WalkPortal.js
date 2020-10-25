@@ -85,7 +85,6 @@ export default WalkPortal = createReactClass({
 								currentAnimation: 'waiting',
 								scene: scenes[Math.floor(Math.random() * scenes.length)],
 							});
-						console.log(this.state.position, 'doggo');
 					}, 3000);
 				}}
 			>

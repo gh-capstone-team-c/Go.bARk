@@ -2,23 +2,16 @@
 
 import React from 'react';
 import {
-	ViroARScene,
 	ViroNode,
 	Viro3DObject,
-	ViroImage,
-	ViroARCamera,
 	ViroText,
 	ViroAmbientLight,
-	ViroAnimatedImage,
 	ViroSpotLight,
 	ViroSound,
 	ViroMaterials,
 } from 'react-viro';
 import { Vibration } from 'react-native';
 var createReactClass = require('create-react-class');
-import BallThrowAR, { sceneConsts, RenderMenu } from './BallThrowAR';
-import FoodTime from './FoodTime';
-import Walk from './Walk';
 
 const dogStand = {
 	red: require('./res/dogColors/redDog.vrx'),
@@ -34,14 +27,16 @@ export default TugOfWar = createReactClass({
 			user: this.props.user,
 			addPoints: this.props.addPoints,
 			tugging: false,
-      //sound effects
+			//sound effects
 			playPoints: true,
 			playBark: true,
 			dogPosition: [-1, -3, -1],
 			rotation: [0, 90, 0],
 		};
 	},
-
+	componentWillUnmount() {
+		console.log('Tug of War has unmounted!');
+	},
 	render() {
 		const dogColor = this.state.user.dog.color;
 		return (
@@ -153,8 +148,7 @@ export default TugOfWar = createReactClass({
 		if (stateValue === 1) {
 			this.setState({ tugging: true });
 		} else this.setState({ tugging: false });
-		if (stateValue === 3)
-			this.updatePoints();
+		if (stateValue === 3) this.updatePoints();
 		this.setState({
 			playPoints: !this.state.playPoints,
 		});

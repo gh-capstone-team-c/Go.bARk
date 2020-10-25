@@ -2,7 +2,6 @@
 
 import React from 'react';
 import {
-
 	Viro3DObject,
 	ViroAmbientLight,
 	ViroSpotLight,
@@ -11,15 +10,19 @@ import {
 	ViroText,
 	ViroQuad,
 	ViroSound,
-
 } from 'react-viro';
 
 var createReactClass = require('create-react-class');
 
-const dog = {
-  red: require('./res/dogColors/redDog.vrx'),
-  blackTan: require('./res/dogColors/blackTanDog.vrx'),
-  cream: require('./res/dogColors/creamDog.vrx'),
+const dogStand = {
+	red: require('./res/dogColors/redDog.vrx'),
+	blackTan: require('./res/dogColors/blackTanDog.vrx'),
+	cream: require('./res/dogColors/creamDog.vrx'),
+};
+const dogPose = {
+	red: require('./res/dogPose/redDogEat.vrx'),
+	blackTan: require('./res/dogPose/blackTanDogEat.vrx'),
+	cream: require('./res/dogPose/creamDogEat.vrx'),
 };
 import socket from '../socket/socket';
 
@@ -28,21 +31,13 @@ export default BallThrowAR = createReactClass({
 		return {
 			currentAnimation: 'rotate',
 			text: 'Play with me!',
-			dogPosition: [
-				this.props.dogPosition[0],
-				this.props.dogPosition[1] - 1,
-				this.props.dogPosition[2] - 5,
-			],
-			ballPosition: [
-				this.props.dogPosition[0],
-				this.props.dogPosition[1] - 1.5,
-				this.props.dogPosition[2] + 3,
-			],
+			dogPosition: [0, -2, -4],
+			ballPosition: [0, -3, -1],
 			playCount: 0,
 			dogAnimation: 'waiting',
 			dogScale: [0.025, 0.025, 0.025],
-			rotation: [0, 0, 0],
 			scale: [0.2, 0.2, 0.2],
+			getBall: false,
 			//sound effects
 			playPoints: true,
 			playBark: true,
@@ -51,8 +46,13 @@ export default BallThrowAR = createReactClass({
 			addPoints: this.props.addPoints,
 		};
 	},
+	componentWillUnmount() {
+		console.log('BallThrow has unmounted!');
+	},
 	render() {
 		const dogColor = this.state.user.dog.color;
+		let dog;
+		this.state.getBall ? (dog = dogPose[dogColor]) : (dog = dogStand[dogColor]);
 		return (
 			<ViroNode>
 				{/****** scene items below ****** */}
@@ -63,7 +63,7 @@ export default BallThrowAR = createReactClass({
 				/>
 				<ViroAmbientLight color={'#e8e0dc'} />
 				{/* dog object */}
-				<ViroNode position={this.state.dogPosition} scale={this.state.dogScale}>
+				<ViroNode>
 					<ViroSpotLight
 						innerAngle={5}
 						outerAngle={40}
@@ -81,12 +81,13 @@ export default BallThrowAR = createReactClass({
 						shadowOpacity={0.9}
 					/>
 					<Viro3DObject
-						source={this.props.dog[dogColor]}
+						source={dog}
 						animation={{
 							name: this.state.dogAnimation,
 							run: true,
 							interruptible: true,
 						}}
+						scale={this.state.dogScale}
 						ignoreEventHandling={true}
 						type="VRX"
 						position={this.state.dogPosition}
@@ -104,7 +105,7 @@ export default BallThrowAR = createReactClass({
 					/>
 				</ViroNode>
 				{/* ball object */}
-				<ViroNode position={this.state.ballPosition} scale={this.state.scale}>
+				<ViroNode scale={this.state.scale}>
 					<ViroSpotLight
 						innerAngle={5}
 						outerAngle={20}
@@ -135,6 +136,16 @@ export default BallThrowAR = createReactClass({
 							name: this.state.currentAnimation,
 							run: true,
 							interruptible: false,
+							onFinish: () => {
+								if (this.state.currentAnimation === 'return') {
+									this.setState({
+										currentAnimation: 'rotate',
+										dogAnimation: 'faceMe',
+										dogPosition: [0, -2, -0.6],
+										ballPosition: [0, -1.6, 3],
+									});
+								}
+							},
 						}}
 						onDrag={() => {}}
 					/>
@@ -204,11 +215,6 @@ export default BallThrowAR = createReactClass({
 				if (this.state.dogAnimation === 'dropBall') {
 					this.setState({
 						...this.state,
-						dogPosition: [
-							this.props.dogPosition[0],
-							this.props.dogPosition[1] - 1,
-							this.props.dogPosition[2] + 2,
-						],
 						playCount: 0,
 						dogAnimation: 'waiting',
 						currentAnimation: 'rotate',
@@ -227,35 +233,34 @@ export default BallThrowAR = createReactClass({
 			});
 			//captures dog walking towards ball
 			setTimeout(() => {
-				if (this.state.currentAnimation === 'arc') {
+				if (
+					this.state.currentAnimation === 'arc' &&
+					this.state.dogAnimation === 'fetch'
+				) {
 					const dogZ = this.state.ballPosition[2] - 6;
 					this.setState({
-						...this.state,
-						dogPosition: [
-							this.state.ballPosition[0],
-							this.state.ballPosition[1],
-							dogZ,
-						],
+						dogAnimation: 'faceMe',
+						dogPosition: [this.state.ballPosition[0], -2, dogZ],
+						getBall: true,
 					});
 				}
 			}, 2000);
 			// This timeout fires after the ball lands near the dog. It sets the dog and ball on a return course. The if statement stops it from refiring after the dog drops the ball.
 			setTimeout(() => {
-				if (this.state.currentAnimation === 'arc') {
+				if (
+					this.state.currentAnimation === 'arc' &&
+					this.state.dogAnimation === 'faceMe'
+				) {
+					const liftBall = [
+						this.state.ballPosition[0],
+						-0.5,
+						this.state.ballPosition[2],
+					];
 					this.setState({
-						...this.state,
-						currentAnimation: 'returnBall',
-						dogAnimation: 'return',
-						ballPosition: [
-							this.props.dogPosition[0],
-							this.props.dogPosition[1] + 0.5,
-							this.props.dogPosition[2] + 5.8,
-						],
-						dogPosition: [
-							this.props.dogPosition[0],
-							this.props.dogPosition[1] - 1,
-							this.props.dogPosition[2] + 5,
-						],
+						ballPosition: liftBall,
+						getBall: false,
+						currentAnimation: 'return',
+						dogAnimation: 'returnBall',
 					});
 				}
 			}, 6500);
@@ -269,6 +274,11 @@ ViroAnimations.registerAnimations({
 			rotateY: '+=90',
 		},
 		duration: 0, //0 seconds
+	},
+	faceMe: {
+		properties: {
+			rotateY: 0,
+		},
 	},
 	lookLeft: {
 		properties: {
@@ -284,7 +294,7 @@ ViroAnimations.registerAnimations({
 	},
 	launch: {
 		properties: {
-			positionZ: '-=10.0',
+			positionZ: '-=5.0',
 			positionY: '+=12.0',
 		},
 		easing: 'EaseOut',
@@ -292,8 +302,8 @@ ViroAnimations.registerAnimations({
 	},
 	fall: {
 		properties: {
-			positionZ: '-=10.0',
-			positionY: 0,
+			positionZ: '-=5.0',
+			positionY: -3,
 		},
 		duration: 2300,
 		easing: 'bounce',
@@ -302,27 +312,21 @@ ViroAnimations.registerAnimations({
 		[
 			{
 				properties: {
-					rotateY: '-=180',
+					rotateY: 180,
 				},
 				duration: 500, //0 seconds
 			},
 			{
 				properties: {
-					positionZ: '-=20',
+					positionZ: '-=6',
 				},
 				duration: 2000,
 			},
 			{
 				properties: {
-					rotateY: '-=180',
-				},
-				duration: 180,
-			},
-			{
-				properties: {
 					rotateY: 0,
 				},
-				duration: 20,
+				duration: 180,
 			},
 		],
 	],
@@ -367,16 +371,16 @@ ViroAnimations.registerAnimations({
 		[
 			{
 				properties: {
-					rotateY: '+=180',
+					rotateY: 180,
 				},
 				duration: 500,
 				easing: 'Bounce',
 			},
 			{
 				properties: {
-					positionZ: '-=10',
+					positionZ: '-=5',
 				},
-				duration: 1400,
+				duration: 1000,
 				easing: 'Bounce',
 			},
 			{
@@ -401,26 +405,33 @@ ViroAnimations.registerAnimations({
 			'lookRight',
 		],
 	],
-	return: {
-		properties: {
-			positionX: 0,
-			positionY: 0,
-			positionZ: 0,
-			rotateY: 0,
-		},
-		duration: 2000,
-		easing: 'EaseOut',
-	},
-	returnBall: {
-		properties: {
-			positionX: 0,
-			positionY: 0,
-			positionZ: 0,
-			rotateY: 0,
-		},
-		duration: 1800,
-		easing: 'EaseOut',
-	},
+	return: [
+		[
+			{
+				properties: {
+					positionX: 0,
+					positionY: -1.6,
+					positionZ: 3,
+				},
+				duration: 1800,
 
+				easing: 'EaseOut',
+			},
+		],
+	],
+	returnBall: [
+		[
+			{
+				properties: {
+					positionX: 0,
+					positionY: -2,
+					positionZ: -0.6,
+				},
+				duration: 1500,
+
+				easing: 'EaseOut',
+			},
+		],
+	],
 });
 module.exports = BallThrowAR;

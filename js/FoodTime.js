@@ -2,14 +2,11 @@
 
 import React from 'react';
 import {
-	ViroARScene,
 	ViroNode,
 	Viro3DObject,
 	ViroText,
 	ViroAmbientLight,
-	ViroAnimatedImage,
 	ViroSound,
-	ViroSpotLight,
 } from 'react-viro';
 
 var createReactClass = require('create-react-class');
@@ -43,6 +40,9 @@ export default FoodTime = createReactClass({
 			],
 			dogScale: [0.03, 0.03, 0.03],
 		};
+	},
+	componentWillUnmount() {
+		console.log('FoodTime has unmounted!');
 	},
 	render() {
 		const dogColor = this.state.user.dog.color;

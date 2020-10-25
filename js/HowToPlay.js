@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { appStyles } from '../Styles';
+
 import { Friends, Activities, Points } from './Directions';
 
 export default class HowToPlay extends React.Component {

@@ -7,7 +7,6 @@ import {
 	ViroNode,
 	ViroAnimatedImage,
 	ViroSound,
-	ViroARPlane,
 	ViroImage,
 } from 'react-viro';
 import BallThrowAR from './BallThrowAR';
@@ -20,13 +19,6 @@ export default NavAR = createReactClass({
 	getInitialState() {
 		return {
 			loading: true,
-			currentAnimation: 'rotate',
-			text: 'Play with me!',
-			dogPosition: [0, -11, -21],
-			ballPosition: [0, -11, -11],
-			playCount: 0,
-			rotation: [0, 0, 0],
-			dogAnimation: 'waiting',
 			dogScale: [0.1, 0.1, 0.1],
 			scale: [1, 1, 1],
 			walkPosition: [0, -1, 2],
@@ -230,7 +222,6 @@ export default NavAR = createReactClass({
 							<BallThrowAR
 								user={this.state.user}
 								addPoints={this.state.addPoints}
-								dog={this.state.dog}
 								dogPosition={[
 									this.state.walkPosition[0],
 									this.state.walkPosition[1],

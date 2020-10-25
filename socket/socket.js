@@ -11,7 +11,6 @@ socket.on('connect', () => {
 });
 
 socket.on('pointsUpdated', () => {
-	console.log('frontend: points were updated');
 	store.dispatch(getUsers());
 });
 

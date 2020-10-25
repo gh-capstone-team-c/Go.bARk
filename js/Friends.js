@@ -1,7 +1,7 @@
 /** @format */
 
 import React from 'react';
-import { View, Image, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { View, Image, Text, TouchableOpacity } from 'react-native';
 import { appStyles } from '../Styles';
 import { connect } from 'react-redux';
 import { getUsers } from '../store/allUsers';
@@ -37,7 +37,6 @@ class Friends extends React.Component {
   }
 
   render() {
-    // console.log(this.props.user);
     return (
       <View style={appStyles.individualMenu}>
         {this.state.loading && <Text>Loading!</Text>}
@@ -190,48 +189,44 @@ class Friends extends React.Component {
                       source={{ uri: user.imageUrl }}
                     />
                     <Text style={appStyles.centerText}>{user.email}</Text>
-                    {/* <Image
-								style={appStyles.miniImage}
-								source={{ uri: user.dog.imageUrl }}
-							/> */}
-                    <Text style={[{ fontSize: 30 }, appStyles.centerText]}>
-                      {heart} points: {user.points}
-                    </Text>
+										<Text style={[{ fontSize: 30 }, appStyles.centerText]}>
+											{heart} points: {user.points}
+										</Text>
 
-                    <TouchableOpacity
-                      onPress={() => {
-                        this.props.addFollowing(user.id, user);
-                        let newIds = this.state.friendIds;
-                        newIds[user.id] = true;
-                        this.setState({ ...this.state, friendIds: newIds });
-                      }}
-                    >
-                      <Text>Follow!</Text>
-                    </TouchableOpacity>
-                  </View>
-                );
-              })}
-          </View>
-        )}
-      </View>
-    );
-  }
+										<TouchableOpacity
+											onPress={() => {
+												this.props.addFollowing(user.id, user);
+												let newIds = this.state.friendIds;
+												newIds[user.id] = true;
+												this.setState({ ...this.state, friendIds: newIds });
+											}}
+										>
+											<Text>Follow!</Text>
+										</TouchableOpacity>
+									</View>
+								);
+							})}
+					</View>
+				)}
+			</View>
+		);
+	}
 }
 
 // connect to redux
 const mapState = (state) => {
-  return {
-    allUsers: state.allUsers,
-    user: state.user,
-  };
+	return {
+		allUsers: state.allUsers,
+		user: state.user,
+	};
 };
 
 const mapDispatch = (dispatch) => {
-  return {
-    getUsers: () => dispatch(getUsers()),
-    addFollowing: (id, obj) => dispatch(addFollowing(id, obj)),
-    removeFollowing: (id, obj) => dispatch(removeFollowing(id, obj)),
-  };
+	return {
+		getUsers: () => dispatch(getUsers()),
+		addFollowing: (id, obj) => dispatch(addFollowing(id, obj)),
+		removeFollowing: (id, obj) => dispatch(removeFollowing(id, obj)),
+	};
 };
 
 export default connect(mapState, mapDispatch)(Friends);

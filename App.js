@@ -93,7 +93,6 @@ class App extends Component {
 
 	async requestWriteAccessPermission() {
 		try {
-			console.log('write access');
 			const granted = await PermissionsAndroid.requestMultiple(
 				[
 					PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
@@ -111,13 +110,11 @@ class App extends Component {
 				}
 			);
 			if (granted == PermissionsAndroid.RESULTS.GRANTED) {
-				console.log('granted');
 				this.setState({
 					writeAccessPermission: true,
 					readAccessPermission: true,
 				});
 			} else {
-				console.log('not granted');
 				this.setState({
 					writeAccessPermission: false,
 				});
@@ -160,15 +157,12 @@ class App extends Component {
 	}
 
 	async _takeScreenshot() {
-		console.log('screenshot1');
 		if (!this.state.writeAccessPermission) {
-			console.log('screenshot2');
 			this.requestWriteAccessPermission();
 		}
 		this._arNavigator
 			._takeScreenshot('screenshot' + this.state.screenshot_count, true)
 			.then((retDict) => {
-				console.log('hi');
 				let currentCount = this.state.screenshot_count + 1;
 				this.setState({
 					videoUrl: 'file://' + retDict.url,
@@ -177,7 +171,6 @@ class App extends Component {
 					previewType: kPreviewTypePhoto,
 					screenshot_count: currentCount,
 				});
-				console.log('videourl', this.state.videoUrl);
 			});
 	}
 
@@ -209,7 +202,6 @@ class App extends Component {
 	}
 
 	render() {
-		console.log(this.props.user.dog.color);
 		return (
 			<View style={appStyles.containerApp}>
 				<View>
