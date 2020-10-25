@@ -140,6 +140,28 @@ export const appStyles = StyleSheet.create({
 		color: palette.darkBrown,
 		borderRadius: 10,
 	},
+	underline: { borderWidth: 1 },
+	inputIOS: {
+		margin: 15,
+		height: 60,
+		borderColor: palette.lightest,
+		borderWidth: 1,
+		padding: 10,
+		backgroundColor: palette.lightBrown,
+		color: palette.darkBrown,
+		borderRadius: 10,
+	},
+	inputAndroid: {
+		margin: 15,
+		height: 60,
+		borderColor: palette.lightest,
+		borderWidth: 1,
+		width: 250,
+		padding: 10,
+		backgroundColor: palette.lightBrown,
+		color: palette.darkBrown,
+		borderRadius: 10,
+	},
 	/******   button styles ****** */
 	buttons: {
 		justifyContent: 'center',
@@ -176,7 +198,7 @@ export const appStyles = StyleSheet.create({
 		backgroundColor: palette.highlight,
 		borderRadius: 100,
 		borderWidth: 1,
-		borderColor: palette.lightBrown,
+		borderColor: palette.lightest,
 	},
 	/******   Home page styling ****** */
 	miniImage: {

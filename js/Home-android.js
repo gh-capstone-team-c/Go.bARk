@@ -22,7 +22,7 @@ class HomeAndroid extends React.Component {
 		this.state = {
 			pressed: false,
 			dogName: '',
-			dogColor: '',
+			dogColor: 'red',
 			showAlert: false,
 		};
 	}
@@ -72,6 +72,7 @@ class HomeAndroid extends React.Component {
 										Choose dog's color: Red, Black/Tan, or Cream
 									</Text>
 									<RNPickerSelect
+										value={this.state.dogColor}
 										onValueChange={(value) => {
 											this.setState({ dogColor: value });
 										}}
@@ -80,6 +81,9 @@ class HomeAndroid extends React.Component {
 											{ label: 'Black & Tan', value: 'blackTan' },
 											{ label: 'Cream', value: 'cream' },
 										]}
+										style={appStyles}
+										placeholder={{}}
+										useNativeAndroidPickerStyle={false}
 									/>
 									<TouchableOpacity
 										style={appStyles.rectButton}
