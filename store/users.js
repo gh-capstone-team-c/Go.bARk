@@ -17,13 +17,13 @@ const removeUser = () => ({ type: REMOVE_USER });
 export const addFollowing = (id, obj) => {
 	return async (dispatch, getState) => {
 		try {
-			await axios.put(
+			let res = await axios.put(
 				`https://gobark-backend.herokuapp.com/auth/me/${id}`,
 				obj
 			);
 			dispatch({
 				type: ADD_FOLLOW,
-				obj,
+				obj: obj,
 				state: getState,
 			});
 		} catch (err) {
@@ -40,7 +40,7 @@ export const removeFollowing = (id, obj) => {
 				`https://gobark-backend.herokuapp.com/auth/me/${id}`,
 				obj
 			);
-			dispatch({
+			await dispatch({
 				type: REMOVE_FOLLOW,
 				obj,
 				state: getState,
@@ -210,10 +210,17 @@ export default function userReducer(state = defaultUser, action) {
 				},
 			};
 		case ADD_FOLLOW:
-			return {
-				...state,
-				following: [...state.following, action.obj],
-			};
+			if (state.following) {
+				return {
+					...state,
+					following: [...state.following, action.obj],
+				};
+			} else {
+				return {
+					...state,
+					following: [action.obj],
+				};
+			}
 		case REMOVE_FOLLOW:
 			return {
 				...state,
