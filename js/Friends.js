@@ -106,6 +106,19 @@ class Friends extends React.Component {
 															>
 																{heart} points: {user.points}
 															</Text>
+															<TouchableOpacity
+																onPress={() => {
+																	this.props.removeFollowing(user.id, user);
+																	let newIds = this.state.friendIds;
+																	newIds[user.id] = null;
+																	this.setState({
+																		...this.state,
+																		friendIds: newIds,
+																	});
+																}}
+															>
+																<Text>Remove Follow</Text>
+															</TouchableOpacity>
 														</View>
 													</View>
 												);
@@ -154,19 +167,6 @@ class Friends extends React.Component {
 															>
 																{heart} points: {user.points}
 															</Text>
-															<TouchableOpacity
-																onPress={() => {
-																	this.props.removeFollowing(user.id, user);
-																	let newIds = this.state.friendIds;
-																	newIds[user.id] = null;
-																	this.setState({
-																		...this.state,
-																		friendIds: newIds,
-																	});
-																}}
-															>
-																<Text>Remove Follow</Text>
-															</TouchableOpacity>
 														</View>
 													</View>
 												);
@@ -196,26 +196,36 @@ class Friends extends React.Component {
 								if (user.points >= 30) heart = '💖';
 
 								return (
-									<View styles={appStyles.friendContainer} key={user.id}>
-										<Image
-											style={appStyles.tinyImage}
-											source={{ uri: user.imageUrl }}
-										/>
-										<Text style={appStyles.centerText}>{user.email}</Text>
-										<Text style={[{ fontSize: 30 }, appStyles.centerText]}>
-											{heart} points: {user.points}
-										</Text>
+									<View style={appStyles.friendContainer} key={user.id}>
+										<View style={appStyles.friendInfo}>
+											<Image
+												style={appStyles.tinyImage}
+												source={{ uri: user.imageUrl }}
+											/>
+											<Text style={appStyles.centerText}>{user.email}</Text>
+										</View>
+										<View style={appStyles.pointsAndRemove}>
+											<Text
+												style={[
+													{ fontSize: 20 },
+													appStyles.centerTextLessPadding,
+												]}
+											>
+												{heart} points: {user.points}
+											</Text>
 
-										<TouchableOpacity
-											onPress={() => {
-												this.props.addFollowing(user.id, user);
-												let newIds = this.state.friendIds;
-												newIds[user.id] = true;
-												this.setState({ friendIds: newIds });
-											}}
-										>
-											<Text>Follow!</Text>
-										</TouchableOpacity>
+											<TouchableOpacity
+												style={appStyles.pointsAndRemove}
+												onPress={() => {
+													this.props.addFollowing(user.id, user);
+													let newIds = this.state.friendIds;
+													newIds[user.id] = true;
+													this.setState({ friendIds: newIds });
+												}}
+											>
+												<Text style={[{ textAlign: 'center' }]}>Follow!</Text>
+											</TouchableOpacity>
+										</View>
 									</View>
 								);
 							})}
