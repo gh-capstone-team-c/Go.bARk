@@ -31,7 +31,7 @@ const scenes = [
 	{
 		scene: require('./res/360_lake.jpeg'),
 		/***temp variables */
-		particles: require('./res/fallleaf.png'),
+		particles: require('./res/dandelionseed.png'),
 		parkAnim: 'frolic',
 		sound: require('./sounds/birdsPark.mp3'),
 	},
