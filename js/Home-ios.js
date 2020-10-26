@@ -24,7 +24,7 @@ class HomeIos extends React.Component {
 		this.state = {
 			pressed: false,
 			dogName: '',
-			dogColor: '',
+			dogColor: 'red',
 			showAlert: false,
 		};
 	}

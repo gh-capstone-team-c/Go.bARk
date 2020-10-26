@@ -26,94 +26,110 @@ import socket from '../socket/socket';
 export default FoodTime = createReactClass({
 	getInitialState() {
 		return {
-			user: this.props.user,
-			addPoints: this.props.addPoints,
+			user: {},
+			addPoints: () => {},
 			changePose: false,
 			//sound effects
 			playPoints: true,
 			playBark: true,
 			bowlScale: [0.05, 0.05, 0.05],
+			bowlPosition: [0, 0, 0],
+			dogScale: [0.03, 0.03, 0.03],
+		};
+	},
+	componentDidMount() {
+		this.setState({
+			user: this.props.user,
+			addPoints: this.props.addPoints,
 			bowlPosition: [
 				this.props.foodPosition[0] - 3,
 				this.props.foodPosition[1] - 3,
 				this.props.foodPosition[2],
 			],
-			dogScale: [0.03, 0.03, 0.03],
-		};
-	},
-	componentWillUnmount() {
-		console.log('FoodTime has unmounted!');
+		});
 	},
 	render() {
-		const dogColor = this.state.user.dog.color;
-		let dog;
-		this.state.changePose
-			? (dog = dogPose[dogColor])
-			: (dog = dogStand[dogColor]);
-		return (
-			<ViroNode transformBehaviors={['billboardY']}>
-				{/****** scene items below ****** */}
-				<ViroAmbientLight color={'#e8e0dc'} />
+		if (this.state.user.id !== undefined) {
+			const dogColor = this.state.user.dog.color;
+			let dog;
+			this.state.changePose
+				? (dog = dogPose[dogColor])
+				: (dog = dogStand[dogColor]);
+			return (
+				<ViroNode transformBehaviors={['billboardY']}>
+					{/****** scene items below ****** */}
+					<ViroAmbientLight color={'#e8e0dc'} />
 
-				{/* food bowl & clicking on food bowl to get user points */}
-				<ViroNode
-					position={this.state.bowlPosition}
-					scale={this.state.bowlScale}
-				>
-					<Viro3DObject
-						onClick={this._onBowlClicked}
-						source={require('./res/dogBowl.vrx')}
-						type="VRX"
+					{/* food bowl & clicking on food bowl to get user points */}
+					<ViroNode
+						position={this.state.bowlPosition}
+						scale={this.state.bowlScale}
+					>
+						<Viro3DObject
+							onClick={this._onBowlClicked}
+							source={require('./res/dogBowl.vrx')}
+							type="VRX"
+						/>
+					</ViroNode>
+
+					{/* dog */}
+					<ViroNode
+						position={[
+							this.state.bowlPosition[0] - 0.1,
+							this.state.bowlPosition[1],
+							this.state.bowlPosition[2] - 1.1,
+						]}
+						scale={this.state.dogScale}
+						ignoreEventHandling={true}
+					>
+						<Viro3DObject source={dog} type="VRX" ignoreEventHandling={true} />
+					</ViroNode>
+
+					<ViroText
+						text={'Tap the bowl to feed your dog!'}
+						scale={[1, 1, 1]}
+						position={[4, 1, 0]}
+					/>
+
+					{/* points sound effects */}
+					<ViroSound
+						paused={this.state.playPoints}
+						muted={false}
+						source={require('./sounds/points3.mp3')}
+						loop={false}
+						onFinish={() => {
+							this.setState({
+								playPoints: true,
+							});
+						}}
+						volume={1.0}
+					/>
+					{/* dog bark sound effects */}
+					<ViroSound
+						paused={this.state.playBark}
+						muted={false}
+						source={require('./sounds/smallBark.mp3')}
+						loop={false}
+						onFinish={() => {
+							this.setState({
+								playBark: true,
+							});
+						}}
+						volume={1.0}
 					/>
 				</ViroNode>
-
-				{/* dog */}
-				<ViroNode
-					position={[
-						this.state.bowlPosition[0] - 0.1,
-						this.state.bowlPosition[1],
-						this.state.bowlPosition[2] - 1.1,
-					]}
-					scale={this.state.dogScale}
-					ignoreEventHandling={true}
-				>
-					<Viro3DObject source={dog} type="VRX" ignoreEventHandling={true} />
+			);
+		} else
+			return (
+				<ViroNode>
+					<ViroText
+						text={'Loading, Please wait!'}
+						scale={[3, 3, 3]}
+						position={[0, 1, 0]}
+						transformBehaviors={['billboardY']}
+					/>
 				</ViroNode>
-
-				<ViroText
-					text={'Tap the bowl to feed your dog!'}
-					scale={[1, 1, 1]}
-					position={[4, 1, 0]}
-				/>
-
-				{/* points sound effects */}
-				<ViroSound
-					paused={this.state.playPoints}
-					muted={false}
-					source={require('./sounds/points3.mp3')}
-					loop={false}
-					onFinish={() => {
-						this.setState({
-							playPoints: true,
-						});
-					}}
-					volume={1.0}
-				/>
-				{/* dog bark sound effects */}
-				<ViroSound
-					paused={this.state.playBark}
-					muted={false}
-					source={require('./sounds/smallBark.mp3')}
-					loop={false}
-					onFinish={() => {
-						this.setState({
-							playBark: true,
-						});
-					}}
-					volume={1.0}
-				/>
-			</ViroNode>
-		);
+			);
 	},
 
 	//socket
