@@ -106,6 +106,19 @@ class Friends extends React.Component {
 															>
 																{heart} points: {user.points}
 															</Text>
+															<TouchableOpacity
+																onPress={() => {
+																	this.props.removeFollowing(user.id, user);
+																	let newIds = this.state.friendIds;
+																	newIds[user.id] = null;
+																	this.setState({
+																		...this.state,
+																		friendIds: newIds,
+																	});
+																}}
+															>
+																<Text>Remove Follow</Text>
+															</TouchableOpacity>
 														</View>
 													</View>
 												);
@@ -154,19 +167,6 @@ class Friends extends React.Component {
 															>
 																{heart} points: {user.points}
 															</Text>
-															<TouchableOpacity
-																onPress={() => {
-																	this.props.removeFollowing(user.id, user);
-																	let newIds = this.state.friendIds;
-																	newIds[user.id] = null;
-																	this.setState({
-																		...this.state,
-																		friendIds: newIds,
-																	});
-																}}
-															>
-																<Text>Remove Follow</Text>
-															</TouchableOpacity>
 														</View>
 													</View>
 												);
