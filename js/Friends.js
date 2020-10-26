@@ -5,7 +5,7 @@ import { View, Image, Text, TouchableOpacity } from 'react-native';
 import { appStyles } from '../Styles';
 import { connect } from 'react-redux';
 import { getUsers } from '../store/allUsers';
-import { addFollowing, removeFollowing } from '../store/users';
+import { addFollowing, removeFollowing, getUser } from '../store/users';
 
 class Friends extends React.Component {
   constructor(props) {
@@ -33,10 +33,13 @@ class Friends extends React.Component {
       this.props.user.following.map((user) => {
         if (!tempIDs[user.id]) tempIDs[user.id] = true;
       });
-    this.setState({ ...this.state, friendIds: tempIDs });
+    this.setState({ friendIds: tempIDs });
   }
 
+  
+
   render() {
+
     return (
       <View style={appStyles.individualMenu}>
         {this.state.loading && <Text>Loading!</Text>}
@@ -195,10 +198,10 @@ class Friends extends React.Component {
 
 										<TouchableOpacity
 											onPress={() => {
-												this.props.addFollowing(user.id, user);
+                        this.props.addFollowing(user.id, user);
 												let newIds = this.state.friendIds;
 												newIds[user.id] = true;
-												this.setState({ ...this.state, friendIds: newIds });
+												this.setState({ friendIds: newIds });
 											}}
 										>
 											<Text>Follow!</Text>
@@ -222,7 +225,8 @@ const mapState = (state) => {
 };
 
 const mapDispatch = (dispatch) => {
-	return {
+  return {
+    getUser: () => dispatch(getUser()),
 		getUsers: () => dispatch(getUsers()),
 		addFollowing: (id, obj) => dispatch(addFollowing(id, obj)),
 		removeFollowing: (id, obj) => dispatch(removeFollowing(id, obj)),
