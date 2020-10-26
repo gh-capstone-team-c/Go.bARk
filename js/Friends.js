@@ -36,12 +36,7 @@ class Friends extends React.Component {
     this.setState({ friendIds: tempIDs });
   }
 
-  // componentDidUpdate(prevProps) {
-  //   if (!prevProps.user.following && this.props.user.following) {
-
-  //     this.filterUsers()
-  //   }
-  // }
+  
 
   render() {
 
