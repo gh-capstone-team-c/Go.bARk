@@ -2,6 +2,8 @@
 
 # go.bARk
 
+<img src ="/gobARk.gif">
+
 **A casual Augmented Reality game for you and your virtual dog!**
 
 go.Bark is the brainchild of Marie Crumpton, Leslie Meng, and Elizabeth Groton. We wanted to create a simple game for those of us who either do not have the pleasure of owning a dog, or would like to play with a virtual dog in our own homes.
